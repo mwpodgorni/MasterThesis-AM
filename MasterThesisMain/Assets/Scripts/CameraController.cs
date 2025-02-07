@@ -1,52 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class AxonometricCameraController : MonoBehaviour
 {
-    public float moveSpeed = 10f; // Speed of camera movement
-    public float lookSpeed = 2f;  // Sensitivity of mouse look
-    public float rotationSmoothness = 5f;
+    public float lookSpeed = 2f;
+    public float zoomSpeed = 2f;
+    public float edgeScrollSpeed = 10f;
+    public float edgeThreshold = 100f; // in pixels
+    public float minDistance = 5f;
+    public float maxDistance = 20f;
 
-    private Vector3 rotation = Vector3.zero;
-    private bool _move = false;
+    private Vector3 pivot;
+    private float distance = 10f;
+    private Vector2 rotation = new Vector2(30f, 45f); // pitch (x) and yaw (y)
 
     void Start()
     {
-        rotation = transform.eulerAngles;
+        // Set pivot based on initial position and direction.
+        pivot = transform.position + transform.forward * distance;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        // Zoom with mouse scroll.
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        distance -= scrollInput * zoomSpeed;
+        distance = Mathf.Clamp(distance, minDistance, maxDistance);
+
+        // Rotate camera when right mouse button is held.
+        if (Input.GetMouseButton(1))
         {
-            _move = !_move;
-            Cursor.lockState = _move ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !_move;
+            float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
+            float mouseY = Input.GetAxis("Mouse Y") * lookSpeed;
+            rotation.y += mouseX;
+            rotation.x = Mathf.Clamp(rotation.x - mouseY, -90f, 90f);
         }
-        if (!_move) return;
-        // Camera movement with WSAD keys
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
+        Quaternion camRotation = Quaternion.Euler(rotation.x, rotation.y, 0);
 
-        Vector3 moveDirection = transform.right * moveX + transform.forward * moveZ;
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        // Edge scrolling: adjust the pivot.
+        Vector3 moveDir = Vector3.zero;
+        Vector3 right = camRotation * Vector3.right;
+        Vector3 forward = camRotation * Vector3.forward;
+        right.y = 0; forward.y = 0;
+        right.Normalize(); forward.Normalize();
 
-        // Camera rotation with mouse
-        float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
-        float mouseY = Input.GetAxis("Mouse Y") * lookSpeed;
+        if (Input.mousePosition.x <= edgeThreshold)
+            moveDir -= right;
+        if (Input.mousePosition.x >= Screen.width - edgeThreshold)
+            moveDir += right;
+        if (Input.mousePosition.y <= edgeThreshold)
+            moveDir -= forward;
+        if (Input.mousePosition.y >= Screen.height - edgeThreshold)
+            moveDir += forward;
 
-        rotation.y += mouseX;
-        rotation.x -= mouseY;
-        rotation.x = Mathf.Clamp(rotation.x, -90f, 90f);
+        pivot += moveDir * edgeScrollSpeed * Time.deltaTime;
 
-        Quaternion targetRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothness * Time.deltaTime);
-    }
-
-    void OnDisable()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        // Position the camera relative to the pivot.
+        Vector3 offset = camRotation * new Vector3(0, 0, -distance);
+        transform.position = pivot + offset;
+        transform.LookAt(pivot);
     }
 }
