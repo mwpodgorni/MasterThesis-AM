@@ -1,68 +1,154 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEditor;
+using UnityEngine.InputSystem;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class CameraDragController : MonoBehaviour
 {
-    public float lookSpeed = 2f;
-    public float zoomSpeed = 2f;
-    public float edgeScrollSpeed = 10f;
-    public float edgeThreshold = 100f; // in pixels
-    public float maxViewSize = 20f;
-    public float minViewSize = 5f;
+    [Header("Camera Properties")]
+    public ProjectionMode projectionMode = ProjectionMode.Perspective;
+    
+    [SerializeField] float _lookSpeed = 2f;
+    [SerializeField] float _zoomSpeed = 2f;
 
-    private Vector3 pivot;
-    private float distance = 50f;
-    private Vector2 rotation = new Vector2(30f, 45f); // pitch (x) and yaw (y)
-    float viewSize = 10f;
+    [Tooltip("Only relevant for Orthographic Projection Mode")]
+    [SerializeField] float _maxViewSize = 20f;
+    [Tooltip("Only relevant for Orthographic Projection Mode")]
+    [SerializeField] float _minViewSize = 5f;
+
+    [Tooltip("Only relevant for Perspective Projection Mode")]
+    [SerializeField] float _maxDistance = 20f;
+    [Tooltip("Only relevant for Perspective Projection Mode")]
+    [SerializeField] float _minDistance = 5f;
+
+    [SerializeField] Transform _cameraHolder;
+
+    [SerializeField] InputReader _input;
+
+    Vector2 _targetRotation = new Vector2(30f, 45f); // pitch (x) and yaw (y)
+    Vector3 _targetPosition = new Vector3(0,0,0);
+
+    Vector3 _dragOrigin;
+    Vector3 _dragDifference;
+
+    bool _dragMovement;
+    bool _dragRotation;
+
+    float _currentZoomValue = 0;
+    void OnEnable()
+    {
+        _input.LeftClickDown += EnableDragMovement;
+        _input.RightClickDown += EnableDragRotation;
+
+        _input.LeftClickUp += DisableDragMovement;
+        _input.RightClickUp += DisableDragRotation;
+    }
+
+    void OnDisable()
+    {
+        _input.LeftClickDown -= EnableDragMovement;
+        _input.RightClickDown -= EnableDragRotation;
+
+        _input.LeftClickUp -= DisableDragMovement;
+        _input.RightClickUp -= DisableDragRotation;
+    }
 
     void Start()
     {
-        // Set pivot based on initial position and direction.
-        pivot = new Vector3(0,0,0);
+        transform.position = _targetPosition;
+        transform.rotation = Quaternion.Euler(_targetRotation.x, _targetRotation.y, 0);
+
+        switch(projectionMode)
+        {
+            case ProjectionMode.Perspective:
+                Camera.main.orthographic = false;
+                _currentZoomValue = _maxDistance;
+                _cameraHolder.localPosition = new Vector3(0, 0, -_currentZoomValue);
+                break;
+            case ProjectionMode.Orthographic:
+                Camera.main.orthographic = true;
+                _currentZoomValue = _maxViewSize;
+                _cameraHolder.localPosition = new Vector3(0, 0, -100);
+                break;
+        }   
     }
 
-    void Update()
+    void LateUpdate()
     {
+        Zoom();
 
-        // Zoom with mouse scroll.
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        viewSize -= scrollInput * zoomSpeed;
-        viewSize = Mathf.Clamp(viewSize, minViewSize, maxViewSize);
+        if (_dragMovement) DragMovement();
+        if (_dragRotation) DragRotation();
+    }
 
-        // Rotate camera when right mouse button is held.
-        if (Input.GetMouseButton(1))
+    // Zoom in and out. For Orthogonic Projection, increase/decrese view size.
+    void Zoom()
+    {
+        _currentZoomValue -= _input.Scroll * _zoomSpeed;
+
+        switch (projectionMode)
         {
-            float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
-            float mouseY = Input.GetAxis("Mouse Y") * lookSpeed;
-            rotation.y += mouseX;
-            rotation.x = Mathf.Clamp(rotation.x - mouseY, -90f, 90f);
+            case ProjectionMode.Perspective:
+                _currentZoomValue = Mathf.Clamp(_currentZoomValue, _minDistance, _maxDistance);
+                _cameraHolder.localPosition = new Vector3(0, 0, -_currentZoomValue);
+                break;
+            case ProjectionMode.Orthographic:
+                _currentZoomValue = Mathf.Clamp(_currentZoomValue, _minViewSize, _maxViewSize);
+                Camera.main.orthographicSize = _currentZoomValue;
+                break;
         }
-        Quaternion camRotation = Quaternion.Euler(rotation.x, rotation.y, 0);
 
-        // Edge scrolling: adjust the pivot.
-        Vector3 moveDir = Vector3.zero;
-        Vector3 right = camRotation * Vector3.right;
-        Vector3 forward = camRotation * Vector3.forward;
-        right.y = 0; forward.y = 0;
-        right.Normalize(); forward.Normalize();
+    }
 
-        if (Input.mousePosition.x <= edgeThreshold)
-            moveDir -= right;
-        if (Input.mousePosition.x >= Screen.width - edgeThreshold)
-            moveDir += right;
-        if (Input.mousePosition.y <= edgeThreshold)
-            moveDir -= forward;
-        if (Input.mousePosition.y >= Screen.height - edgeThreshold)
-            moveDir += forward;
+    void DragMovement()
+    {
+        _dragDifference = GetMousePosition() - transform.position;
+ 
+        transform.position = _dragOrigin - _dragDifference;
+    }
 
-        pivot += moveDir * edgeScrollSpeed * Time.deltaTime;
+    void DragRotation()
+    {
+        // Rotate camera when right mouse button is held.
+        float mouseX = _input.PositionDelta.x * _lookSpeed;
+        float mouseY = _input.PositionDelta.y * _lookSpeed;
+        _targetRotation.y += mouseX;
+        _targetRotation.x = Mathf.Clamp(_targetRotation.x - mouseY, -90f, 90f);
+        transform.rotation = Quaternion.Euler(_targetRotation.x, _targetRotation.y, 0);
+    }
 
-        // Position the camera relative to the pivot.
-        Vector3 offset = camRotation * new Vector3(0, 0, -distance);
-        transform.position = pivot + offset;
-        transform.LookAt(pivot);
+    void EnableDragMovement()
+    {
+        _dragOrigin = GetMousePosition();
+        _dragMovement = true;
+    }
 
-        Camera.main.orthographicSize = viewSize;
+    void DisableDragMovement()
+    {
+        _dragMovement = false;
+    }
+
+    void EnableDragRotation()
+    {
+        _dragRotation = true;
+    }
+
+    void DisableDragRotation()
+    {
+        _dragRotation = false;
+    }
+
+    Vector3 GetMousePosition()
+    {
+        return Camera.main.ScreenToWorldPoint(_input.Position);
+    }
+
+    public enum ProjectionMode
+    {
+        Perspective,
+        Orthographic
     }
 }
