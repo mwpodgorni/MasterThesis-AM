@@ -14,6 +14,7 @@ public class CameraDragController : MonoBehaviour
     [SerializeField] float _lookSpeed = 2f;
     [SerializeField] float _zoomSpeed = 2f;
 
+    [Header("Zoom Properties")]
     [Tooltip("Only relevant for Orthographic Projection Mode")]
     [SerializeField] float _maxViewSize = 20f;
     [Tooltip("Only relevant for Orthographic Projection Mode")]
@@ -24,8 +25,14 @@ public class CameraDragController : MonoBehaviour
     [Tooltip("Only relevant for Perspective Projection Mode")]
     [SerializeField] float _minDistance = 5f;
 
+    [Header("Camera Angles")]
+    [SerializeField] float _maxYaw = 90f;
+    [SerializeField] float _minYaw = -90f;
+
+    [Header("Camera Holder")]
     [SerializeField] Transform _cameraHolder;
 
+    [Header("Input Reader")]
     [SerializeField] InputReader _input;
 
     Vector2 _targetRotation = new Vector2(30f, 45f); // pitch (x) and yaw (y)
@@ -106,7 +113,6 @@ public class CameraDragController : MonoBehaviour
     void DragMovement()
     {
         _dragDifference = GetMousePosition() - transform.position;
- 
         transform.position = _dragOrigin - _dragDifference;
     }
 
@@ -116,7 +122,7 @@ public class CameraDragController : MonoBehaviour
         float mouseX = _input.PositionDelta.x * _lookSpeed;
         float mouseY = _input.PositionDelta.y * _lookSpeed;
         _targetRotation.y += mouseX;
-        _targetRotation.x = Mathf.Clamp(_targetRotation.x - mouseY, -90f, 90f);
+        _targetRotation.x = Mathf.Clamp(_targetRotation.x - mouseY, _minYaw, _maxYaw);
         transform.rotation = Quaternion.Euler(_targetRotation.x, _targetRotation.y, 0);
     }
 
@@ -143,7 +149,17 @@ public class CameraDragController : MonoBehaviour
 
     Vector3 GetMousePosition()
     {
-        return Camera.main.ScreenToWorldPoint(_input.Position);
+        switch(projectionMode)
+        {
+            case ProjectionMode.Perspective:
+                Vector3 pos = _input.Position;
+                pos.z = _currentZoomValue;
+                return Camera.main.ScreenToWorldPoint(pos);
+            case ProjectionMode.Orthographic:
+                return Camera.main.ScreenToWorldPoint(_input.Position);
+        }
+
+        return new Vector3();
     }
 
     public enum ProjectionMode
