@@ -5,7 +5,7 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine;
 
-public class Bob : Agent
+public class BobAgent : Agent
 {
     public Transform target;
     
