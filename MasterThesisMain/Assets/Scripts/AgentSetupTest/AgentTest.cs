@@ -22,7 +22,7 @@ public class AgentLeftRight : Agent
     {
         Vector3 relativePosition = largeTarget.transform.position - transform.position;
         sensor.AddObservation(relativePosition.normalized);
-        sensor.AddObservation(m_AgentRb.velocity)X
+        sensor.AddObservation(m_AgentRb.velocity);
     }
 
     public void MoveAgent(ActionSegment<int> act)
