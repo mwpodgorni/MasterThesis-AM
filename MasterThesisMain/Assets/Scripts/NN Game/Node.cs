@@ -23,6 +23,8 @@ public class Node : MonoBehaviour
             _parameters.BiasRange.Item1,
             _parameters.BiasRange.Item2
         );
+
+        _activationFunc = _parameters.ActivationFunction;
     }
 
     public void SetActivationFunc(Func<float, float> func)
@@ -45,6 +47,12 @@ public class Node : MonoBehaviour
         }
 
         return sum + bias;
+    }
+
+    public void ClearWeights()
+    {
+        weightsIn.Clear();
+        weightsOut.Clear();
     }
 
 }

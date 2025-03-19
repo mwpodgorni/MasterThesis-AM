@@ -14,17 +14,15 @@ public class Parameters : ScriptableObject
     public float maxBias = 1f;
     public float minBias = -0f;
 
+    public int maxNodes = 8;
+    public int maxLayers = 6;
+
     [Header("Hyper Parameters")]
     public float learningRate = 0.1f;
     public float gradient = 0.1f;
 
-    public List<Func<float, float>> activationFuncs = new List<Func<float, float>>()
-    {
-        ActivationFunctions.BinaryStep,
-        ActivationFunctions.Sigmoid,
-        ActivationFunctions.Tanh,
-        ActivationFunctions.ReLU
-    };
+    [SerializeField]
+    ActivationFunctionType activationFunc = ActivationFunctionType.Sigmoid;
 
     public GameObject nodePrefab;
     public GameObject weightPrefab;
@@ -38,6 +36,11 @@ public class Parameters : ScriptableObject
     public (float, float) BiasRange
     {
         get { return (minBias, maxBias); }
+    }
+
+    public Func<float, float> ActivationFunction
+    {
+        get { return ActivationFunctions.GetFunction(activationFunc); }
     }
 }
 
@@ -54,4 +57,24 @@ public static class ActivationFunctions
 
     // ReLU (Rectified Linear Unit)
     public static float ReLU(float x) => MathF.Max(0, x);
+
+    public static Func<float, float> GetFunction(ActivationFunctionType type)
+    {
+        return type switch
+        {
+            ActivationFunctionType.BinaryStep => BinaryStep,
+            ActivationFunctionType.Sigmoid => Sigmoid,
+            ActivationFunctionType.Tanh => Tanh,
+            ActivationFunctionType.ReLU => ReLU,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), "Unknown activation function")
+        };
+    }
+}
+
+public enum ActivationFunctionType
+{
+    BinaryStep,
+    Sigmoid,
+    Tanh,
+    ReLU
 }

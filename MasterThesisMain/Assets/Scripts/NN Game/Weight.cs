@@ -17,7 +17,6 @@ public class Weight : MonoBehaviour
 
     LineRenderer _line;
     UILineRenderer _lineUI;
-    MeshCollider _collider;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +43,8 @@ public class Weight : MonoBehaviour
             _parameters.WeightRange.Item1,
             _parameters.WeightRange.Item2
         );
+
+        transform.position = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);
     }
 
     private void Update()

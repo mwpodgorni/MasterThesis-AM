@@ -569,6 +569,7 @@ MonoBehaviour:
   - {fileID: 8272274211359910458}
   _parameters: {fileID: 11400000, guid: 8c9eab89f433bfa4e8bf6ffdf11a4b49, type: 2}
   _nodePanel: {fileID: 8375777692500554847}
+  _channel: {fileID: 11400000, guid: c4d513662902d0e4f90413fb1ba54549, type: 2}
 --- !u!1 &5891469545380660559
 GameObject:
   m_ObjectHideFlags: 0
