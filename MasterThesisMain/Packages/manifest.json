@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.alexw-su.unity-essentials": "https://github.com/alexw-su/unity-essentials.git",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.6.0",
     "com.unity.ide.rider": "3.0.31",
     "com.unity.ide.visualstudio": "2.0.22",
