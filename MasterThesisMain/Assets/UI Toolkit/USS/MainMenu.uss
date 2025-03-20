@@ -73,3 +73,26 @@
     padding-top: 15px;
     padding-bottom: 15px;
 }
+#TutorialHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: 150px;
+}
+
+#TutorialIcon {
+    min-width: 150px;
+    max-width: 150px;
+    flex-shrink: 0;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#TutorialTitle {
+    flex-grow: 1 !important;
+    flex: 1 !important;
+    height: 150px !important;
+    display: flex;
+}

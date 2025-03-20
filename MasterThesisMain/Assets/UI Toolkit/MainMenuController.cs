@@ -15,6 +15,7 @@ public class MainMenuController : MonoBehaviour
     public VisualElement optionsPanel;
 
     public VisualElement menu;
+    public VisualElement tutorialPanel;
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -35,6 +36,10 @@ public class MainMenuController : MonoBehaviour
         optionsPanel.style.display = DisplayStyle.None;
 
         menu = ui.Q<VisualElement>("Menu");
+        menu.style.display = DisplayStyle.Flex;
+
+        tutorialPanel = ui.Q<VisualElement>("TutorialPanel");
+        tutorialPanel.style.display = DisplayStyle.None;
 
     }
     private void OnQuitButtonClicked()
@@ -57,6 +62,7 @@ public class MainMenuController : MonoBehaviour
     {
         Debug.Log("Play Button Clicked");
         menu.style.display = DisplayStyle.None;
+        tutorialPanel.style.display = DisplayStyle.Flex;
     }
 
 }

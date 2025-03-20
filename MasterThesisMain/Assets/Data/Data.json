@@ -1,0 +1,24 @@
+[
+  {
+    "title": "Welcome to the robot factory!",
+    "content": [
+      "As a supervisor, your task will be assemble and train robots to perform various tasks.",
+      "But before you can start, you need to go through mandatory training that will teach you how these robots work."
+    ]
+  },
+  {
+    "title": "How do robots work?",
+    "content": [
+      "The robots in our factory use neural networks as their brains, which helps them learn and make decisions.",
+      "A neural network is like a web of connected neurons, where the input layer takes in information, hidden layers process it by adjusting weights and applying activation functions, and the output layer makes the final decision.",
+      "By training the network, we teach the robot how to recognize patterns and improve its performance over time!"
+    ]
+  },
+  {
+    "title": "Your first task",
+    "content": [
+      "Before you start to create fully functional robots, you need to prove that you know how to create and use neural networks.",
+      "Let’s say you have to design a network that will recognize and sort numbers from 1 to 4. How would you do that?"
+    ]
+  }
+]
