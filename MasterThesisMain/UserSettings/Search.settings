@@ -11,6 +11,9 @@ scopes = {
 	"last_search.45C55C1A" = ""
 	"OpenInspectorPreview.45C55C1A" = "0"
 	"currentGroup.45C55C1A" = "asset"
+	"last_search.5A656512" = "ref=\"GlobalObjectId_V1-4-0000000000000000f000000000000000-10907-0\""
+	"OpenInspectorPreview.5A656512" = "0"
+	"currentGroup.5A656512" = null
 }
 providers = {
 	store = {

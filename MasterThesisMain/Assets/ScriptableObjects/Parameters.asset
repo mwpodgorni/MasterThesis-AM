@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa71f40531d64cf46af572b5eeff7f31, type: 3}
+  m_Name: Parameters
+  m_EditorClassIdentifier: 
+  maxWeight: 1
+  minWeight: 0
+  maxBias: 1
+  minBias: -0
+  learningRate: 0.1
+  gradient: 0.1
+  nodePrefab: {fileID: 2686141494440953359, guid: e265df7571d8b934391c88d4c0c8a186,
+    type: 3}
+  weightPrefab: {fileID: 7019961211403406116, guid: b4d10345eb16e7b45bca8be02002582a,
+    type: 3}
+  layerPrefab: {fileID: 4304185201039555630, guid: 08d066689b446ac4a9d9ce8d3ffffc3b,
+    type: 3}
