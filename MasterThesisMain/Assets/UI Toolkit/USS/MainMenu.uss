@@ -55,3 +55,21 @@
     margin-bottom: 10px;
     scale: 1.1 1.1;
 }
+
+.text-yellow {
+    color: rgb(255, 247, 115);
+    font-size: 30px;
+    -unity-text-align: middle-center;
+}
+
+.fontawesome-solid {
+    -unity-font-definition: url("project://database/Assets/fontawesome-free-6.7.2-desktop/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&guid=d187ddc5adfa6df4ab1851b37e1ec9fa&type=3#Font Awesome 6 Free-Solid-900");
+}
+
+.header {
+    font-size: 60px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

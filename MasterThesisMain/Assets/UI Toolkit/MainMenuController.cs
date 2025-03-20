@@ -10,7 +10,11 @@ public class MainMenuController : MonoBehaviour
     public Button playButton;
     public Button optionsButton;
     public Button quitButton;
+
+    public Button optionsClosed;
     public VisualElement optionsPanel;
+
+    public VisualElement menu;
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -24,8 +28,14 @@ public class MainMenuController : MonoBehaviour
         quitButton = ui.Q<Button>("QuitButton");
         quitButton.clicked += OnQuitButtonClicked;
 
+        optionsClosed = ui.Q<Button>("OptionsCloseButton");
+        optionsClosed.clicked += OnOptionsClosed;
+
         optionsPanel = ui.Q<VisualElement>("OptionsPanel");
         optionsPanel.style.display = DisplayStyle.None;
+
+        menu = ui.Q<VisualElement>("Menu");
+
     }
     private void OnQuitButtonClicked()
     {
@@ -38,9 +48,15 @@ public class MainMenuController : MonoBehaviour
              ? DisplayStyle.Flex
              : DisplayStyle.None;
     }
+    private void OnOptionsClosed()
+    {
+        Debug.Log("OnOptionsClosed");
+        optionsPanel.style.display = DisplayStyle.None;
+    }
     private void OnPlayButtonClicked()
     {
         Debug.Log("Play Button Clicked");
+        menu.style.display = DisplayStyle.None;
     }
 
 }
