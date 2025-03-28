@@ -16,6 +16,7 @@ public class MainMenuController : MonoBehaviour
 
     public VisualElement menu;
     public VisualElement tutorialPanel;
+
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -63,6 +64,7 @@ public class MainMenuController : MonoBehaviour
         Debug.Log("Play Button Clicked");
         menu.style.display = DisplayStyle.None;
         tutorialPanel.style.display = DisplayStyle.Flex;
+        gameObject.GetComponent<TutorialController>().StartTutorial();
     }
 
 }

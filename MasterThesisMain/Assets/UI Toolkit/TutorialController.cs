@@ -33,12 +33,19 @@ public class TutorialController : MonoBehaviour
         tutorialTitle.text = "";
         tutorialContent.text = "";
         tutorialSteps = DataReader.Instance.GetTutorialSteps();
+    }
+    public void StartTutorial()
+    {
+        StopAllCoroutines();
+        currentTutorialStep = 0;
         StartCoroutine(ShowTutorialStep(tutorialSteps[currentTutorialStep]));
         currentTutorialStep++;
     }
 
     private void OnNextButtonClicked()
     {
+        StopAllCoroutines();
+
         if (currentTutorialStep < tutorialSteps.Count)
         {
             StartCoroutine(ShowTutorialStep(tutorialSteps[currentTutorialStep]));
