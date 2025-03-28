@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
 using UnityEditor.PackageManager;
+using System;
 
 public class NeuralNetwork : MonoBehaviour
 {
@@ -13,9 +14,6 @@ public class NeuralNetwork : MonoBehaviour
 
     public float expectedOutput;
     public float actualOutput;
-
-    public int epoch;
-    public float loss;
 
     [SerializeField] Parameters _parameters;
 
@@ -29,7 +27,8 @@ public class NeuralNetwork : MonoBehaviour
 
     void Start()
     {
-        epoch = 0;    
+        hiddenLayers.AddRange(_hiddenLayerPanel.GetComponentsInChildren<Layer>());
+        CreateWeights();
     }
 
     public void AddHiddenLayer()
@@ -78,12 +77,12 @@ public class NeuralNetwork : MonoBehaviour
                 weight.to = nodeTo;
 
                 nodeFrom.weightsOut.Add(weight);
-                nodeTo.weightsIn.Add(weight);     
+                nodeTo.weightsIn.Add(weight);
             }
         }
     }
 
-    public float ForwardPass(float[] inputs)
+    public float[] ForwardPass(float[] inputs)
     {
         for (int i = 0; i < inputLayer.nodes.Count; i++)
         {
@@ -98,19 +97,23 @@ public class NeuralNetwork : MonoBehaviour
             }
         }
 
-        var outputNode = outputLayer.nodes[0];
+        var output = new float[outputLayer.nodes.Count];
 
-        outputNode.Activate();
+        for (int i = 0; i < outputLayer.nodes.Count; i++)
+        {
+            outputLayer.nodes[i].Activate();
+            output[i] = outputLayer.nodes[i].value;
+        }
 
-        return outputNode.value;
+        return output;
     }
 
-    public void BackPropagate(float output, float expected)
+    public void BackPropagate(float[] output, float[] expected)
     {
         for (int i = 0; i < outputLayer.nodes.Count; i++)
         {
             Node node = outputLayer.nodes[i];
-            float error = expected - node.value;
+            float error = expected[i] - node.value;
             node.gradient = error * (node.value * (1 - node.value));
         }
 
@@ -188,19 +191,28 @@ public class NeuralNetwork : MonoBehaviour
         if (i <= 0) RemoveWeights();
     }
 
-    public void Train(int epoch)
+    public void TrainNN(int epoch, Tuple<float[], float[]>[] trainingData)
     {
         var avgLoss = 0.0f;
 
         for (int i = 0; i < epoch; i++)
         {
-            var selectedInput = Random.Range(0, inputLayer.nodes.Count);
-            var inputs = new float[inputLayer.nodes.Count];
-            inputs[selectedInput] = 1;
+            var set = trainingData[Random.Range(0, trainingData.Length)];
 
-            expectedOutput = selectedInput;
-            actualOutput = ForwardPass(inputs);
-            avgLoss += Mathf.Pow(expectedOutput - actualOutput, 2);
+            var input = set.Item1;
+            var expectedOutput = set.Item2;
+
+            var actualOutput = ForwardPass(input);
+
+            var loss = 0f;
+
+            for (int j = 0; j < expectedOutput.Length; j++)
+            {
+                var error = actualOutput[j] - expectedOutput[j];
+                loss += error * error;
+            }
+
+            avgLoss += loss/expectedOutput.Length;
 
             BackPropagate(actualOutput, expectedOutput);
 
@@ -211,12 +223,5 @@ public class NeuralNetwork : MonoBehaviour
         avgLoss /= epoch;
 
         _lossText.text = avgLoss.ToString();
-    }
-
-    public void TrainButton()
-    {
-        int epoch = int.Parse(_inputField.text);
-
-        Train(epoch);
     }
 }
