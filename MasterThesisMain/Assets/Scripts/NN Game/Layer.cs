@@ -12,6 +12,11 @@ public class Layer : MonoBehaviour
     [SerializeField] Transform _nodePanel;
     [SerializeField] IntEventChannel _channel;
 
+    void Start()
+    {
+        nodes.AddRange(GetComponentsInChildren<Node>());
+    }
+
     public void ActivateLayer()
     {
         foreach (Node node in nodes)
