@@ -2814,6 +2814,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1572632424 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8917368887895693160, guid: 185e74a580f096d489c7ba688b7245ca,
+    type: 3}
+  m_PrefabInstance: {fileID: 1085085012}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bb6c37851a74fa4d84d494ddc9a708f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1614813940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3978,6 +3990,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5076699202437522027, guid: 02c420a7b61cfa7489dbd4638c186bb7,
+        type: 3}
+      propertyPath: epsilon
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699202437522027, guid: 02c420a7b61cfa7489dbd4638c186bb7,
+        type: 3}
+      propertyPath: _goalTile
+      value: 
+      objectReference: {fileID: 1572632424}
     - target: {fileID: 5076699202437522027, guid: 02c420a7b61cfa7489dbd4638c186bb7,
         type: 3}
       propertyPath: decayRate

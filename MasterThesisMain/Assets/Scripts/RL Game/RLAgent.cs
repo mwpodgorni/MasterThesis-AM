@@ -1,8 +1,10 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+using System.Text;
+using System.Threading;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 // A Simple Q-Learning agent
 public class RLAgent : MonoBehaviour
@@ -18,17 +20,25 @@ public class RLAgent : MonoBehaviour
     public float discountFactor = 0.9f;
     public float decayRate = 0.01f;
     
-    public float epsilon = 1f;
+    public float epsilon = 0f;
     float epsilonMin = 0.01f;
     
-    public int stepCount = 0;
+    public int totalStepCount = 0;
+    public int currentEpisodeSteps = 0;
     public int episodeCount = 0;
+    public int maxSteps = 20;
 
     Dictionary<TileType, float> rewards = new Dictionary<TileType, float>();
 
     [Header("Properties")]
+    [SerializeField] Tile _goalTile;
     [SerializeField] PlayerAgent _player;
     [SerializeField] Tile[] _tilesToReset;
+
+    bool _calculatingMove = false;
+    float _waitTime = 1f;
+    float _timer = 0f;
+    Tile prevTile;
 
     // Start is called before the first frame update
     void Start()
@@ -38,13 +48,17 @@ public class RLAgent : MonoBehaviour
         rewards[TileType.Wall] = -1;
         rewards[TileType.Collectible] = 0.5f;
         rewards[TileType.Goal] = 1f;
+
+        prevTile = _player.currentTile;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!_player.IsMoving())
+        if(!_calculatingMove && !_player.IsMoving())
         {
+            _calculatingMove = true;
+
             var action = ChooseAction(_player.currentTile);
 
             var nextTile = _player.GetTile(action);
@@ -54,10 +68,20 @@ public class RLAgent : MonoBehaviour
                 return;
             }
 
-            epsilon = epsilonMin + (1.0f - epsilonMin) * Mathf.Exp(-decayRate * stepCount);
-            stepCount++;
+            epsilon = epsilonMin + (1.0f - epsilonMin) * Mathf.Exp(-decayRate * totalStepCount);
+            totalStepCount++;
+            currentEpisodeSteps++;
 
-            var reward = GetRewardByTileType(nextTile.GetTileType());
+            // Calculate the current distance to the goal
+            float currentDistance = Vector3.Distance(_player.currentTile.point.position, _goalTile.point.position);
+
+            // Calculate the previous distance to the goal (stored from the previous step)
+            float previousDistance = Vector3.Distance(prevTile.point.position, _goalTile.point.position);
+
+            // Reward based on the change in distance
+            float distanceReward = previousDistance - currentDistance;
+
+            var reward = GetRewardByTileType(nextTile.GetTileType()) + distanceReward;
 
             var nextObs = GetTileObservations(nextTile);
 
@@ -65,33 +89,48 @@ public class RLAgent : MonoBehaviour
             float maxFutureQ = _network.ForwardPass(nextObs).Max();
             float qTarget = reward + discountFactor * maxFutureQ;
 
+            float[] currentObs = GetTileObservations(_player.currentTile);
             float[] currentQValues = _network.ForwardPass(GetTileObservations(_player.currentTile));
             currentQValues[(int)action] = qTarget;
 
-            _network.BackPropagate(nextObs, currentQValues);
+            _network.BackPropagate(currentObs, currentQValues);
 
             _player.MoveToSelectedAction(action);
+            
         }
 
-        if(_player.IsDead())
+        if(_calculatingMove && _timer < _waitTime)
+        {
+            _timer += Time.deltaTime;
+        }
+        else
+        {
+            _calculatingMove = false;
+            _timer = 0f;
+        }
+
+        if (_player.IsDead() || currentEpisodeSteps % maxSteps == 0)
         {
             ResetLevel();
             episodeCount++;
+            currentEpisodeSteps = 0;
         }
 
     }
 
     float[] GetTileObservations(Tile tile)
     {
-        float [] observation = new float[4];
+        float [] observation = new float[_network.inputLayer.nodes.Count];
 
         for (int i = 0; i < actions.Length; i++)
-        {   
+        {
             var adjecentTile = tile.GetAdjecentTile(actions[i]);
 
-            if (adjecentTile != null) observation[i] = adjecentTile.GetTileTypeToInt();
-            else observation[i] = GetRewardByTileType(TileType.Wall);
+            if (adjecentTile != null) observation[i] = GetRewardByTileType(adjecentTile.GetTileType());
+            else observation[i] = -2f;
         }
+
+        observation[4] = Vector3.Distance(_player.currentTile.point.position, _goalTile.point.position);
 
         return observation;
     }
@@ -101,26 +140,36 @@ public class RLAgent : MonoBehaviour
     {
         var possibleActions = GetPossibleActions(tile);
 
+        Random.InitState(DateTime.Now.Millisecond);
+
         if (Random.value < epsilon)
         {
-            return possibleActions[Random.Range(0,possibleActions.Count)]; // Random action (exploration)
+            return possibleActions[Random.Range(0, possibleActions.Count)];
         }
 
-        float[] qValues = _network.ForwardPass(GetTileObservations(_player.currentTile));
+        float[] qValues = _network.ForwardPass(GetTileObservations(tile));
 
-        float maxQ = 0;
-        int index = 0;
+        float maxQ = float.NegativeInfinity;
+        Action bestAction = possibleActions[0];
 
-        for (int i = 0; i < qValues.Length; i++)
+        // Only consider valid actions
+        foreach (var action in possibleActions)
         {
-            if (qValues[i] > maxQ)
+            int actionIndex = Array.IndexOf(actions, action);
+            if (actionIndex >= 0 && qValues[actionIndex] > maxQ)
             {
-                maxQ = qValues[i];
-                index = i;
+                maxQ = qValues[actionIndex];
+                bestAction = action;
             }
         }
 
-        Action bestAction = actions[index];
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < qValues.Length; i++)
+        {
+            sb.Append(qValues[i] + "-" + actions[i]);
+            sb.Append(" ");
+        }
+        Debug.Log(sb.ToString());
 
         return bestAction;
     }

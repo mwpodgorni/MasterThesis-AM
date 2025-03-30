@@ -1,12 +1,7 @@
-using Alexwsu.EventChannels;
 using DG.Tweening;
-using Mono.Cecil;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Sentis;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
+
 
 public class PlayerAgent : MonoBehaviour
 {

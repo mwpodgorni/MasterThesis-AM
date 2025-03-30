@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
-using UnityEditor.PackageManager;
 using System;
 
 public class NeuralNetwork : MonoBehaviour
@@ -110,16 +109,18 @@ public class NeuralNetwork : MonoBehaviour
 
     public void BackPropagate(float[] output, float[] expected)
     {
+        // Compute output layer gradients
         for (int i = 0; i < outputLayer.nodes.Count; i++)
         {
             Node node = outputLayer.nodes[i];
             float error = expected[i] - node.value;
-            node.gradient = error * (node.value * (1 - node.value));
+            node.gradient = error * (node.value * (1 - node.value)); // Assuming Sigmoid activation
         }
 
-        // Compute hidden layer gradients
-        foreach (var layer in hiddenLayers)
+        // Compute hidden layer gradients (process layers in reverse order)
+        for (int l = hiddenLayers.Count - 1; l >= 0; l--)
         {
+            Layer layer = hiddenLayers[l];
             foreach (Node node in layer.nodes)
             {
                 float sumGradients = 0;
@@ -127,21 +128,31 @@ public class NeuralNetwork : MonoBehaviour
                 {
                     sumGradients += w.weight * w.to.gradient;
                 }
-                node.gradient = sumGradients * (node.value * (1 - node.value));
+                node.gradient = sumGradients * (node.value * (1 - node.value)); // Assuming Sigmoid
             }
         }
 
-        // Update weights
+        // Update weights and biases (go forward)
         foreach (Layer layer in hiddenLayers)
         {
             foreach (Node node in layer.nodes)
             {
                 foreach (Weight w in node.weightsIn)
                 {
-                    w.weight += _parameters.learningRate * w.to.gradient * w.from.value;
+                    w.weight += _parameters.learningRate * node.gradient * w.from.value; // FIXED: node.gradient
                 }
                 node.bias += _parameters.learningRate * node.gradient;
             }
+        }
+
+        // Also update weights for the output layer
+        foreach (Node node in outputLayer.nodes)
+        {
+            foreach (Weight w in node.weightsIn)
+            {
+                w.weight += _parameters.learningRate * node.gradient * w.from.value;
+            }
+            node.bias += _parameters.learningRate * node.gradient;
         }
     }
 
