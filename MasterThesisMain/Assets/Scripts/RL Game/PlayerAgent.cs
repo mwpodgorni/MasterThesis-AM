@@ -1,36 +1,39 @@
 using Alexwsu.EventChannels;
+using DG.Tweening;
 using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Sentis;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
 
 public class PlayerAgent : MonoBehaviour
 {
+    [Header("Properties")]
     public Tile currentTile;
-    public NavMeshAgent agent;
+    public Tile startingTile;
 
-    [SerializeField] Collider _collider;
-    [SerializeField] IntEventChannel _eventChannel;
+    [SerializeField] Transform _model;
+
+    [Header("External Components")]
+    [SerializeField] NavMeshAgent _agent;
+    [SerializeField] InputReader _inputs;
+    [SerializeField] LineRenderer _line;
 
     bool _moving;
     bool _didAction;
     float _inputWaitingtime = 1f;
     float _waitingTime = 0.0f;
     bool _dead = false;
-
     int _tileIndex = 0;
 
     Action _prevAction;
 
-    [SerializeField] InputReader _inputs;
-    [SerializeField] LineRenderer _line;
-
     // Start is called before the first frame update
     void Start()
     {
-        if (!gameObject.TryGetComponent<NavMeshAgent>(out agent))
+        if (!gameObject.TryGetComponent<NavMeshAgent>(out _agent))
         {
             Debug.LogWarning("Error: Player Agent does not have a NavMesh Agent Component");
         }
@@ -40,15 +43,18 @@ public class PlayerAgent : MonoBehaviour
             Debug.LogWarning("Error: Player Agent does not have a Line Renderer Component");
         }
 
-        if (currentTile == null)
+        if (startingTile == null)
         {
             Debug.LogWarning("Error: No starting tile set.");
         }
         else
         {
-            _line.SetPosition(0, currentTile.point.position);
+            currentTile = startingTile;
+            transform.position = startingTile.point.position;
+            _line.SetPosition(0, startingTile.point.position);
         }
 
+        _model.DOMoveY(1f, 0.75f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
     }
 
     // Update is called once per frame
@@ -67,7 +73,13 @@ public class PlayerAgent : MonoBehaviour
                 _didAction = false;
             }
 
-            if (agent.remainingDistance <= agent.stoppingDistance)
+            if (currentTile.GetTileType() == TileType.Dangerous || currentTile.GetTileType() == TileType.Goal)
+            {
+                _dead = true;
+                return;
+            }
+
+            if (_agent.remainingDistance <= _agent.stoppingDistance)
             {
                 _moving = false;
             }
@@ -85,7 +97,7 @@ public class PlayerAgent : MonoBehaviour
         {
             if (tile.GetTileType() == TileType.Wall) return;
 
-            agent.SetDestination(tile.point.position);
+            _agent.SetDestination(tile.point.position);
             currentTile = tile;
             _moving = true;
             _didAction = true;
@@ -99,16 +111,13 @@ public class PlayerAgent : MonoBehaviour
                 tile.Use();
             }
 
-            if (tile.GetTileType() == TileType.Dangerous) _dead = true;
-
         }
         
     }
 
     public Tile GetTile(Action action)
     {
-        var tile = currentTile.adjecentTiles[action];
-        return tile;
+        return currentTile.GetAdjecentTile(action);
     }
 
     public Tile MoveToSelectedAction(Action action)
@@ -124,6 +133,7 @@ public class PlayerAgent : MonoBehaviour
     }
 
     public bool IsMoving() { return _moving; }
+    public bool IsDead() { return _dead; }
 
     void DoAction()
     {
@@ -131,6 +141,19 @@ public class PlayerAgent : MonoBehaviour
         if (_inputs.Movement.y < 0) MoveToSelectedAction(Action.Down);
         if (_inputs.Movement.x > 0) MoveToSelectedAction(Action.Right);
         if (_inputs.Movement.x < 0) MoveToSelectedAction(Action.Left);
+    }
+
+    public void ResetAgent()
+    {
+        currentTile = startingTile;
+        transform.position = startingTile.point.position;
+        _agent.SetDestination(startingTile.point.position);
+
+        _line.positionCount = 1;
+        _tileIndex = 0;
+
+        _dead = false;
+        _moving = false;
     }
 
 }

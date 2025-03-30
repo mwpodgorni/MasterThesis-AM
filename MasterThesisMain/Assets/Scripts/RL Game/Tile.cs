@@ -13,28 +13,29 @@ public class Tile : MonoBehaviour
     public Transform point;
     public GameObject model;
 
-    [Header("Adjecent Tiles")]
-    public Dictionary<Action, Tile> adjecentTiles = new Dictionary<Action, Tile>();
+    Dictionary<Action, Tile> adjecentTiles = new Dictionary<Action, Tile>();
+    TileType _currentType;
 
     public void Start()
     {
         SetAdjecentTiles();
+        _currentType = _type;
     }
 
     public TileType GetTileType()
     {
-        return _type;
+        return _currentType;
     }
 
     public int GetTileTypeToInt()
     {
-        return (int) _type;
+        return (int) _currentType;
     }
 
     public void Use()
     {
         model.SetActive(false);
-        _type = TileType.Normal;
+        _currentType = TileType.Normal;
     }
 
     void SetAdjecentTiles()
@@ -56,6 +57,24 @@ public class Tile : MonoBehaviour
                 adjecentTiles[Action.Down] = tile;
     }
 
+    public Tile GetAdjecentTile(Action act)
+    {
+        if (!adjecentTiles.TryGetValue(act, out Tile tile))
+            return null;
+            
+        return tile;
+    }
+
+    public bool HasTile(Action act)
+    {
+        return adjecentTiles.ContainsKey(act);
+    }
+
+    public void ResetTile()
+    {
+        _currentType = _type;
+        if (model != null) model.SetActive(true);
+    }
 }
 
 public enum TileType
