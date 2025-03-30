@@ -18,8 +18,14 @@ public class PlayerAgent : MonoBehaviour
     bool _didAction;
     float _inputWaitingtime = 1f;
     float _waitingTime = 0.0f;
+    bool _dead = false;
+
+    int _tileIndex = 0;
+
+    Action _prevAction;
 
     [SerializeField] InputReader _inputs;
+    [SerializeField] LineRenderer _line;
 
     // Start is called before the first frame update
     void Start()
@@ -29,34 +35,47 @@ public class PlayerAgent : MonoBehaviour
             Debug.LogWarning("Error: Player Agent does not have a NavMesh Agent Component");
         }
 
+        if (!gameObject.TryGetComponent<LineRenderer>(out _line))
+        {
+            Debug.LogWarning("Error: Player Agent does not have a Line Renderer Component");
+        }
+
         if (currentTile == null)
         {
             Debug.LogWarning("Error: No starting tile set.");
         }
+        else
+        {
+            _line.SetPosition(0, currentTile.point.position);
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_waitingTime < _inputWaitingtime && _didAction)
+        if (!_dead)
         {
-            _waitingTime += Time.deltaTime;
-            return;
-        }
-        else
-        {
-            _waitingTime = 0.0f;
-            _didAction = false;
-        }
+            if (_waitingTime < _inputWaitingtime && _didAction)
+            {
+                _waitingTime += Time.deltaTime;
+                return;
+            }
+            else
+            {
+                _waitingTime = 0.0f;
+                _didAction = false;
+            }
 
-        if (agent.remainingDistance <= agent.stoppingDistance)
-        {
-            _moving = false;
-        }
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                _moving = false;
+            }
 
-        if (!_moving)
-        {
-            DoAction();
+            if (!_moving)
+            {
+                DoAction();
+            }
         }
     }
 
@@ -70,7 +89,20 @@ public class PlayerAgent : MonoBehaviour
             currentTile = tile;
             _moving = true;
             _didAction = true;
+
+            _tileIndex++;
+            _line.positionCount = _tileIndex + 1;
+            _line.SetPosition(_tileIndex, tile.point.position);
+
+            if (tile.GetTileType() == TileType.Collectible)
+            {
+                tile.Use();
+            }
+
+            if (tile.GetTileType() == TileType.Dangerous) _dead = true;
+
         }
+        
     }
 
     public Tile GetTile(Action action)
@@ -90,8 +122,6 @@ public class PlayerAgent : MonoBehaviour
         MoveToTile(tile);
         return tile;
     }
-
-
 
     public bool IsMoving() { return _moving; }
 
