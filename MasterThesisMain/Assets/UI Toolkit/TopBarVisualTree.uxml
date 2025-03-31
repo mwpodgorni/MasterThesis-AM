@@ -1,3 +1,0 @@
-<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/USS/MainMenu.uss?fileID=7433441132597879392&amp;guid=0cd350ffd8b0c714a98f7e90e0c355eb&amp;type=3#MainMenu" />
-</engine:UXML>
