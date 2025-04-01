@@ -1,18 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class NetworkLayer : MonoBehaviour
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
+public class NetworkLayer : VisualElement
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    #region Boilerplate for Showing up in UI Builder
+    public new class UxmlFactory : UxmlFactory<NetworkLayer> { }
+    public NetworkLayer() { }
+    #endregion
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
