@@ -23,8 +23,6 @@ public class PlayerAgent : MonoBehaviour
     bool _dead = false;
     int _tileIndex = 0;
 
-    Action _prevAction;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -151,4 +149,18 @@ public class PlayerAgent : MonoBehaviour
         _moving = false;
     }
 
+    public void DoubleTime(bool enable)
+    {
+        if (enable) Time.timeScale = 2f;
+        else Time.timeScale = 1f;
+    }
+
 }
+public enum Action
+{
+    Up = 0,
+    Down = 1,
+    Left = 2,
+    Right = 3,
+}
+

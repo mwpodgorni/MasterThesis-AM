@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 // A Simple Q-Learning agent
-public class RLAgent : MonoBehaviour
+public class DeepQAgent : MonoBehaviour
 {
-    [Header("RL Parameters")]
+    [Header("Deep-Q Learning Parameters")]
     // Q-Table
     [SerializeField] NeuralNetwork _network;
 
@@ -43,6 +42,8 @@ public class RLAgent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (_network == null) TryGetComponent<NeuralNetwork>(out _network);
+
         rewards[TileType.Normal] = 0;
         rewards[TileType.Dangerous] = -1;
         rewards[TileType.Wall] = -1;
@@ -217,12 +218,4 @@ public class RLAgent : MonoBehaviour
     public void SetGoalReward(float value)        { SetReward(TileType.Goal, value); }
     public void SetCollectibleReward(float value) { SetReward(TileType.Collectible, value); }
     public void SetDangerReward(float value)      { SetReward(TileType.Dangerous, value); }
-}
-
-public enum Action
-{
-    Up = 0,
-    Down = 1,
-    Left = 2,
-    Right = 3,
 }
