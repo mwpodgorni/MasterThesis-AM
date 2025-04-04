@@ -53,6 +53,16 @@ public class MainMenuController : MonoBehaviour
         miniGamePanel = ui.Q<VisualElement>("MiniGamePanel");
         miniGamePanel.style.display = DisplayStyle.None;
 
+        // TODO : remove this debug code
+        HideAllPanels();
+        miniGamePanel.style.display = DisplayStyle.Flex;
+    }
+    public void HideAllPanels()
+    {
+        menu.style.display = DisplayStyle.None;
+        tutorialPanel.style.display = DisplayStyle.None;
+        miniGamePanel.style.display = DisplayStyle.None;
+        optionsPanel.style.display = DisplayStyle.None;
     }
     private void OnQuitButtonClicked()
     {

@@ -18,7 +18,14 @@
     "title": "Your first task",
     "content": [
       "Before you start to create fully functional robots, you need to prove that you know how to create and use neural networks.",
-      "Let’s say you have to design a network that will recognize and sort numbers from 1 to 4. How would you do that?"
+      "Your first task is to create a neural network that can classify incoming robot parts into different categories based on their properties."
+    ]
+  },
+  {
+    "title": "Instructions",
+    "content": [
+      "Each part has three properties: weight, energy consumption, and material type. Your neural network must analyze these properties and correctly determine whether a part belongs to a Worker, Defender, Explorer, or another category.",
+      "Adjust the network's hidden layers and neurons to achieve the highest classification accuracy."
     ]
   }
 ]

@@ -4,6 +4,7 @@ using TutorialData.Model;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+using System.Text;
 
 public class TutorialController : MonoBehaviour
 {
@@ -12,70 +13,114 @@ public class TutorialController : MonoBehaviour
     public Label tutorialTitle;
     public Label tutorialContent;
     private List<TutorialStep> tutorialSteps;
-    private int currentTutorialStep = 0;
+    private int currentStep = 0;
     private float typingSpeed = 0.01f;
+    private float interpunctuationDelay = 0.5f;
+    private float skipSpeedup = 5f;
+
+    private WaitForSeconds simpleDelay;
+    private WaitForSeconds punctuationDelay;
+    private WaitForSeconds skipDelay;
 
     [SerializeField]
     private UnityEvent tutorialCompletedEvent;
+
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
+        nextButton = ui.Q<Button>("NextButton");
+        tutorialTitle = ui.Q<Label>("TutorialTitle");
+        tutorialContent = ui.Q<Label>("TutorialContent");
+
+        simpleDelay = new WaitForSeconds(typingSpeed);
+        punctuationDelay = new WaitForSeconds(interpunctuationDelay);
+        skipDelay = new WaitForSeconds(1 / (typingSpeed * skipSpeedup));
     }
 
     private void OnEnable()
     {
-        nextButton = ui.Q<Button>("NextButton");
         nextButton.clicked += OnNextButtonClicked;
+    }
 
-        tutorialTitle = ui.Q<Label>("TutorialTitle");
-        tutorialContent = ui.Q<Label>("TutorialContent");
+    private void OnDisable()
+    {
+        nextButton.clicked -= OnNextButtonClicked;
+    }
+
+    public void StartTutorial()
+    {
+        currentStep = 0;
+        StartTypingTutorialStep();
     }
 
     void Start()
     {
-        tutorialTitle.text = "";
-        tutorialContent.text = "";
         tutorialSteps = DataReader.Instance.GetTutorialSteps();
-    }
-    public void StartTutorial()
-    {
-        StopAllCoroutines();
-        currentTutorialStep = 0;
-        StartCoroutine(ShowTutorialStep(tutorialSteps[currentTutorialStep]));
-        currentTutorialStep++;
+        StartTypingTutorialStep();
     }
 
     private void OnNextButtonClicked()
     {
-        StopAllCoroutines();
-
-        if (currentTutorialStep < tutorialSteps.Count)
+        currentStep++;
+        if (currentStep < tutorialSteps.Count)
         {
-            StartCoroutine(ShowTutorialStep(tutorialSteps[currentTutorialStep]));
-            currentTutorialStep++;
+            StartTypingTutorialStep();
         }
         else
         {
             tutorialCompletedEvent?.Invoke();
+            Debug.Log("Tutorial Complete");
         }
     }
 
-    private IEnumerator ShowTutorialStep(TutorialStep step)
+    private void StartTypingTutorialStep()
     {
-        tutorialTitle.text = "";
-        tutorialContent.text = "";
-
-        yield return StartCoroutine(TypeText(tutorialTitle, step.Title, typingSpeed));
-
-        yield return StartCoroutine(TypeText(tutorialContent, string.Join("\n", step.Content), typingSpeed));
-    }
-
-    private IEnumerator TypeText(Label label, string text, float delay)
-    {
-        foreach (char c in text)
+        if (currentStep < tutorialSteps.Count)
         {
-            label.text += c;
-            yield return new WaitForSeconds(delay);
+            StopAllCoroutines();
+            tutorialTitle.text = "";
+            tutorialContent.text = "";
+            StartCoroutine(ShowTitle(tutorialSteps[currentStep].Title));
         }
+    }
+
+    private IEnumerator ShowTitle(string title)
+    {
+        yield return StartCoroutine(ShowText(tutorialTitle, title));
+
+        StartCoroutine(ShowText(tutorialContent, string.Join("\n", tutorialSteps[currentStep].Content)));
+    }
+
+    private IEnumerator ShowText(Label label, string text)
+    {
+        StringBuilder sb = new StringBuilder(text);
+        label.text = "";
+        int maxVisibleCharacters = 0;
+
+        while (maxVisibleCharacters < sb.Length)
+        {
+            maxVisibleCharacters++;
+            label.text = sb.ToString(0, maxVisibleCharacters);
+
+            char currentChar = sb[maxVisibleCharacters - 1];
+            if (IsPunctuation(currentChar))
+            {
+                yield return punctuationDelay;
+            }
+            else
+            {
+                yield return simpleDelay;
+            }
+        }
+    }
+
+    private bool IsPunctuation(char c)
+    {
+        return c == '.'
+        // || c == ',' 
+        || c == '?'
+        || c == '!'
+         || c == ';'
+         || c == ':';
     }
 }

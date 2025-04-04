@@ -1,17 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using Alexwsu.EventChannels;
 
-public class Layer : MonoBehaviour
+public class Layer
 {
-    public List<Node> nodes;
 
-    [SerializeField] Parameters _parameters;
-    [SerializeField] Transform _nodePanel;
-    [SerializeField] IntEventChannel _channel;
-
+    public List<Node> nodes = new List<Node>();
+    public Layer()
+    {
+    }
     public void ActivateLayer()
     {
         foreach (Node node in nodes)
@@ -22,34 +18,30 @@ public class Layer : MonoBehaviour
 
     public void AddNode()
     {
-        if (nodes.Count >= _parameters.maxNodes) return;
+        GP.ChannelInstance.Invoke(0);
 
-        _channel.Invoke(0);
+        Node node = new Node();
 
-        var nodePrefab = Instantiate(_parameters.nodePrefab);
+        nodes.Add(node);
 
-        nodePrefab.transform.SetParent(_nodePanel);
-
-        if (nodePrefab.TryGetComponent<Node>(out Node node))
-        {
-            nodes.Add(node);
-        }
-
-        _channel.Invoke(1);
+        GP.ChannelInstance.Invoke(1);
     }
 
     public void RemoveNode()
     {
         if (nodes.Count <= 1) return;
 
-        _channel.Invoke(0);
+        GP.ChannelInstance.Invoke(0);
 
         var node = nodes[nodes.Count - 1];
 
         nodes.Remove(node);
-        Destroy(node.gameObject);
 
 
-        _channel.Invoke(1);
+        GP.ChannelInstance.Invoke(1);
+    }
+    public int GetNodeCount()
+    {
+        return nodes.Count;
     }
 }

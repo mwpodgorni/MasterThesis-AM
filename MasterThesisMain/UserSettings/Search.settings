@@ -11,9 +11,9 @@ scopes = {
 	"last_search.45C55C1A" = ""
 	"OpenInspectorPreview.45C55C1A" = "0"
 	"currentGroup.45C55C1A" = "asset"
-	"last_search.5A656512" = "ref=\"Assets/UI Toolkit/TutorialController.cs\""
+	"last_search.5A656512" = "ref=\"Assets/Scripts/NN Game/Weight.cs\""
 	"OpenInspectorPreview.5A656512" = "0"
-	"currentGroup.5A656512" = null
+	"currentGroup.5A656512" = ""
 }
 providers = {
 	store = {
