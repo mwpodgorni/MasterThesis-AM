@@ -139,7 +139,7 @@ public class DeepQAgent : MonoBehaviour
 
     Action ChooseAction(Tile tile)
     {
-        var possibleActions = GetPossibleActions(tile);
+        var possibleActions = _player.GetPossibleActions();
 
         Random.InitState(DateTime.Now.Millisecond);
 
@@ -173,18 +173,6 @@ public class DeepQAgent : MonoBehaviour
         Debug.Log(sb.ToString());
 
         return bestAction;
-    }
-
-    List<Action> GetPossibleActions(Tile tile)
-    {
-        var possibleActions = new List<Action>();
-
-        foreach (var act in actions)
-        {
-            if (tile.HasTile(act)) possibleActions.Add(act);
-        }
-
-        return possibleActions;
     }
 
     float GetRewardByTileType(TileType type)

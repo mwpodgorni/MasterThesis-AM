@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class QAgent : MonoBehaviour
 {
@@ -50,7 +52,7 @@ public class QAgent : MonoBehaviour
         {
             var state = GetState(_player.currentTile);
 
-            var action = GetAction(state, _player.currentTile);
+            var action = GetAction(state);
 
             var nextTile = _player.currentTile.GetAdjecentTile(action);
             var nextState = GetState(nextTile);
@@ -84,11 +86,13 @@ public class QAgent : MonoBehaviour
         }
     }
 
-    Action GetAction(State state, Tile tile)
+    Action GetAction(State state)
     {
-        var possibleActions = GetPossibleActions(tile);
+        var possibleActions = _player.GetPossibleActions();
 
         // Choose action using ε-greedy strategy
+        Random.InitState(DateTime.Now.Millisecond);
+
         Action chosenAction = possibleActions[Random.Range(0, possibleActions.Count)];
         if (Random.value < epsilon || !_qTable.ContainsKey(state)) // Explore
         {
@@ -138,18 +142,6 @@ public class QAgent : MonoBehaviour
 
         // Update Q-table
         _qTable[prevState][action] = newQ;
-    }
-
-    List<Action> GetPossibleActions(Tile tile)
-    {
-        var possibleActions = new List<Action>();
-
-        foreach (var act in actions)
-        {
-            if (tile.HasTile(act)) possibleActions.Add(act);
-        }
-
-        return possibleActions;
     }
 
     State GetState(Tile tile)

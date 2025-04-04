@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -149,9 +150,22 @@ public class PlayerAgent : MonoBehaviour
         _moving = false;
     }
 
+    public List<Action> GetPossibleActions()
+    {
+        Action[] actions = { Action.Up, Action.Down, Action.Left, Action.Right };
+        var possibleActions = new List<Action>();
+
+        foreach (var act in actions)
+        {
+            if (currentTile.HasTile(act)) possibleActions.Add(act);
+        }
+
+        return possibleActions;
+    }
+
     public void DoubleTime(bool enable)
     {
-        if (enable) Time.timeScale = 2f;
+        if (enable) Time.timeScale = 3f;
         else Time.timeScale = 1f;
     }
 
