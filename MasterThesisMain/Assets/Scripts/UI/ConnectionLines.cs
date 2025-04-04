@@ -50,9 +50,9 @@ public class ConnectionLines : VisualElement
         float tt = t * t;
         float uu = u * u;
 
-        Vector2 p = uu * start; // (1 - t)^2 * start
-        p += 2 * u * t * controlPoint; // 2 * (1 - t) * t * controlPoint
-        p += tt * end; // t^2 * end
+        Vector2 p = uu * start;
+        p += 2 * u * t * controlPoint;
+        p += tt * end;
 
         return p;
     }
