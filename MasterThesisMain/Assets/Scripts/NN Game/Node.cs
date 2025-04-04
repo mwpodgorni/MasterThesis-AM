@@ -4,27 +4,23 @@ using Random = UnityEngine.Random;
 using UnityEngine;
 
 
-public class Node : MonoBehaviour
+public class Node
 {
-    public List<Weight> weightsIn;
-    public List<Weight> weightsOut;
+    public List<Weight> weightsIn = new List<Weight>();
+    public List<Weight> weightsOut = new List<Weight>();
 
     public float value;
     public float bias;
     public float gradient;
 
-    Func<float, float> _activationFunc;
+    private Func<float, float> _activationFunc;
 
-    [SerializeField] Parameters _parameters;
-
-    public void Start()
+    public Node()
     {
-        bias = Random.Range(
-            _parameters.BiasRange.Item1,
-            _parameters.BiasRange.Item2
-        );
 
-        _activationFunc = _parameters.ActivationFunction;
+        bias = Random.Range(GP.Instance.BiasRange.Item1, GP.Instance.BiasRange.Item2);
+        _activationFunc = GP.Instance.ActivationFunction;
+
     }
 
     public void SetActivationFunc(Func<float, float> func)
@@ -35,6 +31,7 @@ public class Node : MonoBehaviour
     public void Activate()
     {
         value = _activationFunc(CalculateWeightedSum());
+        value = _activationFunc != null ? _activationFunc(CalculateWeightedSum()) : CalculateWeightedSum();
     }
 
     float CalculateWeightedSum()
