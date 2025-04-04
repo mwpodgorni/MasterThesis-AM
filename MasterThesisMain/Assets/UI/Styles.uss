@@ -1,0 +1,114 @@
+.hide {
+    display: none;
+}
+.menu {
+    align-self: center;
+}
+
+.unity-button {
+    color: rgb(255, 247, 115);
+    background-color: rgba(0, 20, 35, 0.9);
+    border-color: rgb(255, 247, 115);
+    border-width: 2px;
+    border-radius: 10px;
+    height: 70px;
+    font-size: 24px;
+    margin: 10px;
+    transition: background-color 0.1s ease;
+}
+
+.unity-button:hover {
+    background-color: #114B5F;
+}
+.text-yellow {
+    color: rgb(255, 247, 115);
+    font-size: 30px;
+    -unity-text-align: middle-center;
+}
+
+.fontawesome-solid {
+    -unity-font-definition: url("project://database/Assets/fontawesome-free-6.7.2-desktop/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&guid=d187ddc5adfa6df4ab1851b37e1ec9fa&type=3#Font Awesome 6 Free-Solid-900");
+}
+
+.header {
+    font-size: 60px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.wrapper {
+    border-radius: 20px;
+    border-color: rgb(255, 247, 115);
+    border-width: 2px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 20, 35, 0.9);
+    margin: 3%;
+}
+
+.border-yellow {
+    border-left-color: rgb(255, 247, 115);
+    border-right-color: rgb(255, 247, 115);
+    border-top-color: rgb(255, 247, 115);
+    border-bottom-color: rgb(255, 247, 115);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.styled-input {
+    border-radius: 10px;
+    margin: 0;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+    background-color: rgb(0, 0, 0);
+}
+
+.styled-input .unity-base-text-field__input {
+    background-color: rgba(0, 20, 35, 0.9);
+    border-left-color: rgb(255, 247, 115);
+    border-right-color: rgb(255, 247, 115);
+    border-top-color: rgb(255, 247, 115);
+    border-bottom-color: rgb(255, 247, 115);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+}
+
+.input-font-size {
+    font-size: 32px;
+}
+
+.network-node {
+    border-radius: 20px;
+}
+
+.network-node { 
+}
+
+.network-node-wrapper {
+    margin: 5px;
+}
+
+.minigame-section{
+    margin: 15px 30px 15px 30px !important;
+    padding: 20px !important;
+    border-radius: 20px !important;
+    background-color: rgba(0, 20, 35, 0.9);
+    border-color: rgba(255, 247, 115, 0.5);
+    border-width: 1px;
+}

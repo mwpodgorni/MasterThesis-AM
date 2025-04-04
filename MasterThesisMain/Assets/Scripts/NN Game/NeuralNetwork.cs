@@ -3,45 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
-using System;
+using UnityEditor.PackageManager;
 
 public class NeuralNetwork : MonoBehaviour
 {
     public Layer inputLayer;
     public Layer outputLayer;
-    public List<Layer> hiddenLayers;
+    public List<Layer> hiddenLayers = new List<Layer>();
 
     public float expectedOutput;
     public float actualOutput;
 
-    [SerializeField] Parameters _parameters;
+    public int epoch;
+    public float loss;
+    float avgLoss = 0.0f;
 
-    [SerializeField] TextMeshProUGUI _layerCount;
-    [SerializeField] TextMeshProUGUI _expectedText;
-    [SerializeField] TextMeshProUGUI _actualText;
-    [SerializeField] TextMeshProUGUI _lossText;
-    [SerializeField] Transform _hiddenLayerPanel;
+
     [SerializeField] Transform _weightPanel;
-    [SerializeField] TMP_InputField _inputField;
 
-    void Start()
+    public NeuralNetwork()
     {
-        hiddenLayers.AddRange(_hiddenLayerPanel.GetComponentsInChildren<Layer>());
-        CreateWeights();
+        epoch = 0;
+        inputLayer = new Layer();
+        outputLayer = new Layer();
     }
+
 
     public void AddHiddenLayer()
     {
-        if (hiddenLayers.Count >= _parameters.maxLayers) return;
-
         RemoveWeights();
 
-        var layer = Instantiate(_parameters.layerPrefab).GetComponent<Layer>();
+        Layer layer = new Layer();
 
         hiddenLayers.Add(layer);
-
-        layer.transform.SetParent(_hiddenLayerPanel);
-        _layerCount.text = hiddenLayers.Count.ToString();
 
         CreateWeights();
     }
@@ -55,33 +49,31 @@ public class NeuralNetwork : MonoBehaviour
         var layer = hiddenLayers[hiddenLayers.Count - 1];
 
         hiddenLayers.Remove(layer);
-        Destroy(layer.gameObject);
 
-        _layerCount.text = hiddenLayers.Count.ToString();
 
         CreateWeights();
     }
 
     public void ConnectLayers(Layer from, Layer to)
     {
-        foreach (Node nodeFrom in from.nodes)
-        {
-            foreach (Node nodeTo in to.nodes)
-            {
-                var weight = Instantiate(_parameters.weightPrefab).GetComponent<Weight>();
+        // foreach (Node nodeFrom in from.nodes)
+        // {
+        //     foreach (Node nodeTo in to.nodes)
+        //     {
+        //         var weight = Instantiate(_parameters.weightPrefab).GetComponent<Weight>();
 
-                weight.transform.SetParent(_weightPanel);
+        //         weight.transform.SetParent(_weightPanel);
 
-                weight.from = nodeFrom;
-                weight.to = nodeTo;
+        //         weight.from = nodeFrom;
+        //         weight.to = nodeTo;
 
-                nodeFrom.weightsOut.Add(weight);
-                nodeTo.weightsIn.Add(weight);
-            }
-        }
+        //         nodeFrom.weightsOut.Add(weight);
+        //         nodeTo.weightsIn.Add(weight);
+        //     }
+        // }
     }
 
-    public float[] ForwardPass(float[] inputs)
+    public float ForwardPass(float[] inputs)
     {
         for (int i = 0; i < inputLayer.nodes.Count; i++)
         {
@@ -96,31 +88,25 @@ public class NeuralNetwork : MonoBehaviour
             }
         }
 
-        var output = new float[outputLayer.nodes.Count];
+        var outputNode = outputLayer.nodes[0];
 
-        for (int i = 0; i < outputLayer.nodes.Count; i++)
-        {
-            outputLayer.nodes[i].Activate();
-            output[i] = outputLayer.nodes[i].value;
-        }
+        outputNode.Activate();
 
-        return output;
+        return outputNode.value;
     }
 
-    public void BackPropagate(float[] output, float[] expected)
+    public void BackPropagate(float output, float expected)
     {
-        // Compute output layer gradients
         for (int i = 0; i < outputLayer.nodes.Count; i++)
         {
             Node node = outputLayer.nodes[i];
-            float error = expected[i] - node.value;
-            node.gradient = error * (node.value * (1 - node.value)); // Assuming Sigmoid activation
+            float error = expected - node.value;
+            node.gradient = error * (node.value * (1 - node.value));
         }
 
-        // Compute hidden layer gradients (process layers in reverse order)
-        for (int l = hiddenLayers.Count - 1; l >= 0; l--)
+        // Compute hidden layer gradients
+        foreach (var layer in hiddenLayers)
         {
-            Layer layer = hiddenLayers[l];
             foreach (Node node in layer.nodes)
             {
                 float sumGradients = 0;
@@ -128,31 +114,21 @@ public class NeuralNetwork : MonoBehaviour
                 {
                     sumGradients += w.weight * w.to.gradient;
                 }
-                node.gradient = sumGradients * (node.value * (1 - node.value)); // Assuming Sigmoid
+                node.gradient = sumGradients * (node.value * (1 - node.value));
             }
         }
 
-        // Update weights and biases (go forward)
+        // Update weights
         foreach (Layer layer in hiddenLayers)
         {
             foreach (Node node in layer.nodes)
             {
                 foreach (Weight w in node.weightsIn)
                 {
-                    w.weight += _parameters.learningRate * node.gradient * w.from.value; // FIXED: node.gradient
+                    w.weight += GP.Instance.learningRate * w.to.gradient * w.from.value;
                 }
-                node.bias += _parameters.learningRate * node.gradient;
+                node.bias += GP.Instance.learningRate * node.gradient;
             }
-        }
-
-        // Also update weights for the output layer
-        foreach (Node node in outputLayer.nodes)
-        {
-            foreach (Weight w in node.weightsIn)
-            {
-                w.weight += _parameters.learningRate * node.gradient * w.from.value;
-            }
-            node.bias += _parameters.learningRate * node.gradient;
         }
     }
 
@@ -187,13 +163,13 @@ public class NeuralNetwork : MonoBehaviour
             }
         }
 
-        if (_weightPanel.childCount > 0)
-        {
-            foreach (Transform child in _weightPanel.transform)
-            {
-                Destroy(child.gameObject);
-            }
-        }
+        // if (_weightPanel.childCount > 0)
+        // {
+        //     foreach (Transform child in _weightPanel.transform)
+        //     {
+        //         Destroy(child.gameObject);
+        //     }
+        // }
     }
 
     public void LayerUpdate(int i)
@@ -202,37 +178,63 @@ public class NeuralNetwork : MonoBehaviour
         if (i <= 0) RemoveWeights();
     }
 
-    public void TrainNN(int epoch, Tuple<float[], float[]>[] trainingData)
+    public void TrainNetwork(int epoch, float learningRate)
     {
-        var avgLoss = 0.0f;
 
         for (int i = 0; i < epoch; i++)
         {
-            var set = trainingData[Random.Range(0, trainingData.Length)];
+            var selectedInput = Random.Range(0, inputLayer.nodes.Count);
+            var inputs = new float[inputLayer.nodes.Count];
+            inputs[selectedInput] = 1;
 
-            var input = set.Item1;
-            var expectedOutput = set.Item2;
-
-            var actualOutput = ForwardPass(input);
-
-            var loss = 0f;
-
-            for (int j = 0; j < expectedOutput.Length; j++)
-            {
-                var error = actualOutput[j] - expectedOutput[j];
-                loss += error * error;
-            }
-
-            avgLoss += loss/expectedOutput.Length;
+            expectedOutput = selectedInput;
+            actualOutput = ForwardPass(inputs);
+            avgLoss += Mathf.Pow(expectedOutput - actualOutput, 2);
 
             BackPropagate(actualOutput, expectedOutput);
 
-            _actualText.text = actualOutput.ToString();
-            _expectedText.text = expectedOutput.ToString();
         }
 
         avgLoss /= epoch;
+    }
 
-        _lossText.text = avgLoss.ToString();
+
+    public int GetLayerCount()
+    {
+        return hiddenLayers.Count;
+    }
+    public float GetLoss()
+    {
+        return loss;
+    }
+    public float GetExpectedOutput()
+    {
+        return expectedOutput;
+    }
+    public float GetActualOutput()
+    {
+        return actualOutput;
+    }
+    public void AddHiddenLayerNode(int index)
+    {
+        if (hiddenLayers.Count <= 0) return;
+
+        hiddenLayers[index].AddNode();
+    }
+    public void AddInputLayerNode()
+    {
+        inputLayer.AddNode();
+    }
+    public void RemoveInputLayerNode()
+    {
+        inputLayer.RemoveNode();
+    }
+    public void AddOutputLayerNode()
+    {
+        outputLayer.AddNode();
+    }
+    public void RemoveOutputLayerNode()
+    {
+        outputLayer.RemoveNode();
     }
 }

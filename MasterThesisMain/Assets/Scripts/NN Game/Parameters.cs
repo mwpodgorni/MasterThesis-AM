@@ -14,7 +14,7 @@ public class Parameters : ScriptableObject
     public float maxBias = 1f;
     public float minBias = -0f;
 
-    public int maxNodes = 8;
+    public int maxNodes = 6;
     public int maxLayers = 6;
 
     [Header("Hyper Parameters")]
@@ -28,7 +28,7 @@ public class Parameters : ScriptableObject
     public GameObject weightPrefab;
     public GameObject layerPrefab;
 
-    public (float, float) WeightRange 
+    public (float, float) WeightRange
     {
         get { return (minWeight, maxWeight); }
     }
