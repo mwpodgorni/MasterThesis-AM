@@ -36,8 +36,6 @@ public class NeuralNetwork : MonoBehaviour
         Layer layer = new Layer();
 
         hiddenLayers.Add(layer);
-
-        CreateWeights();
     }
 
     public void RemoveHiddenLayer()
@@ -49,28 +47,6 @@ public class NeuralNetwork : MonoBehaviour
         var layer = hiddenLayers[hiddenLayers.Count - 1];
 
         hiddenLayers.Remove(layer);
-
-
-        CreateWeights();
-    }
-
-    public void ConnectLayers(Layer from, Layer to)
-    {
-        // foreach (Node nodeFrom in from.nodes)
-        // {
-        //     foreach (Node nodeTo in to.nodes)
-        //     {
-        //         var weight = Instantiate(_parameters.weightPrefab).GetComponent<Weight>();
-
-        //         weight.transform.SetParent(_weightPanel);
-
-        //         weight.from = nodeFrom;
-        //         weight.to = nodeTo;
-
-        //         nodeFrom.weightsOut.Add(weight);
-        //         nodeTo.weightsIn.Add(weight);
-        //     }
-        // }
     }
 
     public float ForwardPass(float[] inputs)
@@ -132,17 +108,6 @@ public class NeuralNetwork : MonoBehaviour
         }
     }
 
-    public void CreateWeights()
-    {
-        ConnectLayers(inputLayer, hiddenLayers[0]);
-
-        for (var i = 0; i < hiddenLayers.Count - 1; i++)
-        {
-            ConnectLayers(hiddenLayers[i], hiddenLayers[i + 1]);
-        }
-
-        ConnectLayers(hiddenLayers[hiddenLayers.Count - 1], outputLayer);
-    }
 
     public void RemoveWeights()
     {
@@ -163,19 +128,6 @@ public class NeuralNetwork : MonoBehaviour
             }
         }
 
-        // if (_weightPanel.childCount > 0)
-        // {
-        //     foreach (Transform child in _weightPanel.transform)
-        //     {
-        //         Destroy(child.gameObject);
-        //     }
-        // }
-    }
-
-    public void LayerUpdate(int i)
-    {
-        if (i > 0) CreateWeights();
-        if (i <= 0) RemoveWeights();
     }
 
     public void TrainNetwork(int epoch, float learningRate)
