@@ -1,0 +1,39 @@
+  // weight: 1 - light, 2 - normal, 3 - heavy
+  // energyConsumption: 1 - low, 2 - medium, 3 - high
+  // materialType: 1 - alluminium, 2 - steel, 3 - copper
+  // 
+
+Scoutlet
+{ "weight": 1,
+"energyConsumption": 1,
+"materialType": 1
+}
+▸ A lightweight, low-power robot made of aluminum. Designed for reconnaissance and quick terrain scanning.
+
+Strongo
+{ "weight": 3,
+"energyConsumption": 3,
+"materialType": 2
+}
+▸ Heavy-duty robot built with steel, used for lifting and transporting heavy loads. Very power-hungry.
+
+Sparker
+{ "weight": 2,
+"energyConsumption": 3,
+"materialType": 3
+}
+▸ Medium weight, high-power robot built with copper—optimized for electrical tasks and high-energy applications.
+
+Defenderon
+{ "weight": 3,
+"energyConsumption": 2,
+"materialType": 2
+}
+▸ Armored protector unit with high durability. Steel-bodied and balanced energy usage for sentry or defense roles.
+
+Minibot
+{ "weight": 1,
+"energyConsumption": 2,
+"materialType": 3
+}
+▸ Small helper robot made of copper. Lightweight but uses a bit more energy to power advanced sensors or tools.
