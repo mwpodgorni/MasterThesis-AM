@@ -196,7 +196,7 @@ public class NetworkController : MonoBehaviour
             {
                 foreach (var nextNode in nextLayer)
                 {
-                    // Debug.Log($"Drawing line from hidden node {currentNode} to hidden node {nextNode}");
+                    //Debug.Log($"Drawing line from hidden node {currentNode} to hidden node {nextNode}");
                     _connectionLines.AddConnection(currentNode, nextNode);
                 }
             }
