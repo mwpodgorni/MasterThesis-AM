@@ -16,8 +16,11 @@ MonoBehaviour:
   minWeight: 0
   maxBias: 1
   minBias: -0
-  learningRate: 0.1
+  maxNodes: 8
+  maxLayers: 6
+  learningRate: 0.2
   gradient: 0.1
+  activationFunc: 1
   nodePrefab: {fileID: 2686141494440953359, guid: e265df7571d8b934391c88d4c0c8a186,
     type: 3}
   weightPrefab: {fileID: 7019961211403406116, guid: b4d10345eb16e7b45bca8be02002582a,
