@@ -54,8 +54,8 @@ public class MainMenuController : MonoBehaviour
         miniGamePanel.style.display = DisplayStyle.None;
 
         // TODO : remove this debug code
-        // HideAllPanels();
-        // miniGamePanel.style.display = DisplayStyle.Flex;
+        HideAllPanels();
+        miniGamePanel.style.display = DisplayStyle.Flex;
     }
     public void HideAllPanels()
     {

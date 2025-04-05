@@ -26,8 +26,8 @@ public class DataReader : MonoBehaviour
     private void Init()
     {
         tutorialSteps = JsonConvert.DeserializeObject<List<TutorialStep>>(jsonFile.text);
-        Debug.Log("Tutorial Steps: " + tutorialSteps);
-        Debug.Log("Tutorial Steps: " + tutorialSteps[0].Title);
+        // Debug.Log("Tutorial Steps: " + tutorialSteps);
+        // Debug.Log("Tutorial Steps: " + tutorialSteps[0].Title);
     }
     public List<TutorialStep> GetTutorialSteps()
     {

@@ -7,9 +7,6 @@ using System.Linq;
 public class NetworkController : MonoBehaviour
 {
 
-    [SerializeField]
-    Parameters _parameters;
-
     // input layer
     public Button inputNodeAddBtn;
     public Button inputNodeRemoveBtn;
@@ -84,6 +81,9 @@ public class NetworkController : MonoBehaviour
 
         ui.Add(_connectionLines);
 
+        // TODO: REMOVE THIS LINE
+        StartCoroutine(DelayedSetup());
+
     }
     public void AddHiddenLayer()
     {
@@ -111,8 +111,9 @@ public class NetworkController : MonoBehaviour
     }
     public void AddNode(VisualElement layer)
     {
-        Debug.Log("AddNode" + layer.name);
-        if (layer.childCount >= _parameters.maxNodes) return;
+        Debug.Log("AddNode:" + layer.name);
+        Debug.Log("addNode2:" + GP.Instance);
+        if (layer.childCount >= GP.Instance.maxNodes) return;
         if (layer.name == "InputLayerPanel")
         {
             neuralNetwork.AddInputLayerNode();
@@ -224,5 +225,32 @@ public class NetworkController : MonoBehaviour
     {
         var worldPos = ve.worldBound;
         return worldPos.center;
+    }
+    IEnumerator DelayedSetup()
+    {
+        yield return null; // wait one frame
+        SetupTestNetwork();
+    }
+    void SetupTestNetwork()
+    {
+        Debug.Log("SetupTestNetwork");
+        // Setup a test network with 2 hidden layers and 3 nodes in each layer
+        AddNode(_inputLayerPanel);
+        AddNode(_inputLayerPanel);
+        AddNode(_inputLayerPanel);
+
+        for (int i = 0; i < 2; i++)
+        {
+            AddHiddenLayer();
+            for (int j = 0; j < 3; j++)
+            {
+                AddNode(_hiddenLayerPanel.Children().ElementAt(i));
+            }
+        }
+
+        AddNode(_outputLayerPanel);
+        AddNode(_outputLayerPanel);
+        AddNode(_outputLayerPanel);
+        RedrawConnections();
     }
 }
