@@ -145,7 +145,7 @@ public class NetworkController : MonoBehaviour
     {
         Debug.Log(_inputTrainingCycle.value);
         Debug.Log(_inputLearningRate.value);
-        neuralNetwork.TrainNetwork(_inputTrainingCycle.value, _inputLearningRate.value);
+        // neuralNetwork.TrainNetwork(_inputTrainingCycle.value, _inputLearningRate.value);
     }
     public void RedrawConnections()
     {

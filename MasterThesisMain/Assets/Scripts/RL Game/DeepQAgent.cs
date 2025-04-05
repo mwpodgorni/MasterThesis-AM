@@ -8,31 +8,38 @@ using Random = UnityEngine.Random;
 // A Simple Q-Learning agent
 public class DeepQAgent : MonoBehaviour
 {
-    [Header("Deep-Q Learning Parameters")]
-    // Q-Table
+    [Header("Neural Network")]
     [SerializeField] NeuralNetwork _network;
+    [SerializeField] int _inputSize = 5;
+    
+    [SerializeField] int _hiddenSize = 8;
+    [SerializeField] int _layerCount = 2;
 
-    // Possible Actions
-    Action[] actions = {Action.Up, Action.Down, Action.Left, Action.Right};
-
+    [Header("Hyper Parameters")]
     public float learningRate = 0.1f;
     public float discountFactor = 0.9f;
     public float decayRate = 0.01f;
     
     public float epsilon = 0f;
     float epsilonMin = 0.01f;
-    
-    public int totalStepCount = 0;
-    public int currentEpisodeSteps = 0;
-    public int episodeCount = 0;
+
     public int maxSteps = 20;
 
     Dictionary<TileType, float> rewards = new Dictionary<TileType, float>();
+    Action[] _actions = { Action.Up, Action.Down, Action.Left, Action.Right };
 
     [Header("Properties")]
     [SerializeField] Tile _goalTile;
-    [SerializeField] PlayerAgent _player;
+    [SerializeField] AgentController _player;
     [SerializeField] Tile[] _tilesToReset;
+
+    [Header("Stats")]
+    public float avgRewardPerEpoch = 0;
+    public float totalReward = 0;
+
+    public int totalStepCount = 0;
+    public int currentEpisodeSteps = 0;
+    public int episodeCount = 1;
 
     bool _calculatingMove = false;
     float _waitTime = 1f;
@@ -43,6 +50,24 @@ public class DeepQAgent : MonoBehaviour
     void Start()
     {
         if (_network == null) TryGetComponent<NeuralNetwork>(out _network);
+        else
+        {
+            for (int i = 0; i < _inputSize; i++)
+                _network.AddInputLayerNode();
+
+            for (int i = 0; i < _actions.Length; i++)
+                _network.AddOutputLayerNode();
+
+            for (int i = 0; i < _layerCount; i++)
+            {
+                _network.AddHiddenLayer();
+
+                for (int j = 0; j < _hiddenSize; j++)
+                {
+                    _network.AddHiddenLayerNode(i);
+                }
+            }
+        }
 
         rewards[TileType.Normal] = 0;
         rewards[TileType.Dangerous] = -1;
@@ -51,6 +76,7 @@ public class DeepQAgent : MonoBehaviour
         rewards[TileType.Goal] = 1f;
 
         prevTile = _player.currentTile;
+        episodeCount = 1;
     }
 
     // Update is called once per frame
@@ -83,6 +109,7 @@ public class DeepQAgent : MonoBehaviour
             float distanceReward = previousDistance - currentDistance;
 
             var reward = GetRewardByTileType(nextTile.GetTileType()) + distanceReward;
+            totalReward += reward;
 
             var nextObs = GetTileObservations(nextTile);
 
@@ -115,6 +142,7 @@ public class DeepQAgent : MonoBehaviour
             ResetLevel();
             episodeCount++;
             currentEpisodeSteps = 0;
+            avgRewardPerEpoch = totalReward / episodeCount;
         }
 
     }
@@ -123,9 +151,9 @@ public class DeepQAgent : MonoBehaviour
     {
         float [] observation = new float[_network.inputLayer.nodes.Count];
 
-        for (int i = 0; i < actions.Length; i++)
+        for (int i = 0; i < _actions.Length; i++)
         {
-            var adjecentTile = tile.GetAdjecentTile(actions[i]);
+            var adjecentTile = tile.GetAdjecentTile(_actions[i]);
 
             if (adjecentTile != null) observation[i] = GetRewardByTileType(adjecentTile.GetTileType());
             else observation[i] = -2f;
@@ -156,7 +184,7 @@ public class DeepQAgent : MonoBehaviour
         // Only consider valid actions
         foreach (var action in possibleActions)
         {
-            int actionIndex = Array.IndexOf(actions, action);
+            int actionIndex = Array.IndexOf(_actions, action);
             if (actionIndex >= 0 && qValues[actionIndex] > maxQ)
             {
                 maxQ = qValues[actionIndex];
@@ -167,7 +195,7 @@ public class DeepQAgent : MonoBehaviour
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < qValues.Length; i++)
         {
-            sb.Append(qValues[i] + "-" + actions[i]);
+            sb.Append(qValues[i] + "-" + _actions[i]);
             sb.Append(" ");
         }
         Debug.Log(sb.ToString());
@@ -193,14 +221,6 @@ public class DeepQAgent : MonoBehaviour
         {
             tile.ResetTile();
         }
-    }
-
-    public void CompleteReset()
-    {
-        _network.RemoveWeights();
-        _network.CreateWeights();
-
-        ResetLevel();
     }
 
     public void SetGoalReward(float value)        { SetReward(TileType.Goal, value); }

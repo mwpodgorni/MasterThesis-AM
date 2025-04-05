@@ -17,17 +17,22 @@ public class QAgent : MonoBehaviour
     [SerializeField] float epsilon = 1f;
     [SerializeField] float epsilonMin = 0.01f;
 
-    [SerializeField] int totalStepCount = 0;
-    [SerializeField] int currentEpisodeSteps = 0;
-    [SerializeField] int episodeCount = 0;
     [SerializeField] int maxSteps = 20;
 
     [Header("Properties")]
-    [SerializeField] PlayerAgent _player;
+    [SerializeField] AgentController _player;
     [SerializeField] Tile _goalTile;
     [SerializeField] Tile[] _tilesToReset;
 
     Dictionary<TileType, float> rewards = new Dictionary<TileType, float>();
+
+    [Header("Stats")]
+    public float avgRewardPerEpoch = 0;
+    public float totalReward = 0;
+
+    [SerializeField] int totalStepCount = 0;
+    [SerializeField] int currentEpisodeSteps = 0;
+    [SerializeField] int episodeCount = 1;
 
     bool _calculatingMove = false;
     float _waitTime = 1f;
@@ -58,6 +63,7 @@ public class QAgent : MonoBehaviour
             var nextState = GetState(nextTile);
 
             var reward = GetReward(nextTile);
+            totalReward += reward;
 
             UpdateQTable(state, nextState, action, reward);
 
@@ -83,6 +89,7 @@ public class QAgent : MonoBehaviour
             ResetLevel();
             episodeCount++;
             currentEpisodeSteps = 0;
+            avgRewardPerEpoch = totalReward / episodeCount;
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class PlayerAgent : MonoBehaviour
+public class AgentController : MonoBehaviour
 {
     [Header("Properties")]
     public Tile currentTile;
