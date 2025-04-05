@@ -3346,7 +3346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2f66ba36684fd04dae970bb2f91f91e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parameters: {fileID: 0}
 --- !u!1001 &541300805199383600
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3551,6 +3550,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkParameters
       objectReference: {fileID: 0}
+    - target: {fileID: 8183128751103964674, guid: 5db2495c68b750648a26114901b56a41,
+        type: 3}
+      propertyPath: firstMiniGameDataset
+      value: 
+      objectReference: {fileID: 4900000, guid: e1c537d6eb8cc4045ad1ec6514307a34, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System;
-
-public class NeuralNetwork : MonoBehaviour
+using Newtonsoft.Json;
+public class NeuralNetwork
 {
     public Layer inputLayer;
     public Layer outputLayer;
@@ -16,9 +16,6 @@ public class NeuralNetwork : MonoBehaviour
     public float loss;
     float avgLoss = 0.0f;
 
-    [SerializeField] TextAsset _trainingSetJSON;
-
-    [SerializeField] Transform _weightPanel;
 
     public NeuralNetwork()
     {
@@ -35,6 +32,7 @@ public class NeuralNetwork : MonoBehaviour
         Layer layer = new Layer();
 
         hiddenLayers.Add(layer);
+        InitializeWeights();
     }
 
     public void RemoveHiddenLayer()
@@ -46,6 +44,7 @@ public class NeuralNetwork : MonoBehaviour
         var layer = hiddenLayers[hiddenLayers.Count - 1];
 
         hiddenLayers.Remove(layer);
+        InitializeWeights();
     }
 
     public float[] ForwardPass(float[] inputs)
@@ -145,17 +144,30 @@ public class NeuralNetwork : MonoBehaviour
 
     public void TrainNetwork(int epoch, float learningRate)
     {
-        var trainingSet = JsonUtility.FromJson<TrainingSet>(_trainingSetJSON.text);
+        var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
+        if (trainingSet.data != null && trainingSet.data.Length > 0)
+        {
+            Debug.Log("Training data loaded");
+        }
+        else
+        {
+            Debug.LogError("Training data is empty or null.");
+        }
 
         for (int i = 0; i < epoch; i++)
         {
             var set = trainingSet.data[Random.Range(0, trainingSet.data.Length)];
-           
+
             var inputs = set.input;
             var expectedOutput = set.expected;
 
             var actualOutput = ForwardPass(inputs);
-        
+            Debug.Log($"Actual output length: {actualOutput.Length}, Expected output length: {expectedOutput.Length}");
+            if (expectedOutput.Length != actualOutput.Length)
+            {
+                Debug.LogError($"Length mismatch: expectedOutput.Length = {expectedOutput.Length}, actualOutput.Length = {actualOutput.Length}");
+                return; // Stop execution or handle it properly
+            }
             // Compute Mean Squared Error (MSE)
             float loss = 0;
             for (int k = 0; k < expectedOutput.Length; k++)
@@ -164,15 +176,38 @@ public class NeuralNetwork : MonoBehaviour
             }
             loss /= expectedOutput.Length;
             avgLoss += loss;
-        
+
             BackPropagate(actualOutput, expectedOutput);
-        
+
         }
 
         avgLoss /= epoch;
+        loss = avgLoss;
+        avgLoss = 0f;
     }
 
+    public void InitializeWeights()
+    {
+        RemoveWeights();
 
+        List<Layer> allLayers = new List<Layer>();
+        allLayers.Add(inputLayer);
+        allLayers.AddRange(hiddenLayers);
+        allLayers.Add(outputLayer);
+
+        for (int l = 0; l < allLayers.Count - 1; l++)
+        {
+            foreach (var fromNode in allLayers[l].nodes)
+            {
+                foreach (var toNode in allLayers[l + 1].nodes)
+                {
+                    var weight = new Weight(fromNode, toNode);
+                    fromNode.weightsOut.Add(weight);
+                    toNode.weightsIn.Add(weight);
+                }
+            }
+        }
+    }
     public int GetLayerCount()
     {
         return hiddenLayers.Count;
@@ -194,22 +229,27 @@ public class NeuralNetwork : MonoBehaviour
         if (hiddenLayers.Count <= 0) return;
 
         hiddenLayers[index].AddNode();
+        InitializeWeights();
     }
     public void AddInputLayerNode()
     {
         inputLayer.AddNode();
+        InitializeWeights();
     }
     public void RemoveInputLayerNode()
     {
         inputLayer.RemoveNode();
+        InitializeWeights();
     }
     public void AddOutputLayerNode()
     {
         outputLayer.AddNode();
+        InitializeWeights();
     }
     public void RemoveOutputLayerNode()
     {
         outputLayer.RemoveNode();
+        InitializeWeights();
     }
 
     public struct TrainingSet

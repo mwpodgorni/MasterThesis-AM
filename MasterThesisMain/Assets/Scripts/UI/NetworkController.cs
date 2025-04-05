@@ -111,8 +111,6 @@ public class NetworkController : MonoBehaviour
     }
     public void AddNode(VisualElement layer)
     {
-        Debug.Log("AddNode:" + layer.name);
-        Debug.Log("addNode2:" + GP.Instance);
         if (layer.childCount >= GP.Instance.maxNodes) return;
         if (layer.name == "InputLayerPanel")
         {
@@ -146,7 +144,7 @@ public class NetworkController : MonoBehaviour
     {
         Debug.Log(_inputTrainingCycle.value);
         Debug.Log(_inputLearningRate.value);
-        // neuralNetwork.TrainNetwork(_inputTrainingCycle.value, _inputLearningRate.value);
+        neuralNetwork.TrainNetwork(_inputTrainingCycle.value, _inputLearningRate.value);
     }
     public void RedrawConnections()
     {
