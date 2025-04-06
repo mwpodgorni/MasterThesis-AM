@@ -12,14 +12,12 @@ public class NeuralNetwork
     public float expectedOutput;
     public float actualOutput;
 
-    public int epoch;
     public float loss;
     float avgLoss = 0.0f;
 
-
+    float learningRate = 0.001f;
     public NeuralNetwork()
     {
-        epoch = 0;
         inputLayer = new Layer();
         outputLayer = new Layer();
     }
@@ -103,7 +101,7 @@ public class NeuralNetwork
             {
                 foreach (Weight w in node.weightsIn)
                 {
-                    w.weight += GP.Instance.learningRate * node.gradient * w.from.value;
+                    w.weight += learningRate * node.gradient * w.from.value;
                 }
                 node.bias += GP.Instance.learningRate * node.gradient;
             }
@@ -114,9 +112,9 @@ public class NeuralNetwork
         {
             foreach (Weight w in node.weightsIn)
             {
-                w.weight += GP.Instance.learningRate * node.gradient * w.from.value;
+                w.weight += learningRate * node.gradient * w.from.value;
             }
-            node.bias += GP.Instance.learningRate * node.gradient;
+            node.bias += learningRate * node.gradient;
         }
     }
 
@@ -144,6 +142,8 @@ public class NeuralNetwork
 
     public void TrainNetwork(int epoch, float learningRate)
     {
+        this.learningRate = learningRate;
+
         var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
         if (trainingSet.data != null && trainingSet.data.Length > 0)
         {
@@ -153,6 +153,8 @@ public class NeuralNetwork
         {
             Debug.LogError("Training data is empty or null.");
         }
+
+        float totalLoss = 0f; // To track loss across all epochs
 
         for (int i = 0; i < epoch; i++)
         {
@@ -166,8 +168,9 @@ public class NeuralNetwork
             if (expectedOutput.Length != actualOutput.Length)
             {
                 Debug.LogError($"Length mismatch: expectedOutput.Length = {expectedOutput.Length}, actualOutput.Length = {actualOutput.Length}");
-                return; // Stop execution or handle it properly
+                return;
             }
+
             // Compute Mean Squared Error (MSE)
             float loss = 0;
             for (int k = 0; k < expectedOutput.Length; k++)
@@ -177,13 +180,23 @@ public class NeuralNetwork
             loss /= expectedOutput.Length;
             avgLoss += loss;
 
+            if ((i + 1) % 10 == 0)
+            {
+                Debug.Log($"Epoch {i + 1}/{epoch} - Loss: {avgLoss / (i + 1)}");
+            }
+
+            // Backpropagate
             BackPropagate(actualOutput, expectedOutput);
 
+            // Update the total loss for tracking
+            totalLoss += loss;
         }
 
         avgLoss /= epoch;
         loss = avgLoss;
         avgLoss = 0f;
+
+        Debug.Log($"Training completed after {epoch} epochs. Final average loss: {loss}");
     }
 
     public void InitializeWeights()

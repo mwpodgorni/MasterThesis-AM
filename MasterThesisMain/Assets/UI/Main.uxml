@@ -1,6 +1,6 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles.uss?fileID=7433441132597879392&amp;guid=251821e7bfa74fc488ed360ccd38cff4&amp;type=3#Styles" />
-    <engine:VisualElement name="VisualElement" style="flex-grow: 2; flex-direction: row; position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+    <engine:VisualElement name="VisualElement" style="flex-grow: 2; flex-direction: row; position: absolute; top: 0; left: 2px; bottom: 0; right: -1px;">
         <engine:VisualElement name="Menu" class="panel" style="flex-grow: 1; align-items: center; border-left-color: rgba(255, 247, 115, 0); border-right-color: rgba(255, 247, 115, 0); border-top-color: rgba(255, 247, 115, 0); border-bottom-color: rgba(255, 247, 115, 0); border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; background-image: none; display: none; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background-color: rgba(0, 20, 35, 0.9);">
             <engine:VisualElement name="VisualElement" class="menu" style="flex-grow: 1; align-items: stretch; justify-content: center; width: 400px; -unity-background-scale-mode: scale-to-fit; align-self: center; height: 100%;">
                 <engine:Button text="Play" name="PlayButton" class="unity-button" />
@@ -23,12 +23,16 @@
             </engine:VisualElement>
         </engine:VisualElement>
         <engine:VisualElement name="MiniGamePanel" class="wrapper" style="flex-grow: 1; display: flex;">
-            <engine:VisualElement style="flex-grow: 1; flex-basis: 20%;">
-                <engine:Label text="Objective" class="text-yellow header" />
+            <engine:VisualElement style="flex-grow: 1; flex-basis: 20%; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 30px; padding-right: 30px; padding-bottom: 30px; padding-left: 30px;">
+                <engine:Label text="\uF0AE" class="text-yellow header" style="-unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;);" />
+                <engine:Label text="Objective" name="ObjectiveText" class="text-yellow header" />
             </engine:VisualElement>
             <engine:VisualElement class="minigame-section" style="flex-grow: 1; flex-direction: row;">
                 <engine:VisualElement name="InputLayerPanel" style="flex-grow: 1; flex-basis: 30%; justify-content: flex-start; align-items: center;">
-                    <engine:Label text="Input Layer" class="text-yellow" style="flex-basis: 10%; width: 100%;" />
+                    <engine:VisualElement style="display: flex; width: 100%; flex-direction: row; align-items: center; justify-content: center;">
+                        <engine:Label text="Input Layer" class="text-yellow" style="flex-shrink: 0; margin-right: 5px;" />
+                        <engine:Label text="\uF05A" name="HelpInputLayer" selectable="false" class="text-yellow cursor-pointer" style="-unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;); flex-shrink: 0;" />
+                    </engine:VisualElement>
                     <engine:VisualElement style="flex-grow: 1;">
                         <engine:VisualElement name="VisualElement" style="flex-grow: 1; width: 100px; max-width: 100px; min-width: 100px; background-color: rgba(0, 20, 35, 0.1); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
                             <engine:VisualElement style="flex-grow: 0; flex-direction: row; flex-basis: 50px; justify-content: space-evenly;">
@@ -40,7 +44,7 @@
                     </engine:VisualElement>
                 </engine:VisualElement>
                 <engine:VisualElement name="HiddenLayerPanel" style="flex-grow: 1; flex-basis: 40%;">
-                    <engine:VisualElement style="flex-grow: 0; flex-basis: 10%; flex-direction: row; justify-content: center; align-items: center;">
+                    <engine:VisualElement style="flex-grow: 0; flex-basis: 15%; flex-direction: row; justify-content: center; align-items: center;">
                         <engine:Label text="Hidden Layers" class="text-yellow" />
                         <engine:Button text="[+" name="HiddenLayerAddBtn" style="margin-top: 0; margin-right: 5px; margin-bottom: 0; margin-left: 0; -unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;); width: 50px; max-width: 50px; min-width: 50px; height: 50px;" />
                         <engine:Button text="-" name="HiddenLayerRemoveBtn" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;); height: 50px; width: 50px; max-width: 50px; min-width: 50px;" />
@@ -48,7 +52,7 @@
                     <engine:VisualElement name="HiddenLayers" style="flex-grow: 1; flex-direction: row; justify-content: space-evenly;" />
                 </engine:VisualElement>
                 <engine:VisualElement name="OutputLayerPanel" style="flex-grow: 1; flex-basis: 30%; align-items: center;">
-                    <engine:Label text="Output Layer" class="text-yellow" style="flex-basis: 10%; width: 100%;" />
+                    <engine:Label text="Output Layer" class="text-yellow" style="flex-basis: 15%; width: 100%;" />
                     <engine:VisualElement style="flex-grow: 1;">
                         <engine:VisualElement style="flex-grow: 1; width: 100px; max-width: 100px; min-width: 100px; background-color: rgba(0, 20, 35, 0.1); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
                             <engine:VisualElement style="flex-grow: 0; flex-direction: row; flex-basis: 50px; justify-content: space-evenly;">
@@ -71,6 +75,13 @@
                 </engine:VisualElement>
                 <engine:Button text="Train" name="TrainBtn" style="padding-top: 10px; padding-bottom: 10px; padding-right: 10px; padding-left: 10px; height: 50px; flex-grow: 1; min-width: 100px;" />
             </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="HelpPanel" class="help-default" style="transition-duration: 0.7s; display: flex; background-color: rgb(0, 20, 35); flex-wrap: wrap;">
+            <engine:VisualElement style="flex-grow: 0; flex-direction: row; justify-content: space-between; margin-right: 30px; margin-left: 30px; align-self: auto; align-items: center; flex-wrap: wrap;">
+                <engine:Label text="Label" name="HelpTitle" class="text-yellow header" style="width: auto; justify-content: flex-end;" />
+                <engine:Button text="\uf00d" name="HelpCloseButton" class="header" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; -unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;); background-color: rgba(0, 20, 35, 0);" />
+            </engine:VisualElement>
+            <engine:Label name="HelpContent" class="text-yellow" style="flex-grow: 1; flex-wrap: nowrap; padding-top: 30px; padding-right: 30px; padding-bottom: 30px; padding-left: 30px; width: 100%; height: auto; white-space: normal; -unity-text-align: upper-left; text-overflow: clip;" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

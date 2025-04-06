@@ -18,6 +18,7 @@ public class MainMenuController : MonoBehaviour
     public VisualElement menu;
     public VisualElement tutorialPanel;
     public VisualElement miniGamePanel;
+    public VisualElement helpPanel;
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -52,6 +53,9 @@ public class MainMenuController : MonoBehaviour
 
         miniGamePanel = ui.Q<VisualElement>("MiniGamePanel");
         miniGamePanel.style.display = DisplayStyle.None;
+
+        helpPanel = ui.Q<VisualElement>("HelpPanel");
+        helpPanel.AddToClassList("help-hidden");
 
         // TODO : remove this debug code
         HideAllPanels();
@@ -89,6 +93,7 @@ public class MainMenuController : MonoBehaviour
     }
     public void StartMiniGame()
     {
+        NetworkController.Instance.SetMiniGameObjective("Train a Neural Network");
         Debug.Log("Start Mini Game Button Clicked");
         tutorialPanel.style.display = DisplayStyle.None;
         miniGamePanel.style.display = DisplayStyle.Flex;

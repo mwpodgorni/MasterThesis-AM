@@ -6,6 +6,7 @@ using UnityEditor;
 using System.Linq;
 public class NetworkController : MonoBehaviour
 {
+    public static NetworkController Instance { get; private set; }
 
     // input layer
     public Button inputNodeAddBtn;
@@ -20,30 +21,31 @@ public class NetworkController : MonoBehaviour
     // UI elements
     public VisualElement ui;
     public VisualElement miniGamePanel;
-    Label _layerCount;
-    Label _expectedText;
-    Label _actualText;
-    Label _lossText;
     VisualElement _hiddenLayerPanel;
     VisualElement _inputLayerPanel;
     VisualElement _outputLayerPanel;
     IntegerField _inputTrainingCycle;
     FloatField _inputLearningRate;
+    Label objectiveText;
 
     NeuralNetwork neuralNetwork;
     ConnectionLines _connectionLines;
     public void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
         ui = GetComponent<UIDocument>().rootVisualElement;
         miniGamePanel = ui.Q<VisualElement>("MiniGamePanel");
         neuralNetwork = new NeuralNetwork();
     }
     public void OnEnable()
     {
-        _layerCount = ui.Q<Label>("LayerCount");
-        _expectedText = ui.Q<Label>("ExpectedOutput");
-        _actualText = ui.Q<Label>("ActualOutput");
-        _lossText = ui.Q<Label>("LossText");
+        objectiveText = ui.Q<Label>("ObjectiveText");
         _hiddenLayerPanel = ui.Q<VisualElement>("HiddenLayers");
         _inputLayerPanel = ui.Q<VisualElement>("InputLayerPanel");
         _outputLayerPanel = ui.Q<VisualElement>("OutputLayerPanel");
@@ -83,6 +85,7 @@ public class NetworkController : MonoBehaviour
 
         // TODO: REMOVE THIS LINE
         StartCoroutine(DelayedSetup());
+
 
     }
     public void AddHiddenLayer()
@@ -228,6 +231,7 @@ public class NetworkController : MonoBehaviour
     {
         yield return null; // wait one frame
         SetupTestNetwork();
+        SetUpHelpClickEvents();
     }
     void SetupTestNetwork()
     {
@@ -250,5 +254,18 @@ public class NetworkController : MonoBehaviour
         AddNode(_outputLayerPanel);
         AddNode(_outputLayerPanel);
         RedrawConnections();
+    }
+    public void SetMiniGameObjective(string objective)
+    {
+        objectiveText.text = objective;
+    }
+    public void SetUpHelpClickEvents()
+    {
+        MakeLabelClickable(ui.Q<Label>("HelpInputLayer"), "InputLayer");
+    }
+    void MakeLabelClickable(Label label, string helpKey)
+    {
+        Debug.Log($"MakeLabelClickable: {label.name}");
+        label.RegisterCallback<ClickEvent>(_ => HelpController.Instance.ShowHelp(helpKey));
     }
 }

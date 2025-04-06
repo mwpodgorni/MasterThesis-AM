@@ -1,6 +1,7 @@
 .hide {
     display: none;
 }
+
 .menu {
     align-self: center;
 }
@@ -18,8 +19,9 @@
 }
 
 .unity-button:hover {
-    background-color: #114B5F;
+    background-color: rgb(17, 75, 95);
 }
+
 .text-yellow {
     color: rgb(255, 247, 115);
     font-size: 30px;
@@ -97,18 +99,33 @@
     border-radius: 20px;
 }
 
-.network-node { 
+.network-node {
 }
 
 .network-node-wrapper {
     margin: 5px;
 }
 
-.minigame-section{
-    margin: 15px 30px 15px 30px !important;
-    padding: 20px !important;
-    border-radius: 20px !important;
+.minigame-section {
+    margin: 15px 30px 15px 30px;
+    padding: 20px;
+    border-radius: 20px;
     background-color: rgba(0, 20, 35, 0.9);
     border-color: rgba(255, 247, 115, 0.5);
     border-width: 1px;
+}
+
+.help-default {
+    flex-grow: 1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 500px;
+    background-color: rgba(0, 20, 35, 0.9);
+}
+
+.help-hidden {
+    right: -500px;
+    opacity: 0;
 }
