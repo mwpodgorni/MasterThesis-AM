@@ -117,20 +117,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d480405b629dc7e4cac55660ca7b39e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  learningRate: 0.1
-  discountFactor: 0.9
-  decayRate: 0.01
-  epsilon: 0
-  epsilonMin: 0.01
-  maxSteps: 20
-  _player: {fileID: 4202400201549563252}
+  _learningRate: 0.1
+  _discountFactor: 0.9
+  _decayRate: 0.01
+  _epsilon: 1
+  _epsilonMin: 0.01
+  _maxSteps: 20
+  _controller: {fileID: 4202400201549563252}
   _goalTile: {fileID: 0}
-  _tilesToReset: []
   avgRewardPerEpoch: 0
   totalReward: 0
   totalStepCount: 0
-  currentEpisodeSteps: 0
-  episodeCount: 1
+  maxSteps: 20
 --- !u!114 &4202400201549563252 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7488383769800551177, guid: 02c420a7b61cfa7489dbd4638c186bb7,

@@ -163,12 +163,6 @@ public class AgentController : MonoBehaviour
         return possibleActions;
     }
 
-    public void DoubleTime(bool enable)
-    {
-        if (enable) Time.timeScale = 3f;
-        else Time.timeScale = 1f;
-    }
-
 }
 public enum Action
 {
