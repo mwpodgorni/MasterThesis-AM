@@ -39,6 +39,7 @@ public class QAgent : RLAgent
 
             var reward = GetReward(nextTile);
             totalReward += reward;
+            currentEpochReward += reward;
 
             UpdateQTable(state, nextState, action, reward);
 

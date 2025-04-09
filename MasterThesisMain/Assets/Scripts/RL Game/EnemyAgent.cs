@@ -9,7 +9,6 @@ public class EnemyAgent : RLAgent
     [SerializeField] AgentController _player;
 
     [SerializeField] bool _randomMovement = true;
-    [SerializeField] bool _hideBody = false;
 
     bool _vulnerable = false;
     Tile _prevTile;
@@ -29,13 +28,13 @@ public class EnemyAgent : RLAgent
 
         if (_controller.IsDead)
         {
-            _hideBody = true;
             return;
         }
 
         if (!_calculatingMove && !_player.IsMoving())
         {
             _calculatingMove = true;
+            _prevTile = _controller.currentTile;
 
             var state = GetState(_controller.currentTile);
 
@@ -43,22 +42,10 @@ public class EnemyAgent : RLAgent
 
             _controller.MoveToSelectedAction(action);
 
-            _prevTile.ResetTile();
-            _prevTile = _controller.currentTile;
             _controller.currentTile.SetCurrentType(TileType.Enemy);
         }
 
-        if (_calculatingMove && _timer < _waitTime)
-        {
-            _timer += Time.deltaTime;
-        }
-        else
-        {
-            _calculatingMove = false;
-            _timer = 0f;
-        }
-
-        if (!_controller.IsDead && (_player.currentTile == _controller.currentTile))
+        if (!_controller.IsDead && (_player.currentTile == _controller.currentTile || _player.currentTile == _prevTile) && !_calculatingMove )
         {
             Debug.Log("Died");
 
@@ -71,7 +58,19 @@ public class EnemyAgent : RLAgent
                 _controller.IsDead = true;
                 HideBody();
                 _controller.currentTile.ResetTile();
+                _prevTile.ResetTile();
             }
+        }
+
+        if (_calculatingMove && _timer < _waitTime)
+        {
+            _timer += Time.deltaTime;
+        }
+        else
+        {
+            _prevTile.ResetTile();
+            _calculatingMove = false;
+            _timer = 0f;
         }
     }
 
@@ -80,8 +79,6 @@ public class EnemyAgent : RLAgent
         var possibleActions = _controller.GetPossibleActions();
 
         Random.InitState(DateTime.Now.Millisecond);
-
-        Debug.Log(possibleActions[0]);
 
         return possibleActions[Random.Range(0, possibleActions.Count)];
     }
@@ -96,11 +93,12 @@ public class EnemyAgent : RLAgent
         base.ResetAgent();
         _vulnerable = false;
         _controller.HideModel(false);
+        _prevTile = _controller.startingTile;
+
     }
 
     void HideBody()
     {
         _controller.HideModel(true);
-        _hideBody = true;
     }
 }

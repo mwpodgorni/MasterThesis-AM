@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using Random = UnityEngine.Random;
 
 public class RLAgent : MonoBehaviour
@@ -22,6 +23,7 @@ public class RLAgent : MonoBehaviour
     [Header("Stats")]
     public float avgRewardPerEpoch = 0;
     public float totalReward = 0;
+    public float currentEpochReward = 0;
     public int totalStepCount = 0;
 
     protected bool _calculatingMove = false;
@@ -79,6 +81,7 @@ public class RLAgent : MonoBehaviour
     {
         _controller.ResetAgent();
         _finishedEpoch = false;
+        currentEpochReward = 0;
     }
 
     virtual public void ResetModel()
