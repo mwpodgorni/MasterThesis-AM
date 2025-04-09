@@ -22,7 +22,6 @@ public class NeuralNetwork
         outputLayer = new Layer();
     }
 
-
     public void AddHiddenLayer()
     {
         RemoveWeights();

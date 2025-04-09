@@ -14,18 +14,15 @@ public class QAgent : RLAgent
         _qTable = new();
 
         _rewards[TileType.Normal] = 0;
-        _rewards[TileType.Dangerous] = -1;
         _rewards[TileType.Wall] = -1;
-        _rewards[TileType.Collectible] = 0.5f;
-        _rewards[TileType.Goal] = 1f;
     }
 
     // Update is called once per frame
-    public void Update()
+    void Update()
     {
         if (!_activated) return;
 
-        if (_controller.IsDead() || _finishedEpoch)
+        if (_controller.IsDead || _finishedEpoch)
         {
             _finishedEpoch = true;
             return;

@@ -18,7 +18,6 @@ public class RLAgent : MonoBehaviour
 
     [Header("Properties")]
     [SerializeField] protected AgentController _controller;
-    [SerializeField] protected Tile _goalTile;
 
     [Header("Stats")]
     public float avgRewardPerEpoch = 0;

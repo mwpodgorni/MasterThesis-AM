@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class AgentController : MonoBehaviour
 {
     [Header("Properties")]
+    public bool isEnemy = false;
     public Tile currentTile;
     public Tile startingTile;
 
@@ -31,6 +32,8 @@ public class AgentController : MonoBehaviour
         {
             Debug.LogWarning("Error: Player Agent does not have a NavMesh Agent Component");
         }
+
+        _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
         if (!gameObject.TryGetComponent<LineRenderer>(out _line))
         {
@@ -100,7 +103,7 @@ public class AgentController : MonoBehaviour
             _line.positionCount = _tileIndex + 1;
             _line.SetPosition(_tileIndex, tile.point.position);
 
-            if (tile.GetTileType() == TileType.Collectible)
+            if (!isEnemy && (tile.GetTileType() == TileType.Collectible || tile.GetTileType() == TileType.Buff) )
             {
                 tile.Use();
             }
@@ -127,7 +130,10 @@ public class AgentController : MonoBehaviour
     }
 
     public bool IsMoving() { return _moving; }
-    public bool IsDead() { return _dead; }
+    public bool IsDead { 
+        get { return _dead; }
+        set { _dead = value; }
+    }
 
     void DoAction()
     {
@@ -161,6 +167,11 @@ public class AgentController : MonoBehaviour
         }
 
         return possibleActions;
+    }
+
+    public void HideModel(bool value)
+    {
+        _model.gameObject.SetActive(!value);
     }
 
 }

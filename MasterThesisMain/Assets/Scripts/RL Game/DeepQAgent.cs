@@ -15,12 +15,14 @@ public class DeepQAgent : RLAgent
     [SerializeField] int _hiddenSize = 8;
     [SerializeField] int _layerCount = 2;
 
+    [SerializeField] protected Tile _goalTile;
+
     Tile prevTile;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (_network == null) TryGetComponent<NeuralNetwork>(out _network);
+        if (_network == null) TryGetComponent(out _network);
         else
         {
             for (int i = 0; i < _inputSize; i++)
@@ -41,10 +43,7 @@ public class DeepQAgent : RLAgent
         }
 
         _rewards[TileType.Normal] = 0;
-        _rewards[TileType.Dangerous] = -1;
         _rewards[TileType.Wall] = -1;
-        _rewards[TileType.Collectible] = 0.5f;
-        _rewards[TileType.Goal] = 1f;
 
         prevTile = _controller.currentTile;
     }
@@ -54,7 +53,7 @@ public class DeepQAgent : RLAgent
     {
         if (!_activated) return;
 
-        if (_controller.IsDead() || _finishedEpoch)
+        if (_controller.IsDead || _finishedEpoch)
         {
             _finishedEpoch = true;
             return;

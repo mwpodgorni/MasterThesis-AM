@@ -18,7 +18,7 @@ public class RLManager : MonoBehaviour
     [SerializeField] float _fasterSpeed = 5f;
 
     public int episodeCount = 1;
-    public int maxEpisodes = 20;
+    public int maxEpisodes = 30;
     public int maxStepPerEpoch = 20;
 
     [Header("Statistics")]
@@ -41,10 +41,9 @@ public class RLManager : MonoBehaviour
             if (episodeCount >= maxEpisodes)
             {
                 // Training finished
-                _training = false;               
-                DeactivateAgents();
+                _training = false;
                 avgRewardPerEpoch = _player.avgRewardPerEpoch;
-
+                DeactivateAgents();
                 ResetTraining();
             }
             else
@@ -61,8 +60,10 @@ public class RLManager : MonoBehaviour
         if (!_training)
         {
             _training = true;
+            ResetModel();
             ResetTraining();
             ActivateAgents();
+            episodeCount = 1;
         }
     }
 
@@ -85,6 +86,11 @@ public class RLManager : MonoBehaviour
                 tile.ResetTile();
             }
         }
+    }
+
+    public void ResetModel()
+    {
+        _player.ResetModel();
     }
 
     public void SetSpeed(GameSpeed mode)
@@ -148,6 +154,41 @@ public class RLManager : MonoBehaviour
                 enemy.Activated = false;
             }
         }
+    }
+
+    public void SetNormalTileReward(float value)
+    {
+        SetReward(TileType.Normal, value);
+    }
+
+    public void SetGoalTileReward(float value)
+    {
+        SetReward(TileType.Goal, value);
+    }
+
+    public void SetCollectibleTileReward(float value)
+    {
+        SetReward(TileType.Collectible, value);
+    }
+
+    public void SetDangerousTileReward(float value)
+    {
+        SetReward(TileType.Dangerous, value);
+    }
+
+    public void SetEnemyTileReward(float value)
+    {
+        SetReward(TileType.Enemy, value);
+    }
+
+    public void SetEnemyVulnerableTileReward(float value)
+    {
+        SetReward(TileType.EnemyVulnerable, value);
+    }
+
+    public void SetBuffTileReward(float value)
+    {
+        SetReward(TileType.Buff, value);
     }
 
     public enum GameSpeed
