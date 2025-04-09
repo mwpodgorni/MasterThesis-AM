@@ -6,24 +6,38 @@
     align-self: center;
 }
 
+.settings-wrapper {
+    border-radius: 20px;
+    border-color: rgb(254, 238, 212);
+    border-width: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgb(0, 20, 35);
+    margin: 10%;
+    padding: 50px;
+}
+
 .unity-button {
-    color: rgb(255, 247, 115);
+    color: rgb(254, 238, 212);
     background-color: rgba(0, 20, 35, 0.9);
-    border-color: rgb(255, 247, 115);
-    border-width: 2px;
+    border-color: rgb(254, 238, 212);
+    border-width: 4px;
     border-radius: 10px;
     height: 70px;
-    font-size: 24px;
+    font-size: 40px;
     margin: 10px;
     transition: background-color 0.1s ease;
 }
 
 .unity-button:hover {
-    background-color: rgb(17, 75, 95);
+    background-color: rgba(17, 75, 95, 0.9);
 }
 
 .text-yellow {
-    color: rgb(255, 247, 115);
+    color: rgb(254, 238, 212);
     font-size: 30px;
     -unity-text-align: middle-center;
 }
@@ -42,7 +56,7 @@
 
 .wrapper {
     border-radius: 20px;
-    border-color: rgb(255, 247, 115);
+    border-color: rgb(254, 238, 212);
     border-width: 2px;
     position: absolute;
     top: 0;
@@ -54,10 +68,10 @@
 }
 
 .border-yellow {
-    border-left-color: rgb(255, 247, 115);
-    border-right-color: rgb(255, 247, 115);
-    border-top-color: rgb(255, 247, 115);
-    border-bottom-color: rgb(255, 247, 115);
+    border-left-color: rgb(254, 238, 212);
+    border-right-color: rgb(254, 238, 212);
+    border-top-color: rgb(254, 238, 212);
+    border-bottom-color: rgb(254, 238, 212);
     border-top-width: 2px;
     border-right-width: 2px;
     border-bottom-width: 2px;
@@ -81,10 +95,10 @@
 
 .styled-input .unity-base-text-field__input {
     background-color: rgba(0, 20, 35, 0.9);
-    border-left-color: rgb(255, 247, 115);
-    border-right-color: rgb(255, 247, 115);
-    border-top-color: rgb(255, 247, 115);
-    border-bottom-color: rgb(255, 247, 115);
+    border-left-color: rgb(254, 238, 212);
+    border-right-color: rgb(254, 238, 212);
+    border-top-color: rgb(254, 238, 212);
+    border-bottom-color: rgb(254, 238, 212);
     border-top-width: 2px;
     border-right-width: 2px;
     border-bottom-width: 2px;
@@ -111,7 +125,7 @@
     padding: 20px;
     border-radius: 20px;
     background-color: rgba(0, 20, 35, 0.9);
-    border-color: rgba(255, 247, 115, 0.5);
+    border-color: rgba(254, 238, 212, 0.5);
     border-width: 1px;
 }
 
@@ -128,4 +142,23 @@
 .help-hidden {
     right: -500px;
     opacity: 0;
+}
+
+.opacity-default {
+}
+
+.opacity-none {
+    opacity: 0;
+}
+
+.settings-show {
+    flex-grow: 1;
+    display: flex;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+}
+
+.settings-hidden {
+    position: absolute;
+    translate: 0 -1096px;
 }

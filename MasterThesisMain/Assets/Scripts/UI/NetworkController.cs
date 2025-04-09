@@ -78,10 +78,12 @@ public class NetworkController : MonoBehaviour
         _connectionLines.style.left = 0;
         _connectionLines.style.right = 0;
         _connectionLines.style.bottom = 0;
+        _connectionLines.AddToClassList("connection-lines");
 
         _connectionLines.pickingMode = PickingMode.Ignore;
-
-        ui.Add(_connectionLines);
+        var miniGamePanel = ui.Q<VisualElement>("MiniGamePanel");
+        miniGamePanel.Add(_connectionLines); // Adds ConnectionLines at the end
+        // ui.Add(_connectionLines);
 
         // TODO: REMOVE THIS LINE
         StartCoroutine(DelayedSetup());

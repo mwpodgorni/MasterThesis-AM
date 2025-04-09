@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 5533610562389605273}
   - component: {fileID: 3831002634869113831}
   - component: {fileID: 5081006166261378890}
-  - component: {fileID: 9186250726914539758}
-  - component: {fileID: 577537468673066780}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -64,50 +62,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ff01d258c94fc4ebef31dcbdcdf198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9186250726914539758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3327152908958878608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67baa49bbec48b045945bb6fa78ae461, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tutorialCompletedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5081006166261378890}
-        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
-        m_MethodName: StartMiniGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &577537468673066780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3327152908958878608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab1465c24b4b31e428ec5a44055b3ab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLayer: {fileID: 0}
-  outputLayer: {fileID: 0}
-  hiddenLayers: []
-  expectedOutput: 0
-  actualOutput: 0
-  epoch: 0
-  loss: 0
-  _parameters: {fileID: 0}
