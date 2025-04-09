@@ -81,9 +81,9 @@ public class NetworkController : MonoBehaviour
         _connectionLines.AddToClassList("connection-lines");
 
         _connectionLines.pickingMode = PickingMode.Ignore;
-        var miniGamePanel = ui.Q<VisualElement>("MiniGamePanel");
-        miniGamePanel.Add(_connectionLines); // Adds ConnectionLines at the end
-        // ui.Add(_connectionLines);
+        var miniGamePanel = ui.Q<VisualElement>("WorkshopPanel");
+        // miniGamePanel.Add(_connectionLines);
+        ui.Add(_connectionLines);
 
         // TODO: REMOVE THIS LINE
         StartCoroutine(DelayedSetup());
@@ -232,7 +232,7 @@ public class NetworkController : MonoBehaviour
     IEnumerator DelayedSetup()
     {
         yield return null; // wait one frame
-        SetupTestNetwork();
+        // SetupTestNetwork();
         SetUpHelpClickEvents();
     }
     void SetupTestNetwork()
@@ -264,6 +264,7 @@ public class NetworkController : MonoBehaviour
     public void SetUpHelpClickEvents()
     {
         MakeLabelClickable(ui.Q<Label>("HelpInputLayer"), "InputLayer");
+        MakeLabelClickable(ui.Q<Label>("HelpOutputLayer"), "OutputLayer");
     }
     void MakeLabelClickable(Label label, string helpKey)
     {

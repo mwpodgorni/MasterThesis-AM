@@ -14,8 +14,8 @@ public class TutorialController : MonoBehaviour
     public Label tutorialContent;
     private List<TutorialStep> tutorialSteps;
     private int currentStep = 0;
-    private float typingSpeed = 0.01f;
-    private float interpunctuationDelay = 0.5f;
+    private float typingSpeed = 0.03f;
+    private float interpunctuationDelay = 0.4f;
     private float skipSpeedup = 5f;
 
     private WaitForSeconds simpleDelay;
@@ -70,6 +70,7 @@ public class TutorialController : MonoBehaviour
         {
             tutorialCompletedEvent?.Invoke();
             Debug.Log("Tutorial Complete");
+            ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
         }
     }
 

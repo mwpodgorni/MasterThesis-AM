@@ -5,9 +5,14 @@
 .menu {
     align-self: center;
 }
-
+.panel-up{
+    translate: 0 -1096px;
+}
+.panel-down{
+    translate: 0 0;
+}
 .settings-wrapper {
-    border-radius: 20px;
+    border-radius: 30px;
     border-color: rgb(254, 238, 212);
     border-width: 5px;
     position: absolute;
@@ -25,13 +30,18 @@
     background-color: rgba(0, 20, 35, 0.9);
     border-color: rgb(254, 238, 212);
     border-width: 4px;
-    border-radius: 10px;
+    border-radius: 15px;
     height: 70px;
     font-size: 40px;
     margin: 10px;
     transition: background-color 0.1s ease;
 }
-
+.plus-button{
+    width:50px;
+    height:50px;
+    border-width: 2px;
+    font-size: 34px;
+}
 .unity-button:hover {
     background-color: rgba(17, 75, 95, 0.9);
 }
@@ -55,9 +65,9 @@
 }
 
 .wrapper {
-    border-radius: 20px;
+    border-radius: 30px;
     border-color: rgb(254, 238, 212);
-    border-width: 2px;
+    border-width: 5px;
     position: absolute;
     top: 0;
     right: 0;
@@ -76,10 +86,7 @@
     border-right-width: 2px;
     border-bottom-width: 2px;
     border-left-width: 2px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-radius: 30px;
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
@@ -87,22 +94,17 @@
 }
 
 .styled-input {
-    border-radius: 10px;
+    border-radius: 15px;
     margin: 0;
-    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
-    background-color: rgb(0, 0, 0);
+    border-width: 2px;
+    border-color: rgb(254, 238, 212);
+    /* -unity-background-image-tint-color: rgba(255, 255, 255, 0); */
+    /* background-color: rgb(0, 0, 0); */
 }
 
 .styled-input .unity-base-text-field__input {
     background-color: rgba(0, 20, 35, 0.9);
-    border-left-color: rgb(254, 238, 212);
-    border-right-color: rgb(254, 238, 212);
-    border-top-color: rgb(254, 238, 212);
-    border-bottom-color: rgb(254, 238, 212);
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
+
 }
 
 .input-font-size {
@@ -151,14 +153,14 @@
     opacity: 0;
 }
 
-.settings-show {
+.panel-down {
     flex-grow: 1;
     display: flex;
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
 }
 
-.settings-hidden {
+.panel-up {
     position: absolute;
     translate: 0 -1096px;
 }

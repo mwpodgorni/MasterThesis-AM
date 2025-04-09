@@ -1,31 +1,38 @@
 [
   {
-    "title": "Welcome to the robot factory!",
+    "title": "Welcome to our robot factory!",
     "content": [
       "As a supervisor, your task will be assemble and train robots to perform various tasks.",
       "But before you can start, you need to go through mandatory training that will teach you how these robots work."
     ]
   },
   {
-    "title": "How do robots work?",
+    "title": "How do robots learn?",
     "content": [
-      "The robots in our factory use neural networks as their brains, which helps them learn and make decisions.",
-      "A neural network is like a web of connected neurons, where the input layer takes in information, hidden layers process it by adjusting weights and applying activation functions, and the output layer makes the final decision.",
-      "By training the network, we teach the robot how to recognize patterns and improve its performance over time!"
+      "The robots in this facility learn using machine learning techniques, primarily neural networks and reinforcement learning.",
+      "To understand how they learn, let's first look at neural networks-one of the core systems powering their decision-making."
+    ]
+  },
+  {
+    "title": "What is a neural network?",
+    "content": [
+      "A neural network is made of layers of connected nodes that transform input data, adjust internal parameters, and improve with training.",
+      "This allows the robot to recognize patterns, make decisions, and enhance its performance over time."
     ]
   },
   {
     "title": "Your first task",
     "content": [
       "Before you start to create fully functional robots, you need to prove that you know how to create and use neural networks.",
-      "Your first task is to create a neural network that can classify incoming robot parts into different categories based on their properties."
+      "Your first task is to set up a basic neural network and explore its architecture to understand how it processes and learns from data."
     ]
   },
   {
     "title": "Instructions",
     "content": [
-      "Each part has three properties: weight, energy consumption, and material type. Your neural network must analyze these properties and correctly determine whether a part belongs to a Worker, Defender, Explorer, or another category.",
-      "Adjust the network's hidden layers and neurons to achieve the highest classification accuracy."
+      "You can build your neural network in the workshop.",
+      "Start by adding nodes to the input and output layers, and include at least one hidden layer with a few nodes.",
+      "If you're unsure about any feature, click on the info icon to view an explanation of its purpose."
     ]
   }
 ]

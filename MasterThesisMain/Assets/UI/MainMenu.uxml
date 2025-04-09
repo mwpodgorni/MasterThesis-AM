@@ -10,7 +10,7 @@
                 </engine:VisualElement>
             </engine:VisualElement>
         </engine:VisualElement>
-        <engine:VisualElement name="OptionsPanel" class="settings-wrapper settings-show">
+        <engine:VisualElement name="OptionsPanel" class="settings-wrapper" style="transition-duration: 0.5s; transition-timing-function: ease-in-out;">
             <engine:Label text="Settings" name="Label" class="text-yellow header" style="margin-top: 6px;" />
             <engine:Button text="\u00D7" emoji-fallback-support="false" tooltip="\uf007" enable-rich-text="false" parse-escape-sequences="true" name="OptionsCloseButton" class="fontawesome-solid unity-button" style="position: absolute; right: 10px; top: 10px; width: 60px; height: 60px; padding-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; font-size: 40px; margin-bottom: 10px;" />
         </engine:VisualElement>

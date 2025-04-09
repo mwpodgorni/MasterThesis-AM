@@ -25,7 +25,7 @@ public class MainMenuController : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
     }
     private void OnEnable()
     {
@@ -43,7 +43,7 @@ public class MainMenuController : MonoBehaviour
         menu.style.display = DisplayStyle.Flex;
         optionsPanel = ui.Q<VisualElement>("OptionsPanel");
         optionsPanel.style.display = DisplayStyle.Flex;
-        optionsPanel.AddToClassList("settings-hidden");
+        optionsPanel.AddToClassList("panel-up");
     }
     private void OnQuitButtonClicked()
     {
@@ -51,11 +51,11 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnOptionsClicked()
     {
-        optionsPanel.RemoveFromClassList("settings-hidden");
+        optionsPanel.RemoveFromClassList("panel-up");
     }
     private void OnOptionsClosed()
     {
-        optionsPanel.AddToClassList("settings-hidden");
+        optionsPanel.AddToClassList("panel-up");
     }
     private void OnPlayButtonClicked()
     {
