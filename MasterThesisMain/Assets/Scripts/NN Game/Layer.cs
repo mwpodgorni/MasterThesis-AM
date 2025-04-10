@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
+using Newtonsoft.Json;
+
 public class Layer
 {
 
@@ -30,7 +32,7 @@ public class Layer
 
     public void RemoveNode()
     {
-        Console.WriteLine("This is a log message.");
+        Debug.Log("LAYER: RemoveNode");
         if (nodes.Count <= 0) return;
 
         GP.ChannelInstance.Invoke(0);

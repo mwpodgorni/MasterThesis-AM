@@ -28,6 +28,8 @@ public class StateManager : MonoBehaviour
             case 1:
                 MiniGame1Solved = true;
                 CurrentStage = GameStage.MiniGame2;
+                StageOneController.Instance.NetworkController().ResetNetwork();
+                StageOneController.Instance.NetworkController().EnableTraining();
                 break;
             case 2:
                 MiniGame2Solved = true;

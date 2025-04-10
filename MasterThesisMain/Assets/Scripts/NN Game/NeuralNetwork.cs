@@ -248,6 +248,7 @@ public class NeuralNetwork
     {
         if (hiddenLayers.Count <= 0) return;
 
+        Debug.Log("NN: Removing hidden layer node" + index);
         hiddenLayers[index].RemoveNode();
         InitializeWeights();
     }
@@ -269,6 +270,7 @@ public class NeuralNetwork
     }
     public void RemoveOutputLayerNode()
     {
+        Debug.Log("NN: Removing output layer node");
         outputLayer.RemoveNode();
         InitializeWeights();
     }
@@ -311,5 +313,13 @@ public class NeuralNetwork
         }
 
         return true;
+    }
+    public void ResetNetwork()
+    {
+        inputLayer = new Layer();
+        outputLayer = new Layer();
+        hiddenLayers.Clear();
+        loss = 0.0f;
+        avgLoss = 0.0f;
     }
 }

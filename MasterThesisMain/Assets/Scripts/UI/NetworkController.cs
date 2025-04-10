@@ -166,6 +166,7 @@ public class NetworkController : MonoBehaviour
             StageOneController.Instance.TutorialController().ShowNextButton();
             StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleSolved());
             StageOneController.Instance.TutorialController().StartTutorial();
+            StateManager.Instance.MarkMiniGameSolved(1);
         }
         else
         {
@@ -174,12 +175,18 @@ public class NetworkController : MonoBehaviour
             StageOneController.Instance.TutorialController().SetDisplayTime(8f);
             StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleNotSolved());
             StageOneController.Instance.TutorialController().StartTutorial();
-            StateManager.Instance.MarkMiniGameSolved(1);
         }
     }
     public void OnTestNetworkButtonClicked()
     {
-
+        if (neuralNetwork.IsNetworkValid())
+        {
+            Debug.Log("Test: Valid netowrk");
+        }
+        else
+        {
+            Debug.Log("Test: invalid network");
+        }
     }
     public void OnTrainNetworkButtonClicked()
     {
@@ -317,5 +324,20 @@ public class NetworkController : MonoBehaviour
     {
         Debug.Log($"MakeLabelClickable: {label.name}");
         label.RegisterCallback<ClickEvent>(_ => StageOneController.Instance.HelpController().ShowHelp(helpKey));
+    }
+    public void ResetNetwork()
+    {
+        _inputLayerPanel.Q<VisualElement>("NodeWrapper").Clear();
+        _outputLayerPanel.Q<VisualElement>("NodeWrapper").Clear();
+        var hiddenLayersContainer = _hiddenLayerPanel.Q<VisualElement>("HiddenLayers");
+        hiddenLayersContainer.Clear();
+        RedrawConnections();
+
+        neuralNetwork.ResetNetwork();
+    }
+    public void EnableTraining()
+    {
+        firstNetworkTestButton.style.display = DisplayStyle.None;
+        networkActionPanel.style.display = DisplayStyle.Flex;
     }
 }
