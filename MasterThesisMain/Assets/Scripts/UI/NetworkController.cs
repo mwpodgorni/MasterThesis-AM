@@ -17,7 +17,6 @@ public class NetworkController : MonoBehaviour
     public Button outputNodeRemoveBtn;
     public Button testNetworkButton;
     public Button trainNetworkButton;
-    public Button firstNetworkTestButton;
     // UI elements
     public VisualElement ui;
     public VisualElement miniGamePanel;
@@ -31,6 +30,8 @@ public class NetworkController : MonoBehaviour
 
     NeuralNetwork neuralNetwork;
     ConnectionLines _connectionLines;
+    NetworkSolution minigame2Solution = new NetworkSolution(3, 3, 2, new int[] { 4, 4 });
+
     public void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -52,8 +53,7 @@ public class NetworkController : MonoBehaviour
         _inputLearningRate = ui.Q<FloatField>("InputLearningRate");
 
         // buttons
-        firstNetworkTestButton = ui.Q<Button>("FirstNetworkTestButton");
-        firstNetworkTestButton.clicked += FirstNetworkTest;
+
         testNetworkButton = ui.Q<Button>("TestNetworkButton");
         testNetworkButton.clicked += OnTestNetworkButtonClicked;
         trainNetworkButton = ui.Q<Button>("TrainNetworkButton");
@@ -159,33 +159,48 @@ public class NetworkController : MonoBehaviour
         }
         RedrawConnections();
     }
-    public void FirstNetworkTest()
-    {
-        if (neuralNetwork.IsNetworkValid())
-        {
-            StageOneController.Instance.TutorialController().ShowNextButton();
-            StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleSolved());
-            StageOneController.Instance.TutorialController().StartTutorial();
-            StateManager.Instance.MarkMiniGameSolved(1);
-        }
-        else
-        {
-            Debug.Log("Network is not valid. Please add nodes to the network.");
-            StageOneController.Instance.TutorialController().HideNextButton();
-            StageOneController.Instance.TutorialController().SetDisplayTime(8f);
-            StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleNotSolved());
-            StageOneController.Instance.TutorialController().StartTutorial();
-        }
-    }
     public void OnTestNetworkButtonClicked()
     {
-        if (neuralNetwork.IsNetworkValid())
+        if (!StateManager.Instance.MiniGame1Solved)
         {
-            Debug.Log("Test: Valid netowrk");
+            if (neuralNetwork.IsNetworkValid())
+            {
+                StageOneController.Instance.TutorialController().ShowNextButton();
+                StageOneController.Instance.TutorialController().SetTypeText(false);
+                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleSolved());
+                StageOneController.Instance.TutorialController().StartTutorial();
+                StateManager.Instance.MarkMiniGameSolved(1);
+            }
+            else
+            {
+                Debug.Log("Network is not valid. Please add nodes to the network.");
+                StageOneController.Instance.TutorialController().HideNextButton();
+                StageOneController.Instance.TutorialController().SetTypeText(false);
+
+                StageOneController.Instance.TutorialController().SetDisplayTime(5f);
+                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleNotSolved());
+                StageOneController.Instance.TutorialController().StartTutorial();
+            }
         }
-        else
+        else if (!StateManager.Instance.MiniGame2Solved)
         {
-            Debug.Log("Test: invalid network");
+            if (minigame2Solution.Matches(neuralNetwork))
+            {
+                StageOneController.Instance.TutorialController().ShowNextButton();
+                StageOneController.Instance.TutorialController().SetTypeText(false);
+                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondPuzzleSolved());
+                StageOneController.Instance.TutorialController().StartTutorial();
+                StateManager.Instance.MarkMiniGameSolved(2);
+            }
+            else
+            {
+                Debug.Log("Network is not valid. Please add nodes to the network.");
+                StageOneController.Instance.TutorialController().HideNextButton();
+                StageOneController.Instance.TutorialController().SetTypeText(false);
+                StageOneController.Instance.TutorialController().SetDisplayTime(5f);
+                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondPuzzleNotSolved());
+                StageOneController.Instance.TutorialController().StartTutorial();
+            }
         }
     }
     public void OnTrainNetworkButtonClicked()
@@ -197,8 +212,8 @@ public class NetworkController : MonoBehaviour
         else
         {
             Debug.Log("Network is not valid. Please add nodes to the network.");
-        }
 
+        }
     }
     public void TrainButtonClicked()
     {
@@ -337,7 +352,35 @@ public class NetworkController : MonoBehaviour
     }
     public void EnableTraining()
     {
-        firstNetworkTestButton.style.display = DisplayStyle.None;
+        testNetworkButton.style.display = DisplayStyle.None;
         networkActionPanel.style.display = DisplayStyle.Flex;
+    }
+}
+
+class NetworkSolution
+{
+    public int inputNodes;
+    public int outputNodes;
+    public int hiddenLayers;
+    public int[] hiddenLayerNodes;
+
+    public NetworkSolution(int inputNodes, int outputNodes, int hiddenLayers, int[] hiddenLayerNodes)
+    {
+        this.inputNodes = inputNodes;
+        this.outputNodes = outputNodes;
+        this.hiddenLayers = hiddenLayers;
+        this.hiddenLayerNodes = hiddenLayerNodes;
+    }
+
+    public bool Matches(NeuralNetwork network)
+    {
+        if (network.inputLayer.nodes.Count != inputNodes) return false;
+        if (network.outputLayer.nodes.Count != outputNodes) return false;
+        if (network.hiddenLayers.Count != hiddenLayers) return false;
+        for (int i = 0; i < hiddenLayers; i++)
+        {
+            if (network.hiddenLayers[i].nodes.Count != hiddenLayerNodes[i]) return false;
+        }
+        return true;
     }
 }

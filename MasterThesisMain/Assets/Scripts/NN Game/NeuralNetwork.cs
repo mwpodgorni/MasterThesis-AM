@@ -292,6 +292,15 @@ public class NeuralNetwork
     {
         return outputLayer.nodes.Count;
     }
+    public int[] GetHiddenLayerCounts()
+    {
+        int[] counts = new int[hiddenLayers.Count];
+        for (int i = 0; i < hiddenLayers.Count; i++)
+        {
+            counts[i] = hiddenLayers[i].nodes.Count;
+        }
+        return counts;
+    }
     public bool IsNetworkValid()
     {
         Debug.Log("Is Network Valid?");

@@ -57,8 +57,25 @@
       "title": "Your second task",
       "content": [
         "Each incoming part has three properties: weight, energy consumption, and material type.",
-        "Your neural network must analyze these properties and correctly determine whether a part belongs to a Worker, Defender, Explorer, or another category.",
+        "Your neural network must analyze these properties and correctly determine whether a part belongs to a Worker, Cleaner or Explorer.",
         "Adjust the network's hidden layers and neurons to achieve the highest classification accuracy."
+      ]
+    }
+  ],
+  "secondPuzzleNotSolved": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The neural network is not yet set up to classify robot parts. Return to the workshop and complete the network setup by adding input, hidden, and output layers."
+      ]
+    }
+  ],
+  "secondPuzzleSolved": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up a neural network that can classify robot parts.",
+        "Now, you'll need to train the network."
       ]
     }
   ]

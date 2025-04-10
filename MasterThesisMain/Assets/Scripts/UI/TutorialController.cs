@@ -21,6 +21,7 @@ public class TutorialController : MonoBehaviour
     private WaitForSeconds simpleDelay;
     private WaitForSeconds punctuationDelay;
     private WaitForSeconds skipDelay;
+    private bool typeText = true;
     private float displayTime = 0f;
 
     [SerializeField]
@@ -80,6 +81,7 @@ public class TutorialController : MonoBehaviour
         }
         else
         {
+            typeText = true;
             tutorialCompletedEvent?.Invoke();
             Debug.Log("Tutorial Complete");
             ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
@@ -107,6 +109,10 @@ public class TutorialController : MonoBehaviour
         }
     }
 
+    public void SetTypeText(bool value)
+    {
+        typeText = value;
+    }
     private IEnumerator ShowTitle(string title)
     {
         yield return StartCoroutine(ShowText(tutorialTitle, title));
@@ -128,11 +134,12 @@ public class TutorialController : MonoBehaviour
             char currentChar = sb[maxVisibleCharacters - 1];
             if (IsPunctuation(currentChar))
             {
-                yield return punctuationDelay;
+                yield return typeText ? punctuationDelay : 0f; ;
             }
             else
             {
-                yield return simpleDelay;
+
+                yield return typeText ? simpleDelay : 0f;
             }
         }
     }
