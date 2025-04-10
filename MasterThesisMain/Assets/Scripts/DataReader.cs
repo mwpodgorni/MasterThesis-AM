@@ -13,7 +13,7 @@ public class DataReader : MonoBehaviour
 
     private Dictionary<string, HelpText> helpTexts;
 
-    private List<TutorialStep> tutorialSteps;
+    private Dictionary<string, List<TutorialStep>> tutorialData;
 
     private void Awake()
     {
@@ -29,14 +29,14 @@ public class DataReader : MonoBehaviour
 
     private void Init()
     {
-        tutorialSteps = JsonConvert.DeserializeObject<List<TutorialStep>>(jsonFile.text);
+        tutorialData = JsonConvert.DeserializeObject<Dictionary<string, List<TutorialStep>>>(jsonFile.text);
         helpTexts = JsonConvert.DeserializeObject<Dictionary<string, HelpText>>(helpTextJson.text);
         // Debug.Log("Tutorial Steps: " + tutorialSteps);
         // Debug.Log("Tutorial Steps: " + tutorialSteps[0].Title);
     }
-    public List<TutorialStep> GetTutorialSteps()
+    public List<TutorialStep> GetIntroductionSteps()
     {
-        return tutorialSteps;
+        return tutorialData.TryGetValue("introduction", out var steps) ? steps : new List<TutorialStep>();
     }
     public Dictionary<string, HelpText> GetHelpTexts()
     {
@@ -47,5 +47,13 @@ public class DataReader : MonoBehaviour
     {
         return helpTexts != null && helpTexts.TryGetValue(key, out HelpText value) ? value : null;
     }
+    public List<TutorialStep> FirstPuzzleNotSolved()
+    {
+        return tutorialData.TryGetValue("firstPuzzleNotSolved", out var steps) ? steps : new List<TutorialStep>();
+    }
 
+    public List<TutorialStep> FirstPuzzleSolved()
+    {
+        return tutorialData.TryGetValue("firstPuzzleSolved", out var steps) ? steps : new List<TutorialStep>();
+    }
 }

@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
-
     public static StateManager Instance { get; private set; }
-    private GameState currentGameState;
+
+    public GameStage CurrentStage { get; private set; }
+    public bool MiniGame1Solved { get; private set; }
+    public bool MiniGame2Solved { get; private set; }
+    public bool MiniGame3Solved { get; private set; }
 
     private void Awake()
     {
@@ -15,12 +18,34 @@ public class StateManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        currentGameState = GameState.MainMenu;
+        CurrentStage = GameStage.Tutorial;
+    }
+
+    public void MarkMiniGameSolved(int miniGameIndex)
+    {
+        switch (miniGameIndex)
+        {
+            case 1:
+                MiniGame1Solved = true;
+                CurrentStage = GameStage.MiniGame2;
+                break;
+            case 2:
+                MiniGame2Solved = true;
+                CurrentStage = GameStage.MiniGame3;
+                break;
+            case 3:
+                MiniGame3Solved = true;
+                CurrentStage = GameStage.Completed;
+                break;
+        }
     }
 }
 
-public enum GameState
+public enum GameStage
 {
-    MainMenu,
-    Intro,
+    Tutorial,
+    MiniGame1,
+    MiniGame2,
+    MiniGame3,
+    Completed
 }

@@ -60,7 +60,6 @@ public class MainMenuController : MonoBehaviour
     private void OnPlayButtonClicked()
     {
         Debug.Log("Play Button Clicked");
-        // gameObject.GetComponent<TutorialController>().StartTutorial();
         SceneManager.LoadScene(stageOneScene.name);
     }
 }

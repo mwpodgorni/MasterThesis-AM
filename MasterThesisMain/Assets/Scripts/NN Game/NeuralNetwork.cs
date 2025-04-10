@@ -244,6 +244,13 @@ public class NeuralNetwork
         hiddenLayers[index].AddNode();
         InitializeWeights();
     }
+    public void RemoveHiddenLayerNode(int index)
+    {
+        if (hiddenLayers.Count <= 0) return;
+
+        hiddenLayers[index].RemoveNode();
+        InitializeWeights();
+    }
     public void AddInputLayerNode()
     {
         inputLayer.AddNode();
@@ -251,6 +258,7 @@ public class NeuralNetwork
     }
     public void RemoveInputLayerNode()
     {
+        Debug.Log("NN: Removing input layer node");
         inputLayer.RemoveNode();
         InitializeWeights();
     }
@@ -274,5 +282,34 @@ public class NeuralNetwork
     {
         public float[] input;
         public float[] expected;
+    }
+    public int GetInputLayerCount()
+    {
+        return inputLayer.nodes.Count;
+    }
+    public int GetOutputLayerCount()
+    {
+        return outputLayer.nodes.Count;
+    }
+    public bool IsNetworkValid()
+    {
+        Debug.Log("Is Network Valid?");
+        Debug.Log("Input Layer Count: " + inputLayer.nodes.Count);
+        Debug.Log("Output Layer Count: " + outputLayer.nodes.Count);
+        Debug.Log("Hidden Layer Count: " + hiddenLayers.Count);
+        foreach (var layer in hiddenLayers)
+        {
+            Debug.Log("Hidden LayerNode Count: " + layer.nodes.Count);
+        }
+        if (inputLayer.nodes.Count == 0) return false;
+        if (outputLayer.nodes.Count == 0) return false;
+        if (hiddenLayers.Count == 0) return false;
+
+        foreach (var layer in hiddenLayers)
+        {
+            if (layer.nodes.Count == 0) return false;
+        }
+
+        return true;
     }
 }

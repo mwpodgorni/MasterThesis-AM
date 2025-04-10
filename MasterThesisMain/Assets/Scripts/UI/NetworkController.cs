@@ -6,8 +6,6 @@ using UnityEditor;
 using System.Linq;
 public class NetworkController : MonoBehaviour
 {
-    public static NetworkController Instance { get; private set; }
-
     // input layer
     public Button inputNodeAddBtn;
     public Button inputNodeRemoveBtn;
@@ -17,13 +15,16 @@ public class NetworkController : MonoBehaviour
     // output layer
     public Button outputNodeAddBtn;
     public Button outputNodeRemoveBtn;
-    public Button trainBtn;
+    public Button testNetworkButton;
+    public Button trainNetworkButton;
+    public Button firstNetworkTestButton;
     // UI elements
     public VisualElement ui;
     public VisualElement miniGamePanel;
     VisualElement _hiddenLayerPanel;
     VisualElement _inputLayerPanel;
     VisualElement _outputLayerPanel;
+    VisualElement networkActionPanel;
     IntegerField _inputTrainingCycle;
     FloatField _inputLearningRate;
     Label objectiveText;
@@ -32,13 +33,6 @@ public class NetworkController : MonoBehaviour
     ConnectionLines _connectionLines;
     public void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
         ui = GetComponent<UIDocument>().rootVisualElement;
         miniGamePanel = ui.Q<VisualElement>("MiniGamePanel");
         neuralNetwork = new NeuralNetwork();
@@ -49,13 +43,21 @@ public class NetworkController : MonoBehaviour
         _hiddenLayerPanel = ui.Q<VisualElement>("HiddenLayers");
         _inputLayerPanel = ui.Q<VisualElement>("InputLayerPanel");
         _outputLayerPanel = ui.Q<VisualElement>("OutputLayerPanel");
+        networkActionPanel = ui.Q<VisualElement>("NetworkActionPanel");
+        networkActionPanel.style.display = DisplayStyle.None;
+
+
 
         _inputTrainingCycle = ui.Q<IntegerField>("InputTrainingCycle");
         _inputLearningRate = ui.Q<FloatField>("InputLearningRate");
 
         // buttons
-        trainBtn = ui.Q<Button>("TrainBtn");
-        trainBtn.clicked += TrainButtonClicked;
+        firstNetworkTestButton = ui.Q<Button>("FirstNetworkTestButton");
+        firstNetworkTestButton.clicked += FirstNetworkTest;
+        testNetworkButton = ui.Q<Button>("TestNetworkButton");
+        testNetworkButton.clicked += OnTestNetworkButtonClicked;
+        trainNetworkButton = ui.Q<Button>("TrainNetworkButton");
+        trainNetworkButton.clicked += OnTrainNetworkButtonClicked;
         inputNodeAddBtn = ui.Q<Button>("InputNodeAddBtn");
         inputNodeAddBtn.clicked += () => AddNode(_inputLayerPanel);
         inputNodeRemoveBtn = ui.Q<Button>("InputNodeRemoveBtn");
@@ -87,8 +89,6 @@ public class NetworkController : MonoBehaviour
 
         // TODO: REMOVE THIS LINE
         StartCoroutine(DelayedSetup());
-
-
     }
     public void AddHiddenLayer()
     {
@@ -140,16 +140,63 @@ public class NetworkController : MonoBehaviour
     }
     public void RemoveNode(VisualElement layer)
     {
+        Debug.Log($"removeing node from {layer.name}");
         var nodeWrapper = layer.Q<VisualElement>("NodeWrapper");
         if (nodeWrapper.childCount <= 0) return;
         nodeWrapper.RemoveAt(nodeWrapper.childCount - 1);
+        if (layer.name == "InputLayerPanel")
+        {
+            Debug.Log("removing input node");
+            neuralNetwork.RemoveInputLayerNode();
+        }
+        else if (layer.name == "OutputLayerPanel")
+        {
+            neuralNetwork.RemoveOutputLayerNode();
+        }
+        else
+        {
+            neuralNetwork.RemoveHiddenLayerNode(_hiddenLayerPanel.IndexOf(layer));
+        }
         RedrawConnections();
+    }
+    public void FirstNetworkTest()
+    {
+        if (neuralNetwork.IsNetworkValid())
+        {
+            StageOneController.Instance.TutorialController().ShowNextButton();
+            StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleSolved());
+            StageOneController.Instance.TutorialController().StartTutorial();
+        }
+        else
+        {
+            Debug.Log("Network is not valid. Please add nodes to the network.");
+            StageOneController.Instance.TutorialController().HideNextButton();
+            StageOneController.Instance.TutorialController().SetDisplayTime(8f);
+            StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleNotSolved());
+            StageOneController.Instance.TutorialController().StartTutorial();
+            StateManager.Instance.MarkMiniGameSolved(1);
+        }
+    }
+    public void OnTestNetworkButtonClicked()
+    {
+
+    }
+    public void OnTrainNetworkButtonClicked()
+    {
+        if (neuralNetwork.IsNetworkValid())
+        {
+            neuralNetwork.TrainNetwork(_inputTrainingCycle.value, _inputLearningRate.value);
+        }
+        else
+        {
+            Debug.Log("Network is not valid. Please add nodes to the network.");
+        }
+
     }
     public void TrainButtonClicked()
     {
         Debug.Log(_inputTrainingCycle.value);
         Debug.Log(_inputLearningRate.value);
-        neuralNetwork.TrainNetwork(_inputTrainingCycle.value, _inputLearningRate.value);
     }
     public void RedrawConnections()
     {
@@ -269,6 +316,6 @@ public class NetworkController : MonoBehaviour
     void MakeLabelClickable(Label label, string helpKey)
     {
         Debug.Log($"MakeLabelClickable: {label.name}");
-        label.RegisterCallback<ClickEvent>(_ => HelpController.Instance.ShowHelp(helpKey));
+        label.RegisterCallback<ClickEvent>(_ => StageOneController.Instance.HelpController().ShowHelp(helpKey));
     }
 }

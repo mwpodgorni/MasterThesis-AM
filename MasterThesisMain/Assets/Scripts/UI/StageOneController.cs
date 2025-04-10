@@ -22,7 +22,7 @@ public class StageOneController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        // Instance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
     private void OnEnable()
@@ -44,6 +44,7 @@ public class StageOneController : MonoBehaviour
         workshopCloseButton.clicked += OnWorkshopCloseButtonClicked;
 
 
+
         StartCoroutine(StartTutorial());
         // TODO: remove this debug code
         //     HideAllPanels();
@@ -56,7 +57,7 @@ public class StageOneController : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         tutorialPanel.RemoveFromClassList("opacity-none");
-        gameObject.GetComponent<TutorialController>().StartTutorial();
+        TutorialController().StartTutorial();
     }
     public void OnWorkshopOpenButtonClicked()
     {
@@ -68,4 +69,23 @@ public class StageOneController : MonoBehaviour
         workshopPanel.AddToClassList("panel-up");
         workshopOpenButton.RemoveFromClassList("opacity-none");
     }
+    public NetworkController NetworkController()
+    {
+        return GetComponent<NetworkController>();
+    }
+    public HelpController HelpController()
+    {
+        return GetComponent<HelpController>();
+    }
+    public TutorialController TutorialController()
+    {
+        // Debug.Log("TutorialController called");
+        if (GetComponent<TutorialController>() == null)
+        {
+            Debug.LogError("TutorialController is null");
+            return null;
+        }
+        return GetComponent<TutorialController>();
+    }
+
 }

@@ -12,7 +12,7 @@ public class TutorialController : MonoBehaviour
     public Button nextButton;
     public Label tutorialTitle;
     public Label tutorialContent;
-    private List<TutorialStep> tutorialSteps;
+    private List<TutorialStep> messages;
     private int currentStep = 0;
     private float typingSpeed = 0.03f;
     private float interpunctuationDelay = 0.4f;
@@ -21,12 +21,14 @@ public class TutorialController : MonoBehaviour
     private WaitForSeconds simpleDelay;
     private WaitForSeconds punctuationDelay;
     private WaitForSeconds skipDelay;
+    private float displayTime = 0f;
 
     [SerializeField]
     private UnityEvent tutorialCompletedEvent;
 
     private void Awake()
     {
+        Debug.Log("TutorialController Awake called");
         ui = GetComponent<UIDocument>().rootVisualElement;
         nextButton = ui.Q<Button>("NextButton");
         tutorialTitle = ui.Q<Label>("TutorialTitle");
@@ -49,20 +51,30 @@ public class TutorialController : MonoBehaviour
 
     public void StartTutorial()
     {
+        ui.Q<VisualElement>("TutorialPanel").style.display = DisplayStyle.Flex;
+        ui.Q<VisualElement>("TutorialPanel").RemoveFromClassList("opacity-none");
         currentStep = 0;
         StartTypingTutorialStep();
+        if (displayTime != 0f)
+        {
+            StartCoroutine(HideTutorialPanel(displayTime));
+        }
     }
 
     void Start()
     {
-        tutorialSteps = DataReader.Instance.GetTutorialSteps();
+        messages = DataReader.Instance.GetIntroductionSteps();
         StartTypingTutorialStep();
     }
-
+    public void SetTutorialSteps(List<TutorialStep> steps)
+    {
+        messages = steps;
+        currentStep = 0;
+    }
     private void OnNextButtonClicked()
     {
         currentStep++;
-        if (currentStep < tutorialSteps.Count)
+        if (currentStep < messages.Count)
         {
             StartTypingTutorialStep();
         }
@@ -71,17 +83,27 @@ public class TutorialController : MonoBehaviour
             tutorialCompletedEvent?.Invoke();
             Debug.Log("Tutorial Complete");
             ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
+            StartCoroutine(HideTutorialPanel());
         }
     }
-
-    private void StartTypingTutorialStep()
+    private IEnumerator HideTutorialPanel(float delay = 0f)
     {
-        if (currentStep < tutorialSteps.Count)
+        // Debug.Log("Hiding tutorial panel after delay: " + delay);
+        yield return new WaitForSeconds(delay);
+        ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
+        displayTime = 0f;
+        yield return new WaitForSeconds(1f);
+        // Debug.Log("Hiding tutorial panel");
+        ui.Q<VisualElement>("TutorialPanel").style.display = DisplayStyle.None;
+    }
+    public void StartTypingTutorialStep()
+    {
+        if (currentStep < messages.Count)
         {
             StopAllCoroutines();
             tutorialTitle.text = "";
             tutorialContent.text = "";
-            StartCoroutine(ShowTitle(tutorialSteps[currentStep].Title));
+            StartCoroutine(ShowTitle(messages[currentStep].Title));
         }
     }
 
@@ -89,7 +111,7 @@ public class TutorialController : MonoBehaviour
     {
         yield return StartCoroutine(ShowText(tutorialTitle, title));
 
-        StartCoroutine(ShowText(tutorialContent, string.Join("\n", tutorialSteps[currentStep].Content)));
+        StartCoroutine(ShowText(tutorialContent, string.Join("\n", messages[currentStep].Content)));
     }
 
     private IEnumerator ShowText(Label label, string text)
@@ -123,5 +145,17 @@ public class TutorialController : MonoBehaviour
         || c == '!'
          || c == ';'
          || c == ':';
+    }
+    public void HideNextButton()
+    {
+        nextButton.style.display = DisplayStyle.None;
+    }
+    public void ShowNextButton()
+    {
+        nextButton.style.display = DisplayStyle.Flex;
+    }
+    public void SetDisplayTime(float time)
+    {
+        displayTime = time;
     }
 }

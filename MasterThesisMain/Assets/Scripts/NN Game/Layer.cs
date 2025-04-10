@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Diagnostics;
+using System;
 public class Layer
 {
 
@@ -29,7 +30,8 @@ public class Layer
 
     public void RemoveNode()
     {
-        if (nodes.Count <= 1) return;
+        Console.WriteLine("This is a log message.");
+        if (nodes.Count <= 0) return;
 
         GP.ChannelInstance.Invoke(0);
 

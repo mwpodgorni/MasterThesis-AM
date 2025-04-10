@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 
 public class HelpController : MonoBehaviour
 {
-    public static HelpController Instance { get; private set; }
     public VisualElement ui;
     public VisualElement helpPanel;
 
@@ -15,13 +14,6 @@ public class HelpController : MonoBehaviour
     public Button closeButton;
     public void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
         ui = GetComponent<UIDocument>().rootVisualElement;
         helpPanel = ui.Q<VisualElement>("HelpPanel");
         helpTitle = ui.Q<Label>("HelpTitle");
