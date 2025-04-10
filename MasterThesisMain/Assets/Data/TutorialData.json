@@ -1,0 +1,65 @@
+{
+  "introduction": [
+    {
+      "title": "Welcome to our robot factory!",
+      "content": [
+        "As a supervisor, your task will be assemble and train robots to perform various tasks.",
+        "But before you can start, you need to go through mandatory training that will teach you how these robots work."
+      ]
+    },
+    {
+      "title": "How do robots learn?",
+      "content": [
+        "The robots in this facility learn using machine learning techniques, primarily neural networks and reinforcement learning.",
+        "To understand how they learn, let's first look at neural networks-one of the core systems powering their decision-making."
+      ]
+    },
+    {
+      "title": "What is a neural network?",
+      "content": [
+        "A neural network is made of layers of connected nodes that transform input data, adjust internal parameters, and improve with training.",
+        "This allows the robot to recognize patterns, make decisions, and enhance its performance over time."
+      ]
+    },
+    {
+      "title": "Your first task",
+      "content": [
+        "Before you start to create fully functional robots, you need to prove that you know how to create and use neural networks.",
+        "Your first task is to set up a basic neural network and explore its architecture to understand how it processes and learns from data."
+      ]
+    },
+    {
+      "title": "Instructions",
+      "content": [
+        "You can build your neural network in the workshop.",
+        "Start by adding nodes to the input and output layers, and include at least one hidden layer with a few nodes.",
+        "If you're unsure about any feature, click on the info icon to view an explanation of its purpose."
+      ]
+    }
+  ],
+  "firstPuzzleNotSolved": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The basic neural network has not been set up yet. Return to the workshop and complete the network setup by adding input, hidden, and output layers."
+      ]
+    }
+  ],
+  "firstPuzzleSolved": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You set up your first network and learned about network architecture.",
+        "Now, you'll will build a network that will power our sorting robot, so that it can classify robot parts into different categories."
+      ]
+    },
+    {
+      "title": "Your second task",
+      "content": [
+        "Each incoming part has three properties: weight, energy consumption, and material type.",
+        "Your neural network must analyze these properties and correctly determine whether a part belongs to a Worker, Defender, Explorer, or another category.",
+        "Adjust the network's hidden layers and neurons to achieve the highest classification accuracy."
+      ]
+    }
+  ]
+}

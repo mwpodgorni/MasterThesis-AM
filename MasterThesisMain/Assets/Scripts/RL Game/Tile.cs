@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Alexwsu.EventChannels;
 
 public class Tile : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Tile : MonoBehaviour
 
     Dictionary<Action, Tile> adjecentTiles = new Dictionary<Action, Tile>();
     TileType _currentType;
+
+    [SerializeField] BoolEventChannel _channel;
 
     public void Start()
     {
@@ -36,6 +39,21 @@ public class Tile : MonoBehaviour
     {
         model.SetActive(false);
         _currentType = TileType.Normal;
+
+        if (_channel != null)
+        {
+            InvokeTrue();
+        }
+    }
+
+    public void InvokeTrue()
+    {
+        _channel.Invoke(true);
+    }
+
+    public void InvokeFalse()
+    {
+        _channel.Invoke(false);
     }
 
     void SetAdjecentTiles()
@@ -48,11 +66,11 @@ public class Tile : MonoBehaviour
             if (left.collider.gameObject.TryGetComponent<Tile>(out Tile tile))
                 adjecentTiles[Action.Left] = tile;
 
-        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit up, 4))
+        if (Physics.Raycast(transform.position, Vector3.back, out RaycastHit up, 4))
             if (up.collider.gameObject.TryGetComponent<Tile>(out Tile tile))
                 adjecentTiles[Action.Up] = tile;
 
-        if (Physics.Raycast(transform.position, Vector3.back, out RaycastHit down, 4))
+        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit down, 4))
             if (down.collider.gameObject.TryGetComponent<Tile>(out Tile tile))
                 adjecentTiles[Action.Down] = tile;
     }
@@ -75,6 +93,11 @@ public class Tile : MonoBehaviour
         _currentType = _type;
         if (model != null) model.SetActive(true);
     }
+
+    public void SetCurrentType(TileType type)
+    {
+        _currentType = type;
+    }
 }
 
 public enum TileType
@@ -83,5 +106,8 @@ public enum TileType
     Wall = 1,
     Dangerous = 2,
     Collectible = 3,
-    Goal = 4
+    Goal = 4,
+    Enemy = 5,
+    EnemyVulnerable = 6,
+    Buff = 7,
 }

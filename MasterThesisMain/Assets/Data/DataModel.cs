@@ -19,4 +19,9 @@ namespace TutorialData.Model
         [JsonProperty("content")]
         public List<string> Content { get; set; }
     }
+    public class HelpText
+    {
+        public string title { get; set; }
+        public List<string> description { get; set; }
+    }
 }

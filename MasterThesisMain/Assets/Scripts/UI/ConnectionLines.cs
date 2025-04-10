@@ -11,7 +11,7 @@ public class ConnectionLines : VisualElement
         generateVisualContent += ctx =>
         {
             var painter = ctx.painter2D;
-            painter.strokeColor = Color.yellow;
+            painter.strokeColor = new Color32(189, 189, 112, 255);
             painter.lineWidth = 2;
 
             foreach (var (start, end) in connections)
@@ -22,15 +22,18 @@ public class ConnectionLines : VisualElement
     }
     private void DrawCurvedLine(Painter2D painter, Vector2 start, Vector2 end)
     {
-        // Control point for the curve, adjust the Y offset for more/less curvature
-        Vector2 controlPoint = (start + end) / 2 + new Vector2(0, 50);
+        Vector2 mid = (start + end) / 2;
+        Vector2 dir = (end - start).normalized;
+        Vector2 normal = new Vector2(-dir.y, dir.x);
 
-        // Use a simple quadratic Bezier curve, which requires drawing several points
-        int segments = 20;  // Number of segments for the curve approximation
+        Vector2 controlPoint1 = mid + normal * 50f;
+        Vector2 controlPoint2 = mid - normal * 50f;
+
+        int segments = 20;
         for (int i = 0; i <= segments; i++)
         {
-            float t = i / (float)segments;  // Parametric value from 0 to 1
-            Vector2 point = CalculateBezierPoint(t, start, controlPoint, end);
+            float t = i / (float)segments;
+            Vector2 point = CalculateCubicBezierPoint(t, start, controlPoint1, controlPoint2, end);
 
             if (i == 0)
                 painter.BeginPath();
@@ -42,21 +45,21 @@ public class ConnectionLines : VisualElement
         }
     }
 
-    // Calculate a point on the quadratic Bezier curve at t using the formula:
-    // P(t) = (1 - t)^2 * start + 2 * (1 - t) * t * controlPoint + t^2 * end
-    private Vector2 CalculateBezierPoint(float t, Vector2 start, Vector2 controlPoint, Vector2 end)
+    private Vector2 CalculateCubicBezierPoint(float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3)
     {
         float u = 1 - t;
         float tt = t * t;
         float uu = u * u;
+        float uuu = uu * u;
+        float ttt = tt * t;
 
-        Vector2 p = uu * start;
-        p += 2 * u * t * controlPoint;
-        p += tt * end;
+        Vector2 p = uuu * p0;
+        p += 3 * uu * t * p1;
+        p += 3 * u * tt * p2;
+        p += ttt * p3;
 
         return p;
     }
-
     public void ClearLines()
     {
         connections.Clear();

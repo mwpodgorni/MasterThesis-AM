@@ -7,9 +7,13 @@ using TutorialData.Model;
 public class DataReader : MonoBehaviour
 {
     [SerializeField] private TextAsset jsonFile;
+    [SerializeField] private TextAsset helpTextJson;
+
     public static DataReader Instance { get; private set; }
 
-    private List<TutorialStep> tutorialSteps;
+    private Dictionary<string, HelpText> helpTexts;
+
+    private Dictionary<string, List<TutorialStep>> tutorialData;
 
     private void Awake()
     {
@@ -25,12 +29,31 @@ public class DataReader : MonoBehaviour
 
     private void Init()
     {
-        tutorialSteps = JsonConvert.DeserializeObject<List<TutorialStep>>(jsonFile.text);
-        Debug.Log("Tutorial Steps: " + tutorialSteps);
-        Debug.Log("Tutorial Steps: " + tutorialSteps[0].Title);
+        tutorialData = JsonConvert.DeserializeObject<Dictionary<string, List<TutorialStep>>>(jsonFile.text);
+        helpTexts = JsonConvert.DeserializeObject<Dictionary<string, HelpText>>(helpTextJson.text);
+        // Debug.Log("Tutorial Steps: " + tutorialSteps);
+        // Debug.Log("Tutorial Steps: " + tutorialSteps[0].Title);
     }
-    public List<TutorialStep> GetTutorialSteps()
+    public List<TutorialStep> GetIntroductionSteps()
     {
-        return tutorialSteps;
+        return tutorialData.TryGetValue("introduction", out var steps) ? steps : new List<TutorialStep>();
+    }
+    public Dictionary<string, HelpText> GetHelpTexts()
+    {
+        return helpTexts;
+    }
+
+    public HelpText GetHelpText(string key)
+    {
+        return helpTexts != null && helpTexts.TryGetValue(key, out HelpText value) ? value : null;
+    }
+    public List<TutorialStep> FirstPuzzleNotSolved()
+    {
+        return tutorialData.TryGetValue("firstPuzzleNotSolved", out var steps) ? steps : new List<TutorialStep>();
+    }
+
+    public List<TutorialStep> FirstPuzzleSolved()
+    {
+        return tutorialData.TryGetValue("firstPuzzleSolved", out var steps) ? steps : new List<TutorialStep>();
     }
 }

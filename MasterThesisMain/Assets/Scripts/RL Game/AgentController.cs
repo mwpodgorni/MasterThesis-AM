@@ -1,4 +1,4 @@
-using DG.Tweening;
+// using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class AgentController : MonoBehaviour
 {
     [Header("Properties")]
+    public bool isEnemy = false;
     public Tile currentTile;
     public Tile startingTile;
 
@@ -32,6 +33,8 @@ public class AgentController : MonoBehaviour
             Debug.LogWarning("Error: Player Agent does not have a NavMesh Agent Component");
         }
 
+        _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+
         if (!gameObject.TryGetComponent<LineRenderer>(out _line))
         {
             Debug.LogWarning("Error: Player Agent does not have a Line Renderer Component");
@@ -48,7 +51,7 @@ public class AgentController : MonoBehaviour
             _line.SetPosition(0, startingTile.point.position);
         }
 
-        _model.DOMoveY(1f, 0.75f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+        // _model.DOMoveY(1f, 0.75f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
     }
 
     // Update is called once per frame
@@ -100,13 +103,13 @@ public class AgentController : MonoBehaviour
             _line.positionCount = _tileIndex + 1;
             _line.SetPosition(_tileIndex, tile.point.position);
 
-            if (tile.GetTileType() == TileType.Collectible)
+            if (!isEnemy && (tile.GetTileType() == TileType.Collectible || tile.GetTileType() == TileType.Buff) )
             {
                 tile.Use();
             }
 
         }
-        
+
     }
 
     public Tile GetTile(Action action)
@@ -127,7 +130,10 @@ public class AgentController : MonoBehaviour
     }
 
     public bool IsMoving() { return _moving; }
-    public bool IsDead() { return _dead; }
+    public bool IsDead { 
+        get { return _dead; }
+        set { _dead = value; }
+    }
 
     void DoAction()
     {
@@ -163,10 +169,9 @@ public class AgentController : MonoBehaviour
         return possibleActions;
     }
 
-    public void DoubleTime(bool enable)
+    public void HideModel(bool value)
     {
-        if (enable) Time.timeScale = 3f;
-        else Time.timeScale = 1f;
+        _model.gameObject.SetActive(!value);
     }
 
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using UnityEngine;
 
-
 public class Node
 {
     public List<Weight> weightsIn = new List<Weight>();

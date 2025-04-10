@@ -4,74 +4,49 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class QAgent : MonoBehaviour
+public class QAgent : RLAgent
 {
     Dictionary<State, Dictionary<Action, float>> _qTable;
-    Action[] actions = { Action.Up, Action.Down, Action.Left, Action.Right };
-
-    [Header("Hyper Parameters")]
-    [SerializeField] float learningRate = 0.1f;   // Alpha (α)
-    [SerializeField] float discountFactor = 0.9f; // Gamma (γ);
-    [SerializeField] float decayRate = 0.01f;
-
-    [SerializeField] float epsilon = 1f;
-    [SerializeField] float epsilonMin = 0.01f;
-
-    [SerializeField] int maxSteps = 20;
-
-    [Header("Properties")]
-    [SerializeField] AgentController _player;
-    [SerializeField] Tile _goalTile;
-    [SerializeField] Tile[] _tilesToReset;
-
-    Dictionary<TileType, float> rewards = new Dictionary<TileType, float>();
-
-    [Header("Stats")]
-    public float avgRewardPerEpoch = 0;
-    public float totalReward = 0;
-
-    [SerializeField] int totalStepCount = 0;
-    [SerializeField] int currentEpisodeSteps = 0;
-    [SerializeField] int episodeCount = 1;
-
-    bool _calculatingMove = false;
-    float _waitTime = 1f;
-    float _timer = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
         _qTable = new();
 
-        rewards[TileType.Normal] = 0;
-        rewards[TileType.Dangerous] = -1;
-        rewards[TileType.Wall] = -1;
-        rewards[TileType.Collectible] = 0.5f;
-        rewards[TileType.Goal] = 1f;
+        _rewards[TileType.Normal] = 0;
+        _rewards[TileType.Wall] = -1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!_calculatingMove && !_player.IsMoving())
+        if (!_activated) return;
+
+        if (_controller.IsDead || _finishedEpoch)
         {
-            var state = GetState(_player.currentTile);
+            _finishedEpoch = true;
+            return;
+        }
+
+        if (!_calculatingMove && !_controller.IsMoving())
+        {
+            var state = GetState(_controller.currentTile);
 
             var action = GetAction(state);
 
-            var nextTile = _player.currentTile.GetAdjecentTile(action);
+            var nextTile = _controller.currentTile.GetAdjecentTile(action);
             var nextState = GetState(nextTile);
 
             var reward = GetReward(nextTile);
             totalReward += reward;
+            currentEpochReward += reward;
 
             UpdateQTable(state, nextState, action, reward);
 
-            _player.MoveToSelectedAction(action);
+            _controller.MoveToSelectedAction(action);
 
-            currentEpisodeSteps++;
             totalStepCount++;
-            epsilon = epsilonMin + (1.0f - epsilonMin) * Mathf.Exp(-decayRate * totalStepCount);
+            _epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-_decayRate * totalStepCount);
         }
 
         if (_calculatingMove && _timer < _waitTime)
@@ -84,31 +59,28 @@ public class QAgent : MonoBehaviour
             _timer = 0f;
         }
 
-        if (_player.IsDead() || currentEpisodeSteps % maxSteps == 0)
+        if (totalStepCount % maxSteps == 0)
         {
-            ResetLevel();
-            episodeCount++;
-            currentEpisodeSteps = 0;
-            avgRewardPerEpoch = totalReward / episodeCount;
+            _finishedEpoch = true;
         }
     }
 
-    Action GetAction(State state)
+    override public Action GetAction(State state)
     {
-        var possibleActions = _player.GetPossibleActions();
+        var possibleActions = _controller.GetPossibleActions();
 
         // Choose action using ε-greedy strategy
         Random.InitState(DateTime.Now.Millisecond);
 
         Action chosenAction = possibleActions[Random.Range(0, possibleActions.Count)];
-        if (Random.value < epsilon || !_qTable.ContainsKey(state)) // Explore
+        if (Random.value < _epsilon || !_qTable.ContainsKey(state)) // Explore
         {
             return chosenAction;
         }
 
         var actionValues = _qTable[state];
         var qValue = 0f;
-        foreach (var act in actions)
+        foreach (var act in _actions)
         {
             float currentQValue;
 
@@ -145,68 +117,15 @@ public class QAgent : MonoBehaviour
         }
 
         // Q-learning formula
-        float newQ = oldQ + learningRate * (reward + discountFactor * maxFutureQ - oldQ);
+        float newQ = oldQ + _learningRate * (reward + _discountFactor * maxFutureQ - oldQ);
 
         // Update Q-table
         _qTable[prevState][action] = newQ;
     }
 
-    State GetState(Tile tile)
+    public override void ResetModel()
     {
-        float[] obs = new float[4];
-
-        for (int i = 0; i < actions.Length; i++)
-        {
-            var adjecentTile = tile.GetAdjecentTile(actions[i]);
-
-            if (adjecentTile != null) obs[i] = adjecentTile.GetTileTypeToInt();
-            else obs[i] = -2f;
-        }
-
-        var state = new State();
-        state.obs = obs;
-
-        return state;
+        _qTable.Clear();
     }
 
-    float GetReward(Tile tile)
-    {
-        return rewards[tile.GetTileType()];
-    }
-
-    void SetReward(TileType type, float value)
-    {
-        rewards[type] = value;
-    }
-
-
-    void ResetLevel()
-    {
-        _player.ResetAgent();
-
-        foreach (var tile in _tilesToReset)
-        {
-            tile.ResetTile();
-        }
-    }
-
-    public struct State
-    {
-        public float[] obs;
-
-        public override bool Equals(object obj)
-        {
-            if (obj is State other)
-            {
-                return obs.SequenceEqual(other.obs);  // Compare arrays by their content
-            }
-            return false;
-        }
-
-        // Override GetHashCode to generate a hash based on the array's contents
-        public override int GetHashCode()
-        {
-            return obs.Aggregate(17, (current, element) => current * 31 + element.GetHashCode());
-        }
-    }
 }
