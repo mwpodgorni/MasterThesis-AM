@@ -3,6 +3,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using System;
 using Newtonsoft.Json;
+using System.Linq;
 public class NeuralNetwork
 {
     // tracked variables
@@ -154,6 +155,7 @@ public class NeuralNetwork
     {
         this.learningRate = learningRate;
 
+        // Load dataset
         var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
         if (trainingSet.data == null || trainingSet.data.Length == 0)
         {
@@ -161,6 +163,7 @@ public class NeuralNetwork
             return;
         }
 
+        // Reset tracking
         correctPredictions = 0;
         errorLessThan005 = 0;
         error005to01 = 0;
@@ -170,87 +173,86 @@ public class NeuralNetwork
         float totalLoss = 0f;
         avgLoss = 0f;
 
+        // Main training loop
         for (int i = 0; i < epoch; i++)
         {
+            // Randomly pick one sample
             var set = trainingSet.data[Random.Range(0, trainingSet.data.Length)];
-
             var inputs = set.input;
             var expectedOutput = set.expected;
 
-            // Perform forward pass
+            // Forward pass
             var actualOutput = ForwardPass(inputs);
 
-            // Ensure output and expected match in length
+            // Ensure output size matches target size
             if (expectedOutput.Length != actualOutput.Length)
             {
-                Debug.LogError($"Length mismatch: expectedOutput.Length = {expectedOutput.Length}, actualOutput.Length = {actualOutput.Length}");
+                Debug.LogError($"Length mismatch: expected {expectedOutput.Length}, got {actualOutput.Length}");
                 return;
             }
 
-            // Calculate loss and error
-            Debug.Log($"actual output: {actualOutput[0]}, {actualOutput[1]}, {actualOutput[2]}");
-            Debug.Log($"expected output: " + expectedOutput[0] + ", " + expectedOutput[1] + ", " + expectedOutput[2]);
+            // Calculate MSE loss
             float loss = CalculateLoss(actualOutput, expectedOutput);
-            float error = 0f;
+            totalLoss += loss;
+            lossPerStep.Add(loss);
+
+            // --- Absolute error just for logging ---
+            float totalError = 0f;
             for (int k = 0; k < expectedOutput.Length; k++)
             {
-                error += Mathf.Abs(expectedOutput[k] - actualOutput[k]);
+                totalError += Mathf.Abs(expectedOutput[k] - actualOutput[k]);
             }
-            error /= expectedOutput.Length;
-            Debug.Log($"error: {error}");
-            lossPerStep.Add(loss);
-            avgLoss += loss;
+            float avgError = totalError / expectedOutput.Length;
 
-            // Track predictions
-            if (error < 0.05f)
-            {
-                errorLessThan005++;
-                correctPredictions++;
-            }
-            else if (error < 0.1f)
-            {
-                error005to01++;
-            }
-            else
-            {
-                errorGreaterThan01++;
-            }
+            // Use these thresholds if you still want that UI info
+            if (avgError < 0.05f) { errorLessThan005++; }
+            else if (avgError < 0.1f) { error005to01++; }
+            else { errorGreaterThan01++; }
+            // --------------------------------------
 
-            // Perform backpropagation
+            // Backpropagate
             BackPropagate(actualOutput, expectedOutput);
 
-            totalLoss += loss;
+            // Argmax for classification accuracy
+            int predictedClass = System.Array.IndexOf(actualOutput, actualOutput.Max());
+            int targetClass = System.Array.IndexOf(expectedOutput, expectedOutput.Max());
+            if (predictedClass == targetClass)
+            {
+                correctPredictions++;
+            }
 
-            // Periodic evaluation update
+            // Periodically call evaluation callback if desired
             if ((i + 1) % 10 == 0)
             {
-                OnEvaluationUpdate?.Invoke(
-                    new EvaluationData
-                    {
-                        finishedCycles = finishedCycles + i + 1,
-                        learningRate = learningRate,
-                        finalAverageLoss = avgLoss / (i + 1),
-                        correctPredictions = correctPredictions,
-                        errorLow = errorLessThan005,
-                        errorMid = error005to01,
-                        errorHigh = errorGreaterThan01,
-                        lossData = new List<float>(lossPerStep)
-                    }
-                );
+                OnEvaluationUpdate?.Invoke(new EvaluationData
+                {
+                    finishedCycles = finishedCycles + i + 1,
+                    learningRate = learningRate,
+                    finalAverageLoss = (totalLoss / (i + 1)),
+                    correctPredictions = correctPredictions,
+                    errorLow = errorLessThan005,
+                    errorMid = error005to01,
+                    errorHigh = errorGreaterThan01,
+                    lossData = new List<float>(lossPerStep)
+                });
             }
         }
 
-        finalAverageLoss = avgLoss / epoch;
+        // Wrap up
+        finalAverageLoss = totalLoss / epoch;
         loss = finalAverageLoss;
         finishedCycles += epoch;
         avgLoss = 0f;
 
+        // Log final metrics
         Debug.Log($"Training completed after {epoch} epochs.");
         Debug.Log($"Finished Cycles: {finishedCycles}");
         Debug.Log($"Final Average Loss: {finalAverageLoss}");
-        Debug.Log($"Correct Predictions (<0.05): {correctPredictions}");
-        Debug.Log($"Errors 0.05–0.1: {error005to01}");
-        Debug.Log($"Errors >0.1: {errorGreaterThan01}");
+        Debug.Log($"Correct Predictions (via argmax): {correctPredictions}");
+        Debug.Log($"Errors <0.05: {errorLessThan005}");
+        Debug.Log($"Errors [0.05..0.1): {error005to01}");
+        Debug.Log($"Errors >=0.1: {errorGreaterThan01}");
+        Debug.Log($"Accuracy: {(float)correctPredictions / epoch}");
     }
     public float CalculateLoss(float[] outputs, float[] targets)
     {

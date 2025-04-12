@@ -33,7 +33,7 @@ public class EvaluationController : MonoBehaviour
     }
     public void UpdateEvaluationData(EvaluationData data)
     {
-        Debug.Log($"Updating evaluation data: {data}");
+        // Debug.Log($"Updating evaluation data: {data}");
         finishedCyclesValue.text = data.finishedCycles.ToString();
         learningRateValue.text = data.learningRate.ToString("F4");
         finalAverageLossValue.text = data.finalAverageLoss.ToString("F4");
