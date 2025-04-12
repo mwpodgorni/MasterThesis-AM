@@ -29,7 +29,6 @@ public class Node
 
     public void Activate()
     {
-        value = _activationFunc(CalculateWeightedSum());
         value = _activationFunc != null ? _activationFunc(CalculateWeightedSum()) : CalculateWeightedSum();
     }
 

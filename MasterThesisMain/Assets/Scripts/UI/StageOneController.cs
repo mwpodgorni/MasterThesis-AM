@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,8 +11,11 @@ public class StageOneController : MonoBehaviour
 
     public VisualElement tutorialPanel;
     public VisualElement workshopPanel;
+    public VisualElement evaluationPanel;
     public Button workshopOpenButton;
     public Button workshopCloseButton;
+    public Button evaluationOpenButton;
+    public Button evaluationCloseButton;
     public VisualElement helpPanel;
 
     private void Awake()
@@ -33,8 +37,13 @@ public class StageOneController : MonoBehaviour
         workshopPanel = ui.Q<VisualElement>("WorkshopPanel");
         workshopPanel.style.display = DisplayStyle.Flex;
         workshopPanel.AddToClassList("panel-up");
+
         helpPanel = ui.Q<VisualElement>("HelpPanel");
         helpPanel.style.display = DisplayStyle.Flex;
+
+        evaluationPanel = ui.Q<VisualElement>("EvaluationPanel");
+        evaluationPanel.style.display = DisplayStyle.Flex;
+        evaluationPanel.AddToClassList("panel-up");
 
         tutorialPanel.AddToClassList("opacity-none");
 
@@ -42,8 +51,10 @@ public class StageOneController : MonoBehaviour
         workshopOpenButton.clicked += OnWorkshopOpenButtonClicked;
         workshopCloseButton = ui.Q<Button>("WorkshopCloseButton");
         workshopCloseButton.clicked += OnWorkshopCloseButtonClicked;
-        var chart = ui.Q<LineChart>("LineChart");
-        chart.data = new List<float> { 1, 3, 2, 5, 4, 6, 2, 4 };
+        evaluationOpenButton = ui.Q<Button>("EvaluationOpenButton");
+        evaluationOpenButton.clicked += OnEvaluationOpenButtonClicked;
+        evaluationCloseButton = ui.Q<Button>("EvaluationCloseButton");
+        evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
 
 
         // StartCoroutine(StartTutorial());
@@ -67,8 +78,19 @@ public class StageOneController : MonoBehaviour
     }
     public void OnWorkshopCloseButtonClicked()
     {
+        NetworkController().ClearLines();
         workshopPanel.AddToClassList("panel-up");
         workshopOpenButton.RemoveFromClassList("opacity-none");
+    }
+    public void OnEvaluationOpenButtonClicked()
+    {
+        evaluationPanel.RemoveFromClassList("panel-up");
+        evaluationOpenButton.AddToClassList("opacity-none");
+    }
+    public void OnEvaluationCloseButtonClicked()
+    {
+        evaluationPanel.AddToClassList("panel-up");
+        evaluationOpenButton.RemoveFromClassList("opacity-none");
     }
     public NetworkController NetworkController()
     {
@@ -87,6 +109,10 @@ public class StageOneController : MonoBehaviour
             return null;
         }
         return GetComponent<TutorialController>();
+    }
+    public EvaluationController EvaluationController()
+    {
+        return GetComponent<EvaluationController>();
     }
 
 }

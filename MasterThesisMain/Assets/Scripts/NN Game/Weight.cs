@@ -10,6 +10,7 @@ public class Weight
 
     public Weight(Node fromNode, Node toNode)
     {
+        // Debug.Log("CREATE WEIGHT");
         from = fromNode;
         to = toNode;
 
@@ -19,5 +20,10 @@ public class Weight
     public float GetWeightSum()
     {
         return weight * from.value;
+    }
+    public void UpdateWeight(float learningRate)
+    {
+        // Debug.Log("Updating weight: " + weight);
+        weight -= learningRate * gradient;  // Gradient descent step
     }
 }

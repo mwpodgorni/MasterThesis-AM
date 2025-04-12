@@ -53,7 +53,6 @@ public class NetworkController : MonoBehaviour
         _inputLearningRate = ui.Q<FloatField>("InputLearningRate");
 
         // buttons
-
         testNetworkButton = ui.Q<Button>("TestNetworkButton");
         testNetworkButton.clicked += OnTestNetworkButtonClicked;
         trainNetworkButton = ui.Q<Button>("TrainNetworkButton");
@@ -86,9 +85,14 @@ public class NetworkController : MonoBehaviour
         var miniGamePanel = ui.Q<VisualElement>("WorkshopPanel");
         // miniGamePanel.Add(_connectionLines);
         ui.Add(_connectionLines);
+        neuralNetwork.OnEvaluationUpdate = UpdateEvaluationData;
 
         // TODO: REMOVE THIS LINE
         StartCoroutine(DelayedSetup());
+    }
+    public void UpdateEvaluationData(EvaluationData data)
+    {
+        StageOneController.Instance.EvaluationController().UpdateEvaluationData(data);
     }
     public void AddHiddenLayer()
     {
@@ -219,6 +223,11 @@ public class NetworkController : MonoBehaviour
     {
         Debug.Log(_inputTrainingCycle.value);
         Debug.Log(_inputLearningRate.value);
+    }
+    public void ClearLines()
+    {
+        _connectionLines.ClearLines();
+
     }
     public void RedrawConnections()
     {

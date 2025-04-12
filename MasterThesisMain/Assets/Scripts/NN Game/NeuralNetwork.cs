@@ -25,6 +25,7 @@ public class NeuralNetwork
     float avgLoss = 0.0f;
 
     float learningRate = 0.001f;
+    public Action<EvaluationData> OnEvaluationUpdate;
     public NeuralNetwork()
     {
         inputLayer = new Layer();
@@ -109,9 +110,10 @@ public class NeuralNetwork
             {
                 foreach (Weight w in node.weightsIn)
                 {
+                    // Debug.Log("Updating weight: " + w.weight);
                     w.weight += learningRate * node.gradient * w.from.value;
                 }
-                node.bias += GP.Instance.learningRate * node.gradient;
+                node.bias += learningRate * node.gradient;
             }
         }
 
@@ -174,29 +176,32 @@ public class NeuralNetwork
 
             var inputs = set.input;
             var expectedOutput = set.expected;
+
+            // Perform forward pass
             var actualOutput = ForwardPass(inputs);
 
+            // Ensure output and expected match in length
             if (expectedOutput.Length != actualOutput.Length)
             {
                 Debug.LogError($"Length mismatch: expectedOutput.Length = {expectedOutput.Length}, actualOutput.Length = {actualOutput.Length}");
                 return;
             }
 
-            float loss = 0f;
+            // Calculate loss and error
+            Debug.Log($"actual output: {actualOutput[0]}, {actualOutput[1]}, {actualOutput[2]}");
+            Debug.Log($"expected output: " + expectedOutput[0] + ", " + expectedOutput[1] + ", " + expectedOutput[2]);
+            float loss = CalculateLoss(actualOutput, expectedOutput);
             float error = 0f;
             for (int k = 0; k < expectedOutput.Length; k++)
             {
-                float diff = expectedOutput[k] - actualOutput[k];
-                error += Mathf.Abs(diff);
-                loss += diff * diff;
+                error += Mathf.Abs(expectedOutput[k] - actualOutput[k]);
             }
-
-            loss /= expectedOutput.Length;
             error /= expectedOutput.Length;
-
+            Debug.Log($"error: {error}");
             lossPerStep.Add(loss);
             avgLoss += loss;
 
+            // Track predictions
             if (error < 0.05f)
             {
                 errorLessThan005++;
@@ -211,12 +216,27 @@ public class NeuralNetwork
                 errorGreaterThan01++;
             }
 
+            // Perform backpropagation
             BackPropagate(actualOutput, expectedOutput);
+
             totalLoss += loss;
 
+            // Periodic evaluation update
             if ((i + 1) % 10 == 0)
             {
-                Debug.Log($"Epoch {i + 1}/{epoch} - Loss: {avgLoss / (i + 1)}");
+                OnEvaluationUpdate?.Invoke(
+                    new EvaluationData
+                    {
+                        finishedCycles = finishedCycles + i + 1,
+                        learningRate = learningRate,
+                        finalAverageLoss = avgLoss / (i + 1),
+                        correctPredictions = correctPredictions,
+                        errorLow = errorLessThan005,
+                        errorMid = error005to01,
+                        errorHigh = errorGreaterThan01,
+                        lossData = new List<float>(lossPerStep)
+                    }
+                );
             }
         }
 
@@ -224,12 +244,23 @@ public class NeuralNetwork
         loss = finalAverageLoss;
         finishedCycles += epoch;
         avgLoss = 0f;
+
         Debug.Log($"Training completed after {epoch} epochs.");
         Debug.Log($"Finished Cycles: {finishedCycles}");
         Debug.Log($"Final Average Loss: {finalAverageLoss}");
         Debug.Log($"Correct Predictions (<0.05): {correctPredictions}");
         Debug.Log($"Errors 0.05–0.1: {error005to01}");
         Debug.Log($"Errors >0.1: {errorGreaterThan01}");
+    }
+    public float CalculateLoss(float[] outputs, float[] targets)
+    {
+        float loss = 0f;
+        for (int i = 0; i < outputs.Length; i++)
+        {
+            float error = outputs[i] - targets[i];
+            loss += error * error;
+        }
+        return loss / outputs.Length;
     }
     public void InitializeWeights()
     {
@@ -363,4 +394,15 @@ public class NeuralNetwork
         loss = 0.0f;
         avgLoss = 0.0f;
     }
+}
+public struct EvaluationData
+{
+    public int finishedCycles;
+    public float learningRate;
+    public float finalAverageLoss;
+    public int correctPredictions;
+    public int errorLow;
+    public int errorMid;
+    public int errorHigh;
+    public List<float> lossData;
 }

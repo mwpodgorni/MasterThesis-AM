@@ -116,7 +116,7 @@ public class LineChart : VisualElement
         float min = Mathf.Min(data.ToArray());
         float range = Mathf.Max(Mathf.Max(data.ToArray()) - min, 0.0001f);
 
-        // Y-axis labels
+        // Y-axis labels (outside the chart area to the left)
         int yTicks = 4;
         for (int i = 0; i <= yTicks; i++)
         {
@@ -126,14 +126,14 @@ public class LineChart : VisualElement
 
             var label = new Label(val.ToString("0.0"));
             label.style.position = Position.Absolute;
-            label.style.left = 0;
+            label.style.left = rect.x - 40;
             label.style.top = y - 12;
             label.style.fontSize = 14;
             label.style.color = Color.white;
             labelContainer.Add(label);
         }
 
-        // X-axis labels
+        // X-axis labels (outside the chart area below)
         for (int i = 0; i < data.Count; i += Mathf.Max(1, data.Count / 5))
         {
             float x = rect.x + i * step;
@@ -141,7 +141,7 @@ public class LineChart : VisualElement
             var label = new Label(i.ToString());
             label.style.position = Position.Absolute;
             label.style.left = x - 12;
-            label.style.top = rect.yMax + 4;
+            label.style.top = rect.yMax + 8;
             label.style.fontSize = 14;
             label.style.color = Color.white;
             labelContainer.Add(label);

@@ -63,6 +63,7 @@ public class ConnectionLines : VisualElement
     public void ClearLines()
     {
         connections.Clear();
+        MarkDirtyRepaint();
     }
 
     public void AddConnection(Vector2 start, Vector2 end)
