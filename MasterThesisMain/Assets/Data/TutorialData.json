@@ -86,5 +86,116 @@
         "Once training starts, open the Evaluation panel to monitor progress and observe how the neural network improves over time."
       ]
     }
+  ],
+  "ReinforcementLearning": [
+    {
+      "title": "What is reinforcement learning?",
+      "content": [
+        "Reinforcement learning is a type of machine learning where an agent learns to make decisions by interacting with its environment.",
+        "The agent receives feedback in the form of rewards or penalties based on its actions, which helps it learn and improve over time."
+      ]
+    },
+    {
+      "title": "How does it work?",
+      "content": [
+        "In reinforcement learning, the agent explores its environment and takes actions to achieve specific goals.",
+        "When the agent performs well, it receives positive rewards, reinforcing that behavior. If it makes mistakes, it gets negative rewards, prompting it to adjust its strategy.",
+        "Over time, the agent learns to maximize its rewards by finding the best actions to take in different situations."
+      ]
+    },
+    {
+      "title": "Your third task",
+      "content": [
+        "Now that you understand how neural networks and reinforcement learning work, it's time to train your robot.",
+        "You will need to set up a reward values that will help the robot learn from its experiences."
+      ]
+    },
+    {
+      "title": "Instructions",
+      "content": [
+        "In this tile-based game, you can set up the reward values for each special tile.",
+        "The robot will receive a reward based on the value you set for the tile it steps on.",
+        "You can also set the reward value for to zero, which means the robot won't receive any feedback when stepping on it."
+      ]
+    }
+  ],
+  "RLPuzzle1": [
+    {
+      "title": "Level 1",
+      "content": [
+        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to navigate the environment and reach the goal.",
+        "How well your setup performs will be evaluated based on the robot's ability to reach the goal efficiently."
+      ]
+    }
+  ],
+  "RLPuzzle2": [
+    {
+      "title": "Level 2",
+      "content": [
+        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to defeat its enemies by taking a buff and then attacking them.",
+        "How well your setup performs will be evaluated based on the robot's ability defeat both enemies."
+      ]
+    }
+  ],
+  "RLPuzzle3": [
+    {
+      "title": "Level 3",
+      "content": [
+        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to grab collectibles and reach the goal.",
+        "There will be enemies in the level that the robot should try and avoid.",
+        "How well your setup performs will be evaluated based on the robot's ability navigate efficiently."
+      ]
+    }
+  ],
+  "RLPuzzle1Solved": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up the reward values for the tiles, allowing the robot to learn to navigate the environment and reach the goal."
+      ]
+    }
+  ],
+  "RLPuzzle1NotSolved": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The reward values were not optimized for the robot to learn to navigate the environment and reach the goal.",
+        "Return to the workshop and give it another try."
+      ]
+    }
+  ],
+  "RLPuzzle2Solved": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up the reward values for the tiles, allowing the robot to learn to defeat its enemies by taking a buff and then attacking them."
+      ]
+    }
+  ],
+  "RLPuzzle2NotSolved": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The reward values were not optimized for the robot to learn to defeat its enemies by taking a buff and then attacking them.",
+        "Return to the workshop and give it another try."
+      ]
+    }
+  ],
+  "RLPuzzle3Solved": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up the reward values for the tiles, allowing the robot to learn to grab collectibles and reach the goal."
+      ]
+    }
+  ],
+  "RLPuzzle3NotSolved": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The reward values were not optimized for the robot to learn to grab collectibles and reach the goal.",
+        "Return to the workshop and give it another try."
+      ]
+    }
   ]
 }
