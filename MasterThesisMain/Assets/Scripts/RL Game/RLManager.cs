@@ -9,7 +9,7 @@ public class RLManager : MonoBehaviour
     [SerializeField] RLAgent _player;
     [SerializeField] List<EnemyAgent> _enemies;
     [SerializeField] List<Tile> _tilesToReset;
-    [SerializeField] List<TileType> _observableTiles;
+    [SerializeField] List<TileType> _observedTiles;
 
     [Header("Level Settings")]
     [SerializeField] GameSpeed _speed = GameSpeed.Normal;
@@ -156,39 +156,9 @@ public class RLManager : MonoBehaviour
         }
     }
 
-    public void SetNormalTileReward(float value)
+    public List<TileType> GetObservedTiles()
     {
-        SetReward(TileType.Normal, value);
-    }
-
-    public void SetGoalTileReward(float value)
-    {
-        SetReward(TileType.Goal, value);
-    }
-
-    public void SetCollectibleTileReward(float value)
-    {
-        SetReward(TileType.Collectible, value);
-    }
-
-    public void SetDangerousTileReward(float value)
-    {
-        SetReward(TileType.Dangerous, value);
-    }
-
-    public void SetEnemyTileReward(float value)
-    {
-        SetReward(TileType.Enemy, value);
-    }
-
-    public void SetEnemyVulnerableTileReward(float value)
-    {
-        SetReward(TileType.EnemyVulnerable, value);
-    }
-
-    public void SetBuffTileReward(float value)
-    {
-        SetReward(TileType.Buff, value);
+        return _observedTiles;
     }
 
     public enum GameSpeed

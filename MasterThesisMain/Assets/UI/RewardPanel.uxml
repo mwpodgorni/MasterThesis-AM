@@ -1,0 +1,12 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles.uss?fileID=7433441132597879392&amp;guid=251821e7bfa74fc488ed360ccd38cff4&amp;type=3#Styles" />
+    <engine:VisualElement name="RewardPanel" style="flex-grow: 1; width: 500px; right: 0; position: absolute; top: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.39);">
+        <engine:Label text="\uF05A" name="HelpInputLayer" selectable="false" class="text-yellow cursor-pointer" style="-unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;); flex-shrink: 0; position: absolute; top: 10px; right: auto; left: -50px;" />
+        <engine:Label text="Reward Adjustment" class="text-yellow" />
+        <engine:VisualElement name="RewardContainer" style="flex-grow: 1;" />
+        <engine:VisualElement style="flex-grow: 0; height: 150px; flex-direction: row; align-items: center; justify-content: center;">
+            <engine:Button text="Start" name="Start" />
+        </engine:VisualElement>
+        <engine:Label text="\uf04e" name="SpeedUp" selectable="false" class="text-yellow cursor-pointer" style="-unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;); flex-shrink: 0; position: absolute; top: auto; right: auto; left: 20px; bottom: 20px;" />
+    </engine:VisualElement>
+</engine:UXML>
