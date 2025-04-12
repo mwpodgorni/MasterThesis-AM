@@ -42,10 +42,11 @@ public class StageOneController : MonoBehaviour
         workshopOpenButton.clicked += OnWorkshopOpenButtonClicked;
         workshopCloseButton = ui.Q<Button>("WorkshopCloseButton");
         workshopCloseButton.clicked += OnWorkshopCloseButtonClicked;
+        var chart = ui.Q<LineChart>("LineChart");
+        chart.data = new List<float> { 1, 3, 2, 5, 4, 6, 2, 4 };
 
 
-
-        StartCoroutine(StartTutorial());
+        // StartCoroutine(StartTutorial());
         // TODO: remove this debug code
         //     HideAllPanels();
         //     menu.style.display = DisplayStyle.Flex;

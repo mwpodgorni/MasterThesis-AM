@@ -1,14 +1,30 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles.uss?fileID=7433441132597879392&amp;guid=251821e7bfa74fc488ed360ccd38cff4&amp;type=3#Styles" />
     <engine:VisualElement name="VisualElement" style="flex-grow: 2; flex-direction: row; position: absolute; top: 0; left: 2px; bottom: 0; right: -1px;">
-        <engine:Button text="\uf7d9" emoji-fallback-support="false" tooltip="\uf007" enable-rich-text="false" parse-escape-sequences="true" name="WorkshopOpenButton" class="fontawesome-solid unity-button" style="position: absolute; right: 10px; top: 10px; width: auto; height: auto; padding-left: 20px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; font-size: 40px; margin-bottom: 10px;" />
-        <engine:VisualElement name="WorkshopPanel" class="wrapper settings-hidden" style="flex-grow: 1; display: flex; transition-duration: 0.5s; transition-timing-function: ease-in-out;">
-            <engine:VisualElement style="flex-grow: 1; flex-basis: 20%; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 30px; padding-right: 30px; padding-bottom: 30px; padding-left: 30px;">
+        <engine:VisualElement style="flex-grow: 1; position: absolute; width: 100%; height: 120px; flex-direction: row-reverse; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;">
+            <engine:Button text="\ue522" emoji-fallback-support="false" tooltip="\uf007" enable-rich-text="false" parse-escape-sequences="true" name="Evaluation" class="fontawesome-solid unity-button" style="position: relative; right: auto; top: auto; width: 100px; height: 100px; padding-left: 20px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; font-size: 40px; margin-bottom: 10px;" />
+            <engine:Button text="\uf7d9" emoji-fallback-support="false" tooltip="\uf007" enable-rich-text="false" parse-escape-sequences="true" name="WorkshopOpenButton" class="fontawesome-solid unity-button" style="position: relative; right: auto; top: auto; width: 100px; height: 100px; padding-left: 20px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; font-size: 40px; margin-bottom: 10px;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="EvaluationPanel" class="wrapper" style="flex-grow: 1; display: flex;">
+            <engine:VisualElement style="flex-grow: 0; flex-basis: 20%; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 30px; padding-right: 30px; padding-bottom: 30px; padding-left: 30px;">
+                <engine:Label text="\ue522" class="text-yellow header" style="-unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;);" />
+                <engine:Label text="Evaluation" name="ObjectiveText" class="text-yellow header" />
+                <engine:Button text="x" emoji-fallback-support="false" tooltip="\uf007" enable-rich-text="false" parse-escape-sequences="true" name="WorkshopCloseButton" class="fontawesome-solid unity-button" style="position: absolute; right: 10px; top: 10px; width: 60px; height: 60px; padding-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; font-size: 40px; margin-bottom: 10px; justify-content: center; align-self: center; align-items: center; -unity-text-align: middle-center;" />
+            </engine:VisualElement>
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <engine:VisualElement style="flex-grow: 1;" />
+                <engine:VisualElement style="flex-grow: 1; flex-basis: 50px; margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px;">
+                    <LineChart name="LineChart" style="background-color: rgba(130, 130, 130, 0);" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="WorkshopPanel" class="wrapper settings-hidden" style="flex-grow: 1; display: none; transition-duration: 0.5s; transition-timing-function: ease-in-out; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+            <engine:VisualElement style="flex-grow: 1; flex-basis: 20%; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 30px; padding-right: 30px; padding-bottom: 30px; padding-left: 30px; display: flex;">
                 <engine:Label text="\uf7d9" class="text-yellow header" style="-unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;);" />
                 <engine:Label text="Workshop" name="ObjectiveText" class="text-yellow header" />
-                <engine:Button text="\uf00d" emoji-fallback-support="false" tooltip="\uf007" enable-rich-text="false" parse-escape-sequences="true" name="WorkshopCloseButton" class="fontawesome-solid unity-button" style="position: absolute; right: 10px; top: 10px; width: 60px; height: 60px; padding-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; font-size: 40px; margin-bottom: 10px; justify-content: center; align-self: center; align-items: center; -unity-text-align: middle-center;" />
+                <engine:Button text="x" emoji-fallback-support="false" tooltip="\uf007" enable-rich-text="false" parse-escape-sequences="true" name="WorkshopCloseButton" class="fontawesome-solid unity-button" style="position: absolute; right: 10px; top: 10px; width: 60px; height: 60px; padding-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; font-size: 40px; margin-bottom: 10px; justify-content: center; align-self: center; align-items: center; -unity-text-align: middle-center;" />
             </engine:VisualElement>
-            <engine:VisualElement class="minigame-section" style="flex-grow: 1; flex-direction: row;">
+            <engine:VisualElement class="minigame-section" style="flex-grow: 1; flex-direction: row; display: flex;">
                 <engine:VisualElement name="InputLayerPanel" style="flex-grow: 1; flex-basis: 30%; justify-content: flex-start; align-items: center;">
                     <engine:VisualElement style="display: flex; width: 100%; flex-direction: row; align-items: center; justify-content: center;">
                         <engine:Label text="Input Layer" class="text-yellow" style="flex-shrink: 0; margin-right: 5px;" />
@@ -48,7 +64,7 @@
                     </engine:VisualElement>
                 </engine:VisualElement>
             </engine:VisualElement>
-            <engine:VisualElement name="NetworkActionPanel" class="minigame-section" style="flex-grow: 0; flex-basis: 15%; flex-direction: row; justify-content: flex-start; align-items: center; align-self: auto;">
+            <engine:VisualElement name="NetworkActionPanel" class="minigame-section" style="flex-grow: 0; flex-basis: 15%; flex-direction: row; justify-content: flex-start; align-items: center; align-self: auto; display: flex;">
                 <engine:VisualElement name="Input" style="flex-direction: row; width: auto; height: 50px; margin-right: 10px; margin-left: 10px; flex-grow: 1; flex-shrink: 1; flex-basis: 200px;">
                     <engine:Label text="Training cycle" name="Label" class="text-yellow input-font-size" style="-unity-text-align: middle-right; flex-basis: 40%; -unity-background-image-tint-color: rgba(255, 255, 255, 0);" />
                     <engine:IntegerField value="42" name="InputTrainingCycle" class="styled-input input-font-size text-yellow" style="flex-grow: 1; flex-direction: column; flex-basis: auto;" />

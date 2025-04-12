@@ -5,6 +5,15 @@ using System;
 using Newtonsoft.Json;
 public class NeuralNetwork
 {
+    // tracked variables
+    public int finishedCycles;
+    public float finalAverageLoss;
+    public int correctPredictions;
+    public int errorLessThan005;
+    public int error005to01;
+    public int errorGreaterThan01;
+    public List<float> lossPerStep = new();
+    // ---
     public Layer inputLayer;
     public Layer outputLayer;
     public List<Layer> hiddenLayers = new List<Layer>();
@@ -144,16 +153,20 @@ public class NeuralNetwork
         this.learningRate = learningRate;
 
         var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
-        if (trainingSet.data != null && trainingSet.data.Length > 0)
-        {
-            Debug.Log("Training data loaded");
-        }
-        else
+        if (trainingSet.data == null || trainingSet.data.Length == 0)
         {
             Debug.LogError("Training data is empty or null.");
+            return;
         }
 
-        float totalLoss = 0f; // To track loss across all epochs
+        correctPredictions = 0;
+        errorLessThan005 = 0;
+        error005to01 = 0;
+        errorGreaterThan01 = 0;
+        lossPerStep.Clear();
+
+        float totalLoss = 0f;
+        avgLoss = 0f;
 
         for (int i = 0; i < epoch; i++)
         {
@@ -161,43 +174,63 @@ public class NeuralNetwork
 
             var inputs = set.input;
             var expectedOutput = set.expected;
-
             var actualOutput = ForwardPass(inputs);
-            Debug.Log($"Actual output length: {actualOutput.Length}, Expected output length: {expectedOutput.Length}");
+
             if (expectedOutput.Length != actualOutput.Length)
             {
                 Debug.LogError($"Length mismatch: expectedOutput.Length = {expectedOutput.Length}, actualOutput.Length = {actualOutput.Length}");
                 return;
             }
 
-            // Compute Mean Squared Error (MSE)
-            float loss = 0;
+            float loss = 0f;
+            float error = 0f;
             for (int k = 0; k < expectedOutput.Length; k++)
             {
-                loss += Mathf.Pow(expectedOutput[k] - actualOutput[k], 2);
+                float diff = expectedOutput[k] - actualOutput[k];
+                error += Mathf.Abs(diff);
+                loss += diff * diff;
             }
+
             loss /= expectedOutput.Length;
+            error /= expectedOutput.Length;
+
+            lossPerStep.Add(loss);
             avgLoss += loss;
+
+            if (error < 0.05f)
+            {
+                errorLessThan005++;
+                correctPredictions++;
+            }
+            else if (error < 0.1f)
+            {
+                error005to01++;
+            }
+            else
+            {
+                errorGreaterThan01++;
+            }
+
+            BackPropagate(actualOutput, expectedOutput);
+            totalLoss += loss;
 
             if ((i + 1) % 10 == 0)
             {
                 Debug.Log($"Epoch {i + 1}/{epoch} - Loss: {avgLoss / (i + 1)}");
             }
-
-            // Backpropagate
-            BackPropagate(actualOutput, expectedOutput);
-
-            // Update the total loss for tracking
-            totalLoss += loss;
         }
 
-        avgLoss /= epoch;
-        loss = avgLoss;
+        finalAverageLoss = avgLoss / epoch;
+        loss = finalAverageLoss;
+        finishedCycles += epoch;
         avgLoss = 0f;
-
-        Debug.Log($"Training completed after {epoch} epochs. Final average loss: {loss}");
+        Debug.Log($"Training completed after {epoch} epochs.");
+        Debug.Log($"Finished Cycles: {finishedCycles}");
+        Debug.Log($"Final Average Loss: {finalAverageLoss}");
+        Debug.Log($"Correct Predictions (<0.05): {correctPredictions}");
+        Debug.Log($"Errors 0.05–0.1: {error005to01}");
+        Debug.Log($"Errors >0.1: {errorGreaterThan01}");
     }
-
     public void InitializeWeights()
     {
         RemoveWeights();

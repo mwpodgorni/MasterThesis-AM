@@ -77,6 +77,14 @@
         "You successfully set up a neural network that can classify robot parts.",
         "Now, you'll need to train the network."
       ]
+    },
+    {
+      "title": "How training works?",
+      "content": [
+        "Training begins by pressing the \"Train\" button.",
+        "Before starting, you can set the number of training cycles and the learning rate using the input fields.",
+        "Once training starts, open the Evaluation panel to monitor progress and observe how the neural network improves over time."
+      ]
     }
   ]
 }
