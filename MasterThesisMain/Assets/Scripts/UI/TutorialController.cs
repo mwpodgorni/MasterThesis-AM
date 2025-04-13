@@ -86,6 +86,11 @@ public class TutorialController : MonoBehaviour
             Debug.Log("Tutorial Complete");
             ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
             StartCoroutine(HideTutorialPanel());
+            if (StateManager.Instance.MiniGame3Solved)
+            {
+                StageOneController.Instance.LoadSecondStage();
+
+            }
         }
     }
     private IEnumerator HideTutorialPanel(float delay = 0f)

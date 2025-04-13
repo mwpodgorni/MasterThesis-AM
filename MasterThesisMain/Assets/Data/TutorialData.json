@@ -87,6 +87,27 @@
       ]
     }
   ],
+  "thirdPuzzleNotSolved": [
+    {
+      "title": "Task incomplete",
+      "content": ["The training of your network did not go well, try again."]
+    }
+  ],
+  "thirdPuzzleSolved": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up a neural network that can classify robot parts.",
+        "Now, this network can be used as a brain of our sorting robot."
+      ]
+    },
+    {
+      "title": "Your third task",
+      "content": [
+        "Now we will move to a different section of our factory, where you will learn more practical applications of machine learning."
+      ]
+    }
+  ],
   "ReinforcementLearning": [
     {
       "title": "What is reinforcement learning?",

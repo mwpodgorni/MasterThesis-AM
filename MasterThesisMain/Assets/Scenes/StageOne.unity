@@ -3553,6 +3553,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3740d840b6141f14488b2d058a9a1e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageTwoScene: {fileID: 102900000, guid: d79293076e810d84a97bf0fcdc960e41, type: 3}
+  firstEvaluationView: 1
 --- !u!114 &5424659736712591275
 MonoBehaviour:
   m_ObjectHideFlags: 0

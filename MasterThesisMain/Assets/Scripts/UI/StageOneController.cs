@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class StageOneController : MonoBehaviour
 {
+    [SerializeField] private SceneAsset stageTwoScene;
     public static StageOneController Instance { get; private set; }
     public VisualElement ui;
 
@@ -18,6 +21,7 @@ public class StageOneController : MonoBehaviour
     public Button evaluationCloseButton;
     public VisualElement helpPanel;
 
+    public bool firstEvaluationView = true;
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -57,7 +61,7 @@ public class StageOneController : MonoBehaviour
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
 
 
-        // StartCoroutine(StartTutorial());
+        StartCoroutine(StartTutorial());
         // TODO: remove this debug code
         //     HideAllPanels();
         //     menu.style.display = DisplayStyle.Flex;
@@ -68,6 +72,7 @@ public class StageOneController : MonoBehaviour
     IEnumerator StartTutorial()
     {
         yield return new WaitForSeconds(1f);
+        Debug.Log("Starting tutorial");
         tutorialPanel.RemoveFromClassList("opacity-none");
         TutorialController().StartTutorial();
     }
@@ -84,6 +89,15 @@ public class StageOneController : MonoBehaviour
     }
     public void OnEvaluationOpenButtonClicked()
     {
+        if (firstEvaluationView)
+        {
+            firstEvaluationView = false;
+            TutorialController().ShowNextButton();
+            TutorialController().SetTypeText(true);
+            TutorialController().SetTutorialSteps(DataReader.Instance.ThirdPuzzleSolved());
+            TutorialController().StartTutorial();
+        }
+
         evaluationPanel.RemoveFromClassList("panel-up");
         evaluationOpenButton.AddToClassList("opacity-none");
     }
@@ -114,5 +128,8 @@ public class StageOneController : MonoBehaviour
     {
         return GetComponent<EvaluationController>();
     }
-
+    public void LoadSecondStage()
+    {
+        SceneManager.LoadScene(stageTwoScene.name);
+    }
 }

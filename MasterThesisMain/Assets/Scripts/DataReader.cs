@@ -64,4 +64,12 @@ public class DataReader : MonoBehaviour
     {
         return tutorialData.TryGetValue("secondPuzzleSolved", out var steps) ? steps : new List<TutorialStep>();
     }
+    public List<TutorialStep> ThirdPuzzleNotSolved()
+    {
+        return tutorialData.TryGetValue("thirdPuzzleNotSolved", out var steps) ? steps : new List<TutorialStep>();
+    }
+    public List<TutorialStep> ThirdPuzzleSolved()
+    {
+        return tutorialData.TryGetValue("thirdPuzzleSolved", out var steps) ? steps : new List<TutorialStep>();
+    }
 }

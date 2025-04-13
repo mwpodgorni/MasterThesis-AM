@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using UnityEditor;
+using UnityEngine.UIElements;
 public class StateManager : MonoBehaviour
 {
     public static StateManager Instance { get; private set; }
@@ -37,7 +38,7 @@ public class StateManager : MonoBehaviour
                 break;
             case 3:
                 MiniGame3Solved = true;
-                CurrentStage = GameStage.Completed;
+                CurrentStage = GameStage.QLearning1;
                 break;
         }
     }
@@ -49,5 +50,6 @@ public enum GameStage
     MiniGame1,
     MiniGame2,
     MiniGame3,
+    QLearning1,
     Completed
 }

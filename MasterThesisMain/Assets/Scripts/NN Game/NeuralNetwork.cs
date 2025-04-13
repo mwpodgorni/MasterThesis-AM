@@ -27,6 +27,7 @@ public class NeuralNetwork
 
     float learningRate = 0.001f;
     public Action<EvaluationData> OnEvaluationUpdate;
+    bool hasTrained = false;
     public NeuralNetwork()
     {
         inputLayer = new Layer();
@@ -236,6 +237,7 @@ public class NeuralNetwork
                     lossData = new List<float>(lossPerStep)
                 });
             }
+            hasTrained = true;
         }
 
         // Wrap up
@@ -395,6 +397,7 @@ public class NeuralNetwork
         hiddenLayers.Clear();
         loss = 0.0f;
         avgLoss = 0.0f;
+        hasTrained = false;
     }
 }
 public struct EvaluationData

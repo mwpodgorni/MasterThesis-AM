@@ -83,8 +83,8 @@ public class NetworkController : MonoBehaviour
 
         _connectionLines.pickingMode = PickingMode.Ignore;
         var miniGamePanel = ui.Q<VisualElement>("WorkshopPanel");
-        // miniGamePanel.Add(_connectionLines);
-        ui.Add(_connectionLines);
+        miniGamePanel.Add(_connectionLines);
+        // ui.Add(_connectionLines);
         neuralNetwork.OnEvaluationUpdate = UpdateEvaluationData;
 
         // TODO: REMOVE THIS LINE
@@ -212,17 +212,15 @@ public class NetworkController : MonoBehaviour
         if (neuralNetwork.IsNetworkValid())
         {
             neuralNetwork.TrainNetwork(_inputTrainingCycle.value, _inputLearningRate.value);
+            // TODO: make better validation of whether it is completed or not
+            StateManager.Instance.MarkMiniGameSolved(3);
+
         }
         else
         {
             Debug.Log("Network is not valid. Please add nodes to the network.");
 
         }
-    }
-    public void TrainButtonClicked()
-    {
-        Debug.Log(_inputTrainingCycle.value);
-        Debug.Log(_inputLearningRate.value);
     }
     public void ClearLines()
     {
@@ -364,6 +362,7 @@ public class NetworkController : MonoBehaviour
         testNetworkButton.style.display = DisplayStyle.None;
         networkActionPanel.style.display = DisplayStyle.Flex;
     }
+
 }
 
 class NetworkSolution
