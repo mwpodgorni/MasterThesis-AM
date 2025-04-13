@@ -53,6 +53,7 @@ public class StageOneController : MonoBehaviour
 
         workshopOpenButton = ui.Q<Button>("WorkshopOpenButton");
         workshopOpenButton.clicked += OnWorkshopOpenButtonClicked;
+        workshopOpenButton.tooltip = "Open Workshop";
         workshopCloseButton = ui.Q<Button>("WorkshopCloseButton");
         workshopCloseButton.clicked += OnWorkshopCloseButtonClicked;
         evaluationOpenButton = ui.Q<Button>("EvaluationOpenButton");
