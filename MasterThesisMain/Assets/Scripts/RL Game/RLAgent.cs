@@ -18,7 +18,8 @@ public class RLAgent : MonoBehaviour
     [SerializeField] protected int _maxSteps = 20;
 
     [Header("Properties")]
-    [SerializeField] protected AgentController _controller;
+    [SerializeField] public AgentController controller;
+    [SerializeField] public List<Task> tasks;
 
     [Header("Stats")]
     public float avgRewardPerEpoch = 0;
@@ -45,7 +46,7 @@ public class RLAgent : MonoBehaviour
 
     virtual public Action GetAction(State state)
     {
-        var possibleActions = _controller.GetPossibleActions();
+        var possibleActions = controller.GetPossibleActions();
         return possibleActions[Random.Range(0, possibleActions.Count)];
     }
 
@@ -79,7 +80,7 @@ public class RLAgent : MonoBehaviour
 
     virtual public void ResetAgent()
     {
-        _controller.ResetAgent();
+        controller.ResetAgent();
         _finishedEpoch = false;
         currentEpochReward = 0;
     }
@@ -113,5 +114,15 @@ public class RLAgent : MonoBehaviour
         {
             return obs.Aggregate(17, (current, element) => current * 31 + element.GetHashCode());
         }
+    }
+
+    public bool CompletedTask()
+    {
+        foreach (var task in tasks)
+        {
+            if (!task.IsComplete()) return false;
+        }
+
+        return true;
     }
 }

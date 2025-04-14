@@ -128,10 +128,11 @@ MonoBehaviour:
   _epsilon: 1
   _epsilonMin: 0.01
   _maxSteps: 20
-  _controller: {fileID: 4202400201549563252}
-  _goalTile: {fileID: 0}
+  controller: {fileID: 4202400201549563252}
+  task: {fileID: 0}
   avgRewardPerEpoch: 0
   totalReward: 0
+  currentEpochReward: 0
   totalStepCount: 0
   maxSteps: 20
 --- !u!114 &4202400201549563252 stripped

@@ -16,6 +16,12 @@ public class Tile : MonoBehaviour
 
     Dictionary<Action, Tile> adjecentTiles = new Dictionary<Action, Tile>();
     TileType _currentType;
+    bool _used = false;
+
+    public bool isUsed
+    {
+        get { return _used; }
+    }
 
     [SerializeField] BoolEventChannel _channel;
 
@@ -39,6 +45,7 @@ public class Tile : MonoBehaviour
     {
         model.SetActive(false);
         _currentType = TileType.Normal;
+        _used = true;
 
         if (_channel != null)
         {
@@ -91,6 +98,7 @@ public class Tile : MonoBehaviour
     public void ResetTile()
     {
         _currentType = _type;
+        _used = false;
         if (model != null) model.SetActive(true);
     }
 

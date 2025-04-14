@@ -22,19 +22,19 @@ public class QAgent : RLAgent
     {
         if (!_activated) return;
 
-        if (_controller.IsDead || _finishedEpoch)
+        if (controller.IsDead || _finishedEpoch)
         {
             _finishedEpoch = true;
             return;
         }
 
-        if (!_calculatingMove && !_controller.IsMoving())
+        if (!_calculatingMove && !controller.IsMoving())
         {
-            var state = GetState(_controller.currentTile);
+            var state = GetState(controller.currentTile);
 
             var action = GetAction(state);
 
-            var nextTile = _controller.currentTile.GetAdjecentTile(action);
+            var nextTile = controller.currentTile.GetAdjecentTile(action);
             var nextState = GetState(nextTile);
 
             var reward = GetReward(nextTile);
@@ -43,7 +43,7 @@ public class QAgent : RLAgent
 
             UpdateQTable(state, nextState, action, reward);
 
-            _controller.MoveToSelectedAction(action);
+            controller.MoveToSelectedAction(action);
 
             totalStepCount++;
             _epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-_decayRate * totalStepCount);
@@ -59,7 +59,7 @@ public class QAgent : RLAgent
             _timer = 0f;
         }
 
-        if (totalStepCount % maxSteps == 0)
+        if (totalStepCount % maxSteps == 0 || CompletedTask())
         {
             _finishedEpoch = true;
         }
@@ -67,7 +67,7 @@ public class QAgent : RLAgent
 
     override public Action GetAction(State state)
     {
-        var possibleActions = _controller.GetPossibleActions();
+        var possibleActions = controller.GetPossibleActions();
 
         // Choose action using ε-greedy strategy
         Random.InitState(DateTime.Now.Millisecond);

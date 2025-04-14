@@ -1,7 +1,6 @@
-using NUnit.Framework;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using Alexwsu.EventChannels;
 
 public class RLManager : MonoBehaviour
 {
@@ -27,6 +26,9 @@ public class RLManager : MonoBehaviour
 
     bool _training = false;
 
+    [Tooltip("Invokes this event channel when training is finished")]
+    [SerializeField] EventChannel _eventChannel;
+
     private void Start()
     {
         SetSpeed(_speed);
@@ -43,8 +45,10 @@ public class RLManager : MonoBehaviour
                 // Training finished
                 _training = false;
                 avgRewardPerEpoch = _player.avgRewardPerEpoch;
+                episodeCount = 0;
                 DeactivateAgents();
                 ResetTraining();
+                _eventChannel.Invoke(new Empty());
             }
             else
             {
@@ -111,6 +115,7 @@ public class RLManager : MonoBehaviour
 
     public void SetReward(TileType type, float value)
     {
+        if (_training) return;
         _player.SetReward(type, value);
     }
 
@@ -167,4 +172,17 @@ public class RLManager : MonoBehaviour
         Fast, 
         Faster
     }
+}
+
+public struct RLEvaluationData
+{
+    public float learningRate;   // Alpha (α)
+    public float discountFactor; // Gamma (γ);
+    public float decayRate;
+    public float epsilonMin;
+    public int maxSteps;
+
+    public float avgEpisodeReward; // total reward avg
+    public float avgEpisodeLength; // number of steps 
+    public float successRate; // rate of how successful it completes tasks
 }
