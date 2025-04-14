@@ -74,6 +74,8 @@ public class NetworkController : MonoBehaviour
 
         // line renderer
         _connectionLines = new ConnectionLines();
+        var miniGamePanel = ui.Q<VisualElement>("WorkshopPanel");
+        miniGamePanel.Add(_connectionLines);
         _connectionLines.style.position = Position.Absolute;
         _connectionLines.style.top = 0;
         _connectionLines.style.left = 0;
@@ -82,9 +84,7 @@ public class NetworkController : MonoBehaviour
         _connectionLines.AddToClassList("connection-lines");
 
         _connectionLines.pickingMode = PickingMode.Ignore;
-        var miniGamePanel = ui.Q<VisualElement>("WorkshopPanel");
-        miniGamePanel.Add(_connectionLines);
-        // ui.Add(_connectionLines);
+
         neuralNetwork.OnEvaluationUpdate = UpdateEvaluationData;
 
         // TODO: REMOVE THIS LINE
@@ -231,12 +231,22 @@ public class NetworkController : MonoBehaviour
     {
         _connectionLines.ClearLines();
 
+        // 1) Get the same parent that contains _connectionLines
+        var miniGamePanel = ui.Q<VisualElement>("WorkshopPanel");
+        if (miniGamePanel == null)
+        {
+            Debug.LogError("WorkshopPanel not found!");
+            return;
+        }
+
+        // 2) Convert node positions to local coords
         var inputNodeWrapper = _inputLayerPanel.Q<VisualElement>("NodeWrapper");
         List<Vector2> inputLayerPositions = new List<Vector2>();
         foreach (var inputNode in inputNodeWrapper.Children())
         {
-            Vector2 inputPosition = GetCenterScreenPosition(inputNode);
-            inputLayerPositions.Add(inputPosition);
+            Vector2 screenPos = GetCenterScreenPosition(inputNode);
+            Vector2 localPos = miniGamePanel.WorldToLocal(screenPos);
+            inputLayerPositions.Add(localPos);
         }
 
         List<List<Vector2>> hiddenLayerPositions = new List<List<Vector2>>();
@@ -247,9 +257,9 @@ public class NetworkController : MonoBehaviour
 
             foreach (var hiddenNode in hiddenNodeWrapper.Children())
             {
-                Vector2 hiddenPosition = GetCenterScreenPosition(hiddenNode);
-                currentLayerPositions.Add(hiddenPosition);
-                // Debug.Log($"Hidden node position: {hiddenPosition}");
+                Vector2 screenPos = GetCenterScreenPosition(hiddenNode);
+                Vector2 localPos = miniGamePanel.WorldToLocal(screenPos);
+                currentLayerPositions.Add(localPos);
             }
 
             hiddenLayerPositions.Add(currentLayerPositions);
@@ -257,12 +267,11 @@ public class NetworkController : MonoBehaviour
 
         if (hiddenLayerPositions.Count > 0)
         {
-            foreach (var inputNode in inputLayerPositions)
+            foreach (var inputPos in inputLayerPositions)
             {
-                foreach (var hiddenNode in hiddenLayerPositions[0])
+                foreach (var hiddenPos in hiddenLayerPositions[0])
                 {
-                    // Debug.Log($"Drawing line from input node {inputNode} to hidden node {hiddenNode}");
-                    _connectionLines.AddConnection(inputNode, hiddenNode);
+                    _connectionLines.AddConnection(inputPos, hiddenPos);
                 }
             }
         }
@@ -272,12 +281,11 @@ public class NetworkController : MonoBehaviour
             var currentLayer = hiddenLayerPositions[i];
             var nextLayer = hiddenLayerPositions[i + 1];
 
-            foreach (var currentNode in currentLayer)
+            foreach (var currentPos in currentLayer)
             {
-                foreach (var nextNode in nextLayer)
+                foreach (var nextPos in nextLayer)
                 {
-                    //Debug.Log($"Drawing line from hidden node {currentNode} to hidden node {nextNode}");
-                    _connectionLines.AddConnection(currentNode, nextNode);
+                    _connectionLines.AddConnection(currentPos, nextPos);
                 }
             }
         }
@@ -286,19 +294,21 @@ public class NetworkController : MonoBehaviour
         {
             var lastHiddenLayer = hiddenLayerPositions[hiddenLayerPositions.Count - 1];
             var outputNodeWrapper = _outputLayerPanel.Q<VisualElement>("NodeWrapper");
-            foreach (var lastHiddenNode in lastHiddenLayer)
+            foreach (var lastHiddenPos in lastHiddenLayer)
             {
                 foreach (var outputNode in outputNodeWrapper.Children())
                 {
-                    Vector2 outputPosition = GetCenterScreenPosition(outputNode);
-                    // Debug.Log($"Drawing line from hidden node {lastHiddenNode} to output node {outputPosition}");
-                    _connectionLines.AddConnection(lastHiddenNode, outputPosition);
+                    Vector2 outputScreenPos = GetCenterScreenPosition(outputNode);
+                    Vector2 outputLocalPos = miniGamePanel.WorldToLocal(outputScreenPos);
+                    _connectionLines.AddConnection(lastHiddenPos, outputLocalPos);
                 }
             }
         }
 
+        // Force a redraw
         _connectionLines.MarkDirtyRepaint();
     }
+
 
     Vector2 GetCenterScreenPosition(VisualElement ve)
     {
