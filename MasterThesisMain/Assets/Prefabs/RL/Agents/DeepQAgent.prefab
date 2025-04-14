@@ -169,7 +169,8 @@ MonoBehaviour:
   _epsilon: 1
   _epsilonMin: 0.01
   _maxSteps: 20
-  _controller: {fileID: 0}
+  controller: {fileID: 8018066106915840088}
+  task: {fileID: 0}
   avgRewardPerEpoch: 0
   totalReward: 0
   currentEpochReward: 0
@@ -179,3 +180,15 @@ MonoBehaviour:
   _hiddenSize: 8
   _layerCount: 2
   _goalTile: {fileID: 0}
+--- !u!114 &8018066106915840088 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7488383769800551177, guid: 02c420a7b61cfa7489dbd4638c186bb7,
+    type: 3}
+  m_PrefabInstance: {fileID: 624296077340855121}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6102224711813134731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b4f8b2fe573974797e07dec183fc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

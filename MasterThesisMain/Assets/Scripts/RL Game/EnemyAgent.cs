@@ -16,8 +16,8 @@ public class EnemyAgent : RLAgent
     // Start is called before the first frame update
     void Start()
     {
-        _prevTile = _controller.currentTile;
-        _controller.isEnemy = true;
+        _prevTile = controller.currentTile;
+        controller.isEnemy = true;
     }
 
     // Update is called once per frame
@@ -26,7 +26,7 @@ public class EnemyAgent : RLAgent
 
         if (!_activated) return;
 
-        if (_controller.IsDead)
+        if (controller.IsDead)
         {
             return;
         }
@@ -34,18 +34,18 @@ public class EnemyAgent : RLAgent
         if (!_calculatingMove && !_player.IsMoving())
         {
             _calculatingMove = true;
-            _prevTile = _controller.currentTile;
+            _prevTile = controller.currentTile;
 
-            var state = GetState(_controller.currentTile);
+            var state = GetState(controller.currentTile);
 
             var action = GetAction(state);
 
-            _controller.MoveToSelectedAction(action);
+            controller.MoveToSelectedAction(action);
 
-            _controller.currentTile.SetCurrentType(TileType.Enemy);
+            controller.currentTile.SetCurrentType(TileType.Enemy);
         }
 
-        if (!_controller.IsDead && (_player.currentTile == _controller.currentTile || _player.currentTile == _prevTile) && !_calculatingMove )
+        if (!controller.IsDead && (_player.currentTile == controller.currentTile || _player.currentTile == _prevTile) && !_calculatingMove )
         {
             Debug.Log("Died");
 
@@ -55,9 +55,9 @@ public class EnemyAgent : RLAgent
             }
             else
             {
-                _controller.IsDead = true;
+                controller.IsDead = true;
                 HideBody();
-                _controller.currentTile.ResetTile();
+                controller.currentTile.ResetTile();
                 _prevTile.ResetTile();
             }
         }
@@ -76,7 +76,7 @@ public class EnemyAgent : RLAgent
 
     override public Action GetAction(State state)
     {
-        var possibleActions = _controller.GetPossibleActions();
+        var possibleActions = controller.GetPossibleActions();
 
         Random.InitState(DateTime.Now.Millisecond);
 
@@ -92,13 +92,13 @@ public class EnemyAgent : RLAgent
     {
         base.ResetAgent();
         _vulnerable = false;
-        _controller.HideModel(false);
-        _prevTile = _controller.startingTile;
+        controller.HideModel(false);
+        _prevTile = controller.startingTile;
 
     }
 
     void HideBody()
     {
-        _controller.HideModel(true);
+        controller.HideModel(true);
     }
 }

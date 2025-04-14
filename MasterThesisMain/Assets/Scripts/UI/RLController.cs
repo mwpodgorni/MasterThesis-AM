@@ -57,11 +57,32 @@ public class RLController : MonoBehaviour
 
     void StartTrainingHandler(ClickEvent evt) 
     {
+        DisableRewardAdjusters();
         _manager.StartTraining();
     }
 
     void SpeedUpHandler(ClickEvent evt)
     {
         _manager.ToggleSpeed();
+    }
+
+    public void EnableRewardAdjusters()
+    {
+        var rewardAdjusters = _rewardContainer.Query("RewardAdjuster").ToList();
+
+        foreach (var adjuster in rewardAdjusters)
+        {
+            adjuster.SetEnabled(true);
+        }
+    }
+
+    public void DisableRewardAdjusters()
+    {
+        var rewardAdjusters = _rewardContainer.Query("RewardAdjuster").ToList();
+
+        foreach (var adjuster in rewardAdjusters)
+        {
+            adjuster.SetEnabled(false);
+        }
     }
 }
