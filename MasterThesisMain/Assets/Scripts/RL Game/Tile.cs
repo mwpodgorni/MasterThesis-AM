@@ -110,12 +110,11 @@ public class Tile : MonoBehaviour
 
 public enum TileType
 {
-    Normal = 0,
-    Wall = 1,
-    Dangerous = 2,
+    Normal      = 0,
+    Wall        = 1,
+    Dangerous   = 2,
     Collectible = 3,
-    Goal = 4,
-    Enemy = 5,
-    EnemyVulnerable = 6,
-    Buff = 7,
+    Goal        = 4,
+    Enemy       = 5,
+    Buff        = 6,
 }

@@ -87,7 +87,7 @@ public class RLAgent : MonoBehaviour
 
     virtual public void ResetModel()
     {
-
+        totalStepCount = 0;
     }
 
     public bool FinishedEpoch 

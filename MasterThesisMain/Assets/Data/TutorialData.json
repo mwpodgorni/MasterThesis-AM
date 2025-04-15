@@ -110,37 +110,76 @@
   ],
   "ReinforcementLearning": [
     {
+      "title": "Welcome to our tile-based game!",
+      "content": [
+        "In this game, you will train a robot to navigate a tile-based environment.",
+        "The type of machine learning used in this game is called reinforcement learning."
+      ]
+    },
+    {
       "title": "What is reinforcement learning?",
       "content": [
-        "Reinforcement learning is a type of machine learning where an agent learns to make decisions by interacting with its environment.",
+        "Reinforcement learning is a type of machine learning where an agent learns to make optimal decisions by interacting with its environment.",
         "The agent receives feedback in the form of rewards or penalties based on its actions, which helps it learn and improve over time."
       ]
     },
     {
       "title": "How does it work?",
       "content": [
-        "In reinforcement learning, the agent explores its environment and takes actions to achieve specific goals.",
-        "When the agent performs well, it receives positive rewards, reinforcing that behavior. If it makes mistakes, it gets negative rewards, prompting it to adjust its strategy.",
+        "In reinforcement learning, the learning is done step by step.",
+        "- The agent is presented a state,",
+        "- It takes an action",
+        "- And receives a reward."
+      ]
+    },
+    {
+      "title": "How does it work?",
+      "content": [
+        "At each step, the agent is provided a \"state\", which is a representation of the environment at that moment.",
+        "The agent then chooses an action based on its current state and receives a reward based on the action it took."
+      ]
+    },
+    {
+      "title": "How does it work?",
+      "content": [
+        "When the agent picks an action that we consider good, it receives a positive reward.",
+        "If the action is bad, it receives a negative reward.",
+        "The agent uses this feedback to learn which actions are better in different states."
+      ]
+    },
+    {
+      "title": "How does it work?",
+      "content": [
         "Over time, the agent learns to maximize its rewards by finding the best actions to take in different situations."
       ]
     },
     {
-      "title": "Your third task",
+      "title": "Your new tasks",
       "content": [
-        "Now that you understand how neural networks and reinforcement learning work, it's time to train your robot.",
-        "You will need to set up a reward values that will help the robot learn from its experiences."
+        "Now that you understand how reinforcement learning work, it's time to train your robot.",
+        "You will need to set up reward values that will help the robot learn and solve different tasks."
       ]
     },
     {
       "title": "Instructions",
       "content": [
-        "In this tile-based game, you can set up the reward values for each special tile.",
-        "The robot will receive a reward based on the value you set for the tile it steps on.",
+        "In this tile-based game, you can adjusts the reward values for each special tile inside the workshop window.",
+        "The robot will receive a reward based on the value you set for the tile it steps on."
+      ]
+    },
+    {
+      "title": "Instructions",
+      "content": [
         "You can also set the reward value for to zero, which means the robot won't receive any feedback when stepping on it."
       ]
-    }
-  ],
-  "RLPuzzle1": [
+    },
+    {
+      "title": "Instructions",
+      "content": [
+        "When you're ready to train the agent, press the \"Play\" button to begin the training.",
+        "You can also speed up the training by pressing the \"Fast-Forward\" button."
+      ]
+    },
     {
       "title": "Level 1",
       "content": [
