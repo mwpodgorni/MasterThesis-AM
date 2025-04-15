@@ -33,7 +33,11 @@ public class RLManager : MonoBehaviour
     {
         SetSpeed(_speed);
         _player.maxSteps = maxStepPerEpoch;
-        
+
+        SetReward(TileType.Enemy, 0);
+        SetReward(TileType.Goal, 0);
+        SetReward(TileType.Collectible, 0);
+        SetReward(TileType.Buff, 0);
     }
 
     private void Update()

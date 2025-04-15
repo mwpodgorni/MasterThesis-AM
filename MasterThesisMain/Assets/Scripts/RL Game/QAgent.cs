@@ -125,6 +125,7 @@ public class QAgent : RLAgent
 
     public override void ResetModel()
     {
+        base.ResetModel();
         _qTable.Clear();
     }
 
