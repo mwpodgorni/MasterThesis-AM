@@ -20,7 +20,7 @@ public class StageOneController : MonoBehaviour
     public Button evaluationOpenButton;
     public Button evaluationCloseButton;
     public VisualElement helpPanel;
-
+    public VisualElement topbar;
     public bool firstEvaluationView = true;
     private void Awake()
     {
@@ -50,6 +50,7 @@ public class StageOneController : MonoBehaviour
         evaluationPanel.AddToClassList("panel-up");
 
         tutorialPanel.AddToClassList("opacity-none");
+        topbar = ui.Q<VisualElement>("Topbar");
 
         workshopOpenButton = ui.Q<Button>("WorkshopOpenButton");
         workshopOpenButton.clicked += OnWorkshopOpenButtonClicked;
@@ -62,7 +63,7 @@ public class StageOneController : MonoBehaviour
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
 
 
-        StartCoroutine(StartTutorial());
+        // StartCoroutine(StartTutorial());
         // TODO: remove this debug code
         //     HideAllPanels();
         //     menu.style.display = DisplayStyle.Flex;
@@ -80,13 +81,13 @@ public class StageOneController : MonoBehaviour
     public void OnWorkshopOpenButtonClicked()
     {
         workshopPanel.RemoveFromClassList("panel-up");
-        workshopOpenButton.AddToClassList("opacity-none");
+        topbar.AddToClassList("opacity-none");
     }
     public void OnWorkshopCloseButtonClicked()
     {
         NetworkController().ClearLines();
         workshopPanel.AddToClassList("panel-up");
-        workshopOpenButton.RemoveFromClassList("opacity-none");
+        topbar.RemoveFromClassList("opacity-none");
     }
     public void OnEvaluationOpenButtonClicked()
     {
@@ -100,12 +101,12 @@ public class StageOneController : MonoBehaviour
         }
 
         evaluationPanel.RemoveFromClassList("panel-up");
-        evaluationOpenButton.AddToClassList("opacity-none");
+        topbar.AddToClassList("opacity-none");
     }
     public void OnEvaluationCloseButtonClicked()
     {
         evaluationPanel.AddToClassList("panel-up");
-        evaluationOpenButton.RemoveFromClassList("opacity-none");
+        topbar.RemoveFromClassList("opacity-none");
     }
     public NetworkController NetworkController()
     {

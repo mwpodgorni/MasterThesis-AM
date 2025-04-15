@@ -29,7 +29,7 @@
     color: rgb(254, 238, 212);
     background-color: rgba(0, 20, 35, 0.9);
     border-color: rgb(254, 238, 212);
-    border-width: 4px;
+    border-width: 2px;
     border-radius: 15px;
     height: 70px;
     font-size: 32px;
