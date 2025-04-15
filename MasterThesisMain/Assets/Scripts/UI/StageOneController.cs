@@ -90,7 +90,7 @@ public class StageOneController : MonoBehaviour
     }
     public void OnEvaluationOpenButtonClicked()
     {
-        if (firstEvaluationView)
+        if (firstEvaluationView && StateManager.Instance.MiniGame2Solved)
         {
             firstEvaluationView = false;
             TutorialController().ShowNextButton();
