@@ -51,34 +51,32 @@ public class RLController : MonoBehaviour
         }
     }
 
-    string GetSolvedText
+    string GetSolvedText(bool solved)
     {
-        get
+        switch (_rlLevel)
         {
-            switch (_rlLevel)
-            {
-                case RLLevel.level1:
-                    if(_solved)
-                    {
-                        return "RLPuzzle1Solved";
-                    }
-                    return "RLPuzzle1NotSolved";
-                case RLLevel.level2:
-                    if (_solved)
-                    {
-                        return "RLPuzzle2Solved";
-                    }
-                    return "RLPuzzle2NotSolved";
-                case RLLevel.level3:
-                    if (_solved)
-                    {
-                        return "RLPuzzle3Solved";
-                    }
-                    return "RLPuzzle3NotSolved";
-            }
-
-            return "";
+            case RLLevel.level1:
+                if(solved)
+                {
+                    return "RLPuzzle1Solved";
+                }
+                return "RLPuzzle1NotSolved";
+            case RLLevel.level2:
+                if (solved)
+                {
+                    return "RLPuzzle2Solved";
+                }
+                return "RLPuzzle2NotSolved";
+            case RLLevel.level3:
+                if (solved)
+                {
+                    return "RLPuzzle3Solved";
+                }
+                return "RLPuzzle3NotSolved";
         }
+
+        return "";
+     
     }
 
 
@@ -123,15 +121,15 @@ public class RLController : MonoBehaviour
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
 
         LoadRewardAdjusters(); 
-        StartCoroutine(StartTutorial());
+        StartCoroutine(StartTutorial(GetTutorialText));
     }
 
-    IEnumerator StartTutorial()
+    IEnumerator StartTutorial(string name)
     {
         yield return new WaitForSeconds(1f);
         Debug.Log("Starting tutorial");
         tutorialPanel.RemoveFromClassList("opacity-none");
-        var steps = DataReader.Instance.GetTutorialSteps(GetTutorialText);
+        var steps = DataReader.Instance.GetTutorialSteps(name);
         TutorialController().SetTutorialSteps(steps);
         TutorialController().StartTutorial();
     }
@@ -155,6 +153,11 @@ public class RLController : MonoBehaviour
     {
         evaluationPanel.AddToClassList("panel-up");
         evaluationOpenButton.RemoveFromClassList("opacity-none");
+    }
+
+    public void OnLevelFinished()
+    {
+        StartCoroutine(StartTutorial(GetSolvedText(_manager.LevelCompleted)));
     }
 
     void LoadRewardAdjusters()

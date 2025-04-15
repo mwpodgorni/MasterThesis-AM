@@ -11,6 +11,7 @@ public class RLManager : MonoBehaviour
     [SerializeField] List<TileType> _observedTiles;
 
     [Header("Level Settings")]
+    [SerializeField] int requiredCountOfCompletedTask = 3;
     [SerializeField] GameSpeed _speed = GameSpeed.Normal;
     [SerializeField] float _normalSpeed = 1f;
     [SerializeField] float _fastSpeed = 3f;
@@ -25,9 +26,19 @@ public class RLManager : MonoBehaviour
     public float avgRewardPerEpoch = 0;
 
     bool _training = false;
+    int _taskCompletedCount = 0;
+
+    public bool LevelCompleted
+    {
+        get
+        {
+            return _taskCompletedCount >= requiredCountOfCompletedTask;
+        }
+    }
 
     [Tooltip("Invokes this event channel when training is finished")]
-    [SerializeField] EventChannel _eventChannel;
+    [SerializeField] EventChannel _unsolvedChannel;
+    [SerializeField] EventChannel _solvedChannel;
 
     private void Start()
     {
@@ -44,7 +55,7 @@ public class RLManager : MonoBehaviour
     {
         if (_player.FinishedEpoch && _training)
         {
-            if (episodeCount >= maxEpisodes)
+            if (episodeCount >= maxEpisodes || _taskCompletedCount >= requiredCountOfCompletedTask)
             {
                 // Training finished
                 _training = false;
@@ -52,7 +63,16 @@ public class RLManager : MonoBehaviour
                 episodeCount = 0;
                 DeactivateAgents();
                 ResetTraining();
-                _eventChannel.Invoke(new Empty());
+
+                if (_taskCompletedCount < requiredCountOfCompletedTask)
+                {
+                    _unsolvedChannel.Invoke(new Empty());
+                }
+                else
+                {
+                    _solvedChannel.Invoke(new Empty());
+                }
+                
             }
             else
             {
@@ -163,6 +183,11 @@ public class RLManager : MonoBehaviour
                 enemy.Activated = false;
             }
         }
+    }
+
+    public void IncreaseSolvedCount()
+    {
+        _taskCompletedCount++;
     }
 
     public List<TileType> GetObservedTiles()
