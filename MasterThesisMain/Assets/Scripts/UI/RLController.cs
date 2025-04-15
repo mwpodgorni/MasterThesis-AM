@@ -28,7 +28,58 @@ public class RLController : MonoBehaviour
     [SerializeField] SceneAsset _nextScene;
     [SerializeField] List<Sprite> _tileSprites;
 
+    [SerializeField] RLLevel _rlLevel = RLLevel.level1;
+
     Dictionary<TileType, Sprite> _tileSpritesDict = new();
+    bool _solved = false;
+
+    string GetTutorialText
+    {
+        get
+        {
+            switch(_rlLevel)
+            {
+                case RLLevel.level1:
+                    return "ReinforcementLearning";
+                case RLLevel.level2:
+                    return "RLPuzzle2";
+                case RLLevel.level3:
+                    return "RLPuzzle2";
+            }
+
+            return "";
+        }
+    }
+
+    string GetSolvedText
+    {
+        get
+        {
+            switch (_rlLevel)
+            {
+                case RLLevel.level1:
+                    if(_solved)
+                    {
+                        return "RLPuzzle1Solved";
+                    }
+                    return "RLPuzzle1NotSolved";
+                case RLLevel.level2:
+                    if (_solved)
+                    {
+                        return "RLPuzzle2Solved";
+                    }
+                    return "RLPuzzle2NotSolved";
+                case RLLevel.level3:
+                    if (_solved)
+                    {
+                        return "RLPuzzle3Solved";
+                    }
+                    return "RLPuzzle3NotSolved";
+            }
+
+            return "";
+        }
+    }
 
 
     // Start is called before the first frame update
@@ -71,8 +122,20 @@ public class RLController : MonoBehaviour
         evaluationCloseButton = _UI.Q<Button>("EvaluationCloseButton");
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
 
-        LoadRewardAdjusters();
+        LoadRewardAdjusters(); 
+        StartCoroutine(StartTutorial());
     }
+
+    IEnumerator StartTutorial()
+    {
+        yield return new WaitForSeconds(1f);
+        Debug.Log("Starting tutorial");
+        tutorialPanel.RemoveFromClassList("opacity-none");
+        var steps = DataReader.Instance.GetTutorialSteps(GetTutorialText);
+        TutorialController().SetTutorialSteps(steps);
+        TutorialController().StartTutorial();
+    }
+
     public void OnWorkshopOpenButtonClicked()
     {
         workshopPanel.RemoveFromClassList("panel-up");
@@ -172,5 +235,12 @@ public class RLController : MonoBehaviour
     public void LoadLevel()
     {
         SceneManager.LoadScene(_nextScene.name);
+    }
+
+    public enum RLLevel
+    {
+        level1, 
+        level2,
+        level3
     }
 }
