@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alexwsu.EventChannels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,8 +19,9 @@ public class RLAgent : MonoBehaviour
     [SerializeField] protected int _maxSteps = 20;
 
     [Header("Properties")]
-    [SerializeField] public AgentController controller;
-    [SerializeField] public List<Task> tasks;
+    public AgentController controller;
+    public List<Task> tasks;
+    public EventChannel taskCompletedChannel;
 
     [Header("Stats")]
     public float avgRewardPerEpoch = 0;
@@ -123,6 +125,7 @@ public class RLAgent : MonoBehaviour
             if (!task.IsComplete()) return false;
         }
 
+        taskCompletedChannel.Invoke(new Empty());
         return true;
     }
 }
