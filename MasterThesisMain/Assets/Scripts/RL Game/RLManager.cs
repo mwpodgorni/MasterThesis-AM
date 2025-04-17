@@ -95,8 +95,8 @@ public class RLManager : MonoBehaviour
                 episodeCount++;
 
                 episodeReward[episodeCount - 1] = _player.currentEpochReward;
-                successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / episodeCount;
-                stepsToCompletion[episodeCount - 1] = _player.currentEpochStepCount / maxStepPerEpoch;
+                successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / (float) episodeCount;
+                stepsToCompletion[episodeCount - 1] = (float) _player.currentEpochStepCount / (float) maxStepPerEpoch;
 
                 ResetTraining(); // Reset for next epoch
             }
