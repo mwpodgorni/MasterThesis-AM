@@ -15,7 +15,7 @@ PlayerSettings:
   companyName: DefaultCompany
   productName: MasterThesisMain
   defaultCursor: {fileID: 2800000, guid: a8e26347071ff954c9ce9a93acc0818d, type: 3}
-  cursorHotspot: {x: 0, y: 0}
+  cursorHotspot: {x: 0.86, y: 1.65}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1

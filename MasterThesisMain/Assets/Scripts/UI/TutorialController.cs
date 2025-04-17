@@ -122,7 +122,10 @@ public class TutorialController : MonoBehaviour
     {
         yield return StartCoroutine(ShowText(tutorialTitle, title));
 
-        StartCoroutine(ShowText(tutorialContent, string.Join("\n", messages[currentStep].Content)));
+        if (currentStep < messages.Count)
+        {
+            StartCoroutine(ShowText(tutorialContent, string.Join("\n", messages[currentStep].Content)));
+        }
     }
 
     private IEnumerator ShowText(Label label, string text)

@@ -196,3 +196,6 @@
 .train-button:hover{
     background-color:rgb(44, 122, 99);
 }
+.evaluation-label{
+    flex-basis: 70%;
+}

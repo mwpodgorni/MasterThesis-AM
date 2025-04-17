@@ -122,7 +122,11 @@ public class NetworkController : MonoBehaviour
     }
     public void AddNode(VisualElement layer)
     {
-        if (layer.childCount >= GP.Instance.maxNodes) return;
+        Debug.Log("ADding node to 1:" + GP.Instance.maxNodes);
+        Debug.Log("ADding node to 2:" + layer.childCount);
+        var childCount = layer.Q<VisualElement>("NodeWrapper").childCount;
+        Debug.Log("ADding node to 3:" + childCount);
+        if (childCount >= GP.Instance.maxNodes) return;
         if (layer.name == "InputLayerPanel")
         {
             neuralNetwork.AddInputLayerNode();
@@ -352,6 +356,7 @@ public class NetworkController : MonoBehaviour
     public void SetUpHelpClickEvents()
     {
         MakeLabelClickable(ui.Q<Label>("HelpInputLayer"), "InputLayer");
+        MakeLabelClickable(ui.Q<Label>("HelpHiddenLayers"), "HiddenLayers");
         MakeLabelClickable(ui.Q<Label>("HelpOutputLayer"), "OutputLayer");
     }
     void MakeLabelClickable(Label label, string helpKey)
@@ -371,7 +376,7 @@ public class NetworkController : MonoBehaviour
     }
     public void EnableTraining()
     {
-        testNetworkButton.style.display = DisplayStyle.None;
+        // testNetworkButton.style.display = DisplayStyle.None;
         networkActionPanel.style.display = DisplayStyle.Flex;
     }
     private void InitializeSliders()

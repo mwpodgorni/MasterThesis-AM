@@ -47,38 +47,41 @@ public class LineChart : VisualElement
         float h = rect.height;
         float step = w / (pointCount - 1);
 
-        // compute global min/max
+        // compute global min/max and add 10% headroom above max
         float globalMin = seriesList.SelectMany(s => s.Item1).Min();
         float globalMax = seriesList.SelectMany(s => s.Item1).Max();
-        float range = Mathf.Max(globalMax - globalMin, 0.0001f);
+        float padding = (globalMax - globalMin) * 0.1f;
+        float paddedMax = globalMax + padding;
+        float paddedRange = Mathf.Max(paddedMax - globalMin, 0.0001f);
 
         // --- background ---
-        painter.fillColor = new Color(0.1f, 0.1f, 0.1f, 1);
+        painter.strokeColor = Color.white;
+        painter.lineWidth = 1;
         painter.BeginPath();
-        painter.MoveTo(rect.min);
-        painter.LineTo(new Vector2(rect.xMax, rect.yMin));
-        painter.LineTo(rect.max);
-        painter.LineTo(new Vector2(rect.xMin, rect.yMax));
+        painter.MoveTo(new Vector2(rect.xMin, rect.yMin));         // top‑left
+        painter.LineTo(new Vector2(rect.xMax, rect.yMin));         // top‑right
+        painter.LineTo(new Vector2(rect.xMax, rect.yMax));         // bottom‑right
+        painter.LineTo(new Vector2(rect.xMin, rect.yMax));         // bottom‑left
         painter.ClosePath();
-        painter.Fill();
+        painter.Stroke();
 
         // --- axes & grid ---
         painter.strokeColor = Color.white;
         painter.lineWidth = 1;
 
-        // X
+        // X axis
         painter.BeginPath();
         painter.MoveTo(new Vector2(rect.xMin, rect.yMax));
         painter.LineTo(new Vector2(rect.xMax, rect.yMax));
         painter.Stroke();
 
-        // Y
+        // Y axis
         painter.BeginPath();
         painter.MoveTo(new Vector2(rect.xMin, rect.yMin));
         painter.LineTo(new Vector2(rect.xMin, rect.yMax));
         painter.Stroke();
 
-        // horizontal grid
+        // horizontal grid lines
         painter.strokeColor = new Color(1, 1, 1, 0.2f);
         for (int i = 0; i <= 4; i++)
         {
@@ -90,7 +93,7 @@ public class LineChart : VisualElement
             painter.Stroke();
         }
 
-        // --- plot each dataset ---
+        // --- plot each dataset with padded range ---
         foreach (var (vals, col) in seriesList)
         {
             painter.strokeColor = col;
@@ -99,9 +102,9 @@ public class LineChart : VisualElement
             for (int i = 0; i < pointCount - 1; i++)
             {
                 float x1 = rect.xMin + i * step;
-                float y1 = rect.yMax - ((vals[i] - globalMin) / range) * h;
+                float y1 = rect.yMax - ((vals[i] - globalMin) / paddedRange) * h;
                 float x2 = rect.xMin + (i + 1) * step;
-                float y2 = rect.yMax - ((vals[i + 1] - globalMin) / range) * h;
+                float y2 = rect.yMax - ((vals[i + 1] - globalMin) / paddedRange) * h;
 
                 painter.BeginPath();
                 painter.MoveTo(new Vector2(x1, y1));
@@ -118,43 +121,59 @@ public class LineChart : VisualElement
 
     private void AddAxisLabels()
     {
-        // Calculate positions and add labels only once the layout is ready
-        var rect = contentRect;
-        float width = rect.width;
-        float height = rect.height;
-        float step = width / (data.Count - 1);
-        float min = Mathf.Min(data.ToArray());
-        float range = Mathf.Max(Mathf.Max(data.ToArray()) - min, 0.0001f);
+        labelContainer.Clear();
 
-        // Y-axis labels (outside the chart area to the left)
+        // 1) same seriesList as used in drawing
+        var seriesList = datasets.Count > 0
+            ? datasets
+            : new List<Tuple<List<float>, Color>> { Tuple.Create(data, lineColor) };
+
+        var values = seriesList.SelectMany(s => s.Item1).ToList();
+        if (values.Count < 2)
+            return;
+
+        int pointCount = seriesList[0].Item1.Count;
+        var rect = contentRect;
+        float w = rect.width;
+        float h = rect.height;
+        float stepX = w / (pointCount - 1);
+
+        // 2) global min/max
+        float globalMin = values.Min();
+        float globalMax = values.Max();
+        float range = Mathf.Max(globalMax - globalMin, 0.0001f);
+
+        // 3) Y‑axis labels
         int yTicks = 4;
         for (int i = 0; i <= yTicks; i++)
         {
-            float t = (float)i / yTicks;
-            float y = rect.yMax - t * height;
-            float val = min + t * range;
+            float t = i / (float)yTicks;
+            float y = Mathf.Lerp(rect.yMax, rect.yMin, t);
+            float val = Mathf.Lerp(globalMin, globalMax, t);
 
-            var label = new Label(val.ToString("0.0"));
-            label.style.position = Position.Absolute;
-            label.style.left = rect.x - 40;
-            label.style.top = y - 12;
-            label.style.fontSize = 14;
-            label.style.color = Color.white;
-            labelContainer.Add(label);
+            var lbl = new Label(val.ToString("0.0"));
+            lbl.style.position = Position.Absolute;
+            lbl.style.left = rect.xMin - 40;
+            lbl.style.top = y - 10;
+            lbl.style.fontSize = 12;
+            lbl.style.color = Color.white;
+            labelContainer.Add(lbl);
         }
 
-        // X-axis labels (outside the chart area below)
-        for (int i = 0; i < data.Count; i += Mathf.Max(1, data.Count / 5))
+        // 4) X‑axis labels (5 ticks max)
+        int maxXTicks = 5;
+        int xStepCount = Mathf.Max(1, (pointCount - 1) / (maxXTicks - 1));
+        for (int i = 0; i < pointCount; i += xStepCount)
         {
-            float x = rect.x + i * step;
+            float x = rect.xMin + i * stepX;
 
-            var label = new Label(i.ToString());
-            label.style.position = Position.Absolute;
-            label.style.left = x - 12;
-            label.style.top = rect.yMax + 8;
-            label.style.fontSize = 14;
-            label.style.color = Color.white;
-            labelContainer.Add(label);
+            var lbl = new Label(i.ToString());
+            lbl.style.position = Position.Absolute;
+            lbl.style.left = x - 8;
+            lbl.style.top = rect.yMax + 4;
+            lbl.style.fontSize = 12;
+            lbl.style.color = Color.white;
+            labelContainer.Add(lbl);
         }
     }
 }

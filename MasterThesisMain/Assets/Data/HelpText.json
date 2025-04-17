@@ -6,7 +6,7 @@
       "For example, if you're trying to recognize an image, the input layer would take in the pixel values of that image. Each sensor in the input layer represents one piece of data, like a pixel, feature, or measurement, and sends that information into the next layer for processing."
     ]
   },
-  "hiddenLayers": {
+  "HiddenLayers": {
     "title": "Hidden Layers",
     "description": [
       "Hidden Layers are the layers between the input and output layers in a neural network. These layers are where the network does most of its thinking.",
@@ -15,7 +15,7 @@
       "You don’t directly see what happens in these layers, which is why they're called hidden. They are essential for enabling the network to solve complex problems."
     ]
   },
-  "outputLayer": {
+  "OutputLayer": {
     "title": "Output Layer",
     "description": [
       "Output Layer is the final layer in a neural network. This layer produces the network's result after processing all the data through the input and hidden layers.",
