@@ -1,0 +1,55 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class RLEvaluationController : MonoBehaviour
+{
+    VisualElement ui;
+    Label avgEpisodeReturn;
+    Label successRate;
+    Label completionTime; 
+    Label episodeCount; 
+
+    LineChart chart;
+
+    void Start()
+    {
+    }
+    private void OnEnable()
+    {
+        ui = GetComponent<UIDocument>().rootVisualElement;
+        chart = ui.Q<LineChart>("LineChart");
+        avgEpisodeReturn = ui.Q<Label>("EpisodeReturn");
+        successRate = ui.Q<Label>("SuccessRate");
+        completionTime = ui.Q<Label>("CompletionTime");
+        episodeCount = ui.Q<Label>("EpisodeCount");
+    }
+    public void UpdateEvaluationData(RLEvaluationData data)
+    {
+        // Debug.Log($"Updating evaluation data: {data}");
+        avgEpisodeReturn.text = data.avgEpisodeReturn.ToString();
+        successRate.text =      data.successRate.ToString();
+        completionTime.text =   data.completionTime.ToString();
+        episodeCount.text =     data.episodeCount.ToString();
+
+        chart.datasets.Add(new Tuple<List<float>, Color>(DownsampleData(data.episodeReward, (int)data.episodeCount), Color.green));
+        chart.datasets.Add(new Tuple<List<float>, Color>(DownsampleData(data.successRateRolling, (int)data.episodeCount), Color.red));
+        chart.datasets.Add(new Tuple<List<float>, Color>(DownsampleData(data.stepsToCompletion, (int)data.episodeCount), Color.blue));
+    }
+    private List<float> DownsampleData(float[] lossData, int maxDataPoints = 1000)
+    {
+        if (lossData.Length <= maxDataPoints) return new List<float>(lossData);
+
+        int step = Mathf.CeilToInt((float)lossData.Length / maxDataPoints);
+        List<float> downsampledData = new List<float>();
+
+        for (int i = 0; i < lossData.Length; i += step)
+        {
+            downsampledData.Add(lossData[i]);
+        }
+
+        return downsampledData;
+    }
+}

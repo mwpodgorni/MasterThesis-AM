@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,6 +10,8 @@ public class LineChart : VisualElement
     public List<float> data = new();
     public Color lineColor = Color.green;
     public float lineWidth = 2f;
+
+    public List<Tuple<List<float>, Color>> datasets = new();
 
     private VisualElement labelContainer;
 
@@ -86,17 +89,40 @@ public class LineChart : VisualElement
         painter.strokeColor = lineColor;
         painter.lineWidth = lineWidth;
 
-        for (int i = 0; i < data.Count - 1; i++)
+        if (datasets.Count <= 0)
         {
-            float x1 = rect.x + i * step;
-            float y1 = rect.yMax - ((data[i] - min) / range * height);
-            float x2 = rect.x + (i + 1) * step;
-            float y2 = rect.yMax - ((data[i + 1] - min) / range * height);
+            foreach (var data in datasets)
+            {
+                painter.strokeColor = data.Item2;
 
-            painter.BeginPath();
-            painter.MoveTo(new Vector2(x1, y1));
-            painter.LineTo(new Vector2(x2, y2));
-            painter.Stroke();
+                for (int i = 0; i < data.Item1.Count - 1; i++)
+                {
+                    float x1 = rect.x + i * step;
+                    float y1 = rect.yMax - ((data.Item1[i] - min) / range * height);
+                    float x2 = rect.x + (i + 1) * step;
+                    float y2 = rect.yMax - ((data.Item1[i + 1] - min) / range * height);
+
+                    painter.BeginPath();
+                    painter.MoveTo(new Vector2(x1, y1));
+                    painter.LineTo(new Vector2(x2, y2));
+                    painter.Stroke();
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < data.Count - 1; i++)
+            {
+                float x1 = rect.x + i * step;
+                float y1 = rect.yMax - ((data[i] - min) / range * height);
+                float x2 = rect.x + (i + 1) * step;
+                float y2 = rect.yMax - ((data[i + 1] - min) / range * height);
+
+                painter.BeginPath();
+                painter.MoveTo(new Vector2(x1, y1));
+                painter.LineTo(new Vector2(x2, y2));
+                painter.Stroke();
+            }
         }
     }
 
