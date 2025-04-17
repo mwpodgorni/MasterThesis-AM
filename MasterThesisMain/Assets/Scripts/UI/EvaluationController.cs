@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+using System.Linq;
+using System;
 public class EvaluationController : MonoBehaviour
 {
     VisualElement ui;
@@ -30,6 +31,15 @@ public class EvaluationController : MonoBehaviour
         errorLowValue = ui.Q<Label>("ErrorLowValue");
         errorMidValue = ui.Q<Label>("ErrorMidValue");
         errorHighValue = ui.Q<Label>("ErrorHighValue");
+        var seriesA = new List<float> { 1f, 2f, 3f, 2f, 1f };
+        var seriesB = new List<float> { 2f, 1f, 4f, 1f, 2f };
+        var seriesC = new List<float> { 3f, 3f, 1f, 3f, 3f };
+
+        chart.datasets = new List<Tuple<List<float>, Color>> {
+            Tuple.Create(seriesA, Color.green),
+            Tuple.Create(seriesB, Color.yellow),
+            Tuple.Create(seriesC, Color.red)
+        };
     }
     public void UpdateEvaluationData(EvaluationData data)
     {
