@@ -73,6 +73,7 @@ public class RLManager : MonoBehaviour
             {
                 // Training finished
                 UpdateEval();
+
                 _training = false;
                 episodeCount = 0;
                 DeactivateAgents();
@@ -94,8 +95,8 @@ public class RLManager : MonoBehaviour
                 episodeCount++;
 
                 episodeReward[episodeCount - 1] = _player.currentEpochReward;
-                successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / episodeCount;
-                stepsToCompletion[episodeCount - 1] = _player.currentEpochStepCount / maxStepPerEpoch;
+                successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / (float) episodeCount;
+                stepsToCompletion[episodeCount - 1] = (float) _player.currentEpochStepCount / (float) maxStepPerEpoch;
 
                 ResetTraining(); // Reset for next epoch
             }
@@ -222,7 +223,7 @@ public class RLManager : MonoBehaviour
 
         currentEval.avgEpisodeReturn = _player.totalReward / maxEpisodes;
         currentEval.successRate = _player.totalTaskCompleted / maxEpisodes;
-        currentEval.completionTime = _player.totalStepCount / (maxStepPerEpoch * maxEpisodes);
+        currentEval.completionTime = _player.totalStepCount / (float)(maxEpisodes);
         currentEval.episodeCount = episodeCount;
     }
 

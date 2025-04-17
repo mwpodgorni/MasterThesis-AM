@@ -60,8 +60,9 @@ public class QAgent : RLAgent
             _timer = 0f;
         }
 
-        if (totalStepCount % maxSteps == 0 || CompletedTask())
+        if (currentEpochStepCount % maxSteps == 0 || CompletedTask())
         {
+            totalTaskCompleted++;
             _finishedEpoch = true;
         }
     }

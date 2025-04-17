@@ -20,6 +20,9 @@ public class RLEvaluationController : MonoBehaviour
     private void OnEnable()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
+
+        ui = ui.Query<VisualElement>("EvaluationPanel");
+
         chart = ui.Q<LineChart>("LineChart");
         avgEpisodeReturn = ui.Q<Label>("EpisodeReturn");
         successRate = ui.Q<Label>("SuccessRate");
