@@ -24,8 +24,11 @@ public class NetworkController : MonoBehaviour
     VisualElement _inputLayerPanel;
     VisualElement _outputLayerPanel;
     VisualElement networkActionPanel;
-    IntegerField _inputTrainingCycle;
-    FloatField _inputLearningRate;
+    SliderInt trainingCycleSlider;
+    Label trainingCycleLabel;
+    Slider learningRateSlider;
+    Label learningRateLabel;
+
     Label objectiveText;
 
     NeuralNetwork neuralNetwork;
@@ -48,9 +51,8 @@ public class NetworkController : MonoBehaviour
         // networkActionPanel.style.display = DisplayStyle.None;
 
 
+        InitializeSliders();
 
-        _inputTrainingCycle = ui.Q<IntegerField>("InputTrainingCycle");
-        _inputLearningRate = ui.Q<FloatField>("InputLearningRate");
 
         // buttons
         testNetworkButton = ui.Q<Button>("TestNetworkButton");
@@ -211,7 +213,7 @@ public class NetworkController : MonoBehaviour
     {
         if (neuralNetwork.IsNetworkValid())
         {
-            neuralNetwork.TrainNetwork(_inputTrainingCycle.value, _inputLearningRate.value);
+            neuralNetwork.TrainNetwork(trainingCycleSlider.value, learningRateSlider.value);
             // TODO: make better validation of whether it is completed or not
             StateManager.Instance.MarkMiniGameSolved(3);
 
@@ -372,6 +374,26 @@ public class NetworkController : MonoBehaviour
         testNetworkButton.style.display = DisplayStyle.None;
         networkActionPanel.style.display = DisplayStyle.Flex;
     }
+    private void InitializeSliders()
+    {
+        trainingCycleSlider = ui.Q<SliderInt>("TrainingCycleSlider");
+        trainingCycleLabel = ui.Q<Label>("TrainingCycleLabel");
+        learningRateSlider = ui.Q<Slider>("LearningRateSlider");
+        learningRateLabel = ui.Q<Label>("LearningRateLabel");
+        trainingCycleLabel.text = trainingCycleSlider.value.ToString();
+        learningRateLabel.text = learningRateSlider.value.ToString("F3");
+
+        trainingCycleSlider.RegisterValueChangedCallback(evt =>
+        {
+            trainingCycleLabel.text = evt.newValue.ToString();
+        });
+
+        learningRateSlider.RegisterValueChangedCallback(evt =>
+        {
+            learningRateLabel.text = evt.newValue.ToString("F3");
+        });
+    }
+
 
 }
 
