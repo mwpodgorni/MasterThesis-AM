@@ -17,22 +17,22 @@
                     <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
                         <engine:Label text="\uf05a" binding-path="\uf05a" class="text-yellow" style="-unity-text-align: middle-left; -unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;);" />
                         <engine:Label text="Episode Return:" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: 50%;" />
-                        <engine:Label text="Label" name="FinishedCyclesValue" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: auto; flex-grow: 1;" />
+                        <engine:Label text="Label" name="EpisodeReturn" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: auto; flex-grow: 1;" />
                     </engine:VisualElement>
                     <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row;">
                         <engine:Label text="\uf05a" binding-path="\uf05a" class="text-yellow" style="-unity-text-align: middle-left; -unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;);" />
                         <engine:Label text="Success Rate:" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: 50%;" />
-                        <engine:Label text="Label" name="LearningRateValue" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: auto; flex-grow: 1;" />
+                        <engine:Label text="Label" name="SuccessRate" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: auto; flex-grow: 1;" />
                     </engine:VisualElement>
                     <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row;">
                         <engine:Label text="\uf05a" binding-path="\uf05a" class="text-yellow" style="-unity-text-align: middle-left; -unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;);" />
                         <engine:Label text="Completion Time" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: 50%;" />
-                        <engine:Label text="Label" name="FinalAverageLossValue" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: auto; flex-grow: 1;" />
+                        <engine:Label text="Label" name="CompletionTime" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: auto; flex-grow: 1;" />
                     </engine:VisualElement>
                     <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row;">
                         <engine:Label text="\uf05a" binding-path="\uf05a" class="text-yellow" style="-unity-text-align: middle-left; -unity-font-definition: url(&quot;project://database/Assets/fontawesome-free-6.7.2-desktop%201/otfs/Font%20Awesome%206%20Free-Solid-900.otf?fileID=12800000&amp;guid=ca59acc8e108ea94991c557ff57696a9&amp;type=3#Font Awesome 6 Free-Solid-900&quot;);" />
                         <engine:Label text="Episode Count:" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: 50%;" />
-                        <engine:Label text="Label" name="CorrectPredictionsValue" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: auto; flex-grow: 1;" />
+                        <engine:Label text="Label" name="EpisodeCount" class="text-yellow" style="-unity-text-align: middle-left; flex-basis: auto; flex-grow: 1;" />
                     </engine:VisualElement>
                 </engine:VisualElement>
                 <engine:VisualElement style="flex-grow: 1; flex-basis: 50px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">

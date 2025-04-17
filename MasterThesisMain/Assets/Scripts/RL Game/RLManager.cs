@@ -73,6 +73,7 @@ public class RLManager : MonoBehaviour
             {
                 // Training finished
                 UpdateEval();
+
                 _training = false;
                 episodeCount = 0;
                 DeactivateAgents();
@@ -222,7 +223,7 @@ public class RLManager : MonoBehaviour
 
         currentEval.avgEpisodeReturn = _player.totalReward / maxEpisodes;
         currentEval.successRate = _player.totalTaskCompleted / maxEpisodes;
-        currentEval.completionTime = _player.totalStepCount / (maxStepPerEpoch * maxEpisodes);
+        currentEval.completionTime = _player.totalStepCount / (float)(maxEpisodes);
         currentEval.episodeCount = episodeCount;
     }
 
