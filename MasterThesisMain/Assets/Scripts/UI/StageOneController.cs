@@ -63,7 +63,7 @@ public class StageOneController : MonoBehaviour
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
 
 
-        // StartCoroutine(StartTutorial());
+        StartCoroutine(StartTutorial());
         // TODO: remove this debug code
         //     HideAllPanels();
         //     menu.style.display = DisplayStyle.Flex;

@@ -45,7 +45,7 @@ public class NetworkController : MonoBehaviour
         _inputLayerPanel = ui.Q<VisualElement>("InputLayerPanel");
         _outputLayerPanel = ui.Q<VisualElement>("OutputLayerPanel");
         networkActionPanel = ui.Q<VisualElement>("NetworkActionPanel");
-        networkActionPanel.style.display = DisplayStyle.None;
+        // networkActionPanel.style.display = DisplayStyle.None;
 
 
 

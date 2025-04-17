@@ -37,7 +37,7 @@ public class RLController : MonoBehaviour
     {
         get
         {
-            switch(_rlLevel)
+            switch (_rlLevel)
             {
                 case RLLevel.level1:
                     return "ReinforcementLearning";
@@ -56,7 +56,7 @@ public class RLController : MonoBehaviour
         switch (_rlLevel)
         {
             case RLLevel.level1:
-                if(solved)
+                if (solved)
                 {
                     return "RLPuzzle1Solved";
                 }
@@ -76,7 +76,7 @@ public class RLController : MonoBehaviour
         }
 
         return "";
-     
+
     }
 
 
@@ -112,7 +112,6 @@ public class RLController : MonoBehaviour
 
         workshopOpenButton = _UI.Q<Button>("WorkshopOpenButton");
         workshopOpenButton.clicked += OnWorkshopOpenButtonClicked;
-        workshopOpenButton.tooltip = "Open Workshop";
         workshopCloseButton = workshopPanel.Q<Button>("WorkshopCloseButton");
         workshopCloseButton.clicked += OnWorkshopCloseButtonClicked;
         evaluationOpenButton = _UI.Q<Button>("EvaluationOpenButton");
@@ -120,7 +119,7 @@ public class RLController : MonoBehaviour
         evaluationCloseButton = _UI.Q<Button>("EvaluationCloseButton");
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
 
-        LoadRewardAdjusters(); 
+        LoadRewardAdjusters();
         StartCoroutine(StartTutorial(GetTutorialText));
     }
 
@@ -186,7 +185,7 @@ public class RLController : MonoBehaviour
         label.text = evt.newValue.ToString();
     }
 
-    void StartTrainingHandler(ClickEvent evt) 
+    void StartTrainingHandler(ClickEvent evt)
     {
         DisableRewardAdjusters();
         _manager.StartTraining();
@@ -242,7 +241,7 @@ public class RLController : MonoBehaviour
 
     public enum RLLevel
     {
-        level1, 
+        level1,
         level2,
         level3
     }
