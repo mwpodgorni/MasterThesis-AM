@@ -1,3 +1,4 @@
+using Google.Protobuf.WellKnownTypes;
 using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
@@ -108,6 +109,10 @@ public class RLController : MonoBehaviour
         helpPanel = _UI.Q<VisualElement>("HelpPanel");
         helpPanel.style.display = DisplayStyle.Flex;
 
+        evaluationPanel = _UI.Q<VisualElement>("EvaluationPanel");
+        evaluationPanel.style.display = DisplayStyle.Flex;
+        evaluationPanel.AddToClassList("panel-up");
+
         tutorialPanel.AddToClassList("opacity-none");
 
         workshopOpenButton = _UI.Q<Button>("WorkshopOpenButton");
@@ -145,6 +150,7 @@ public class RLController : MonoBehaviour
     }
     public void OnEvaluationOpenButtonClicked()
     {
+        EvaluationController().UpdateEvaluationData(_manager.currentEval);
         evaluationPanel.RemoveFromClassList("panel-up");
         evaluationOpenButton.AddToClassList("opacity-none");
     }
@@ -173,16 +179,28 @@ public class RLController : MonoBehaviour
 
             image.style.backgroundImage = new StyleBackground(_tileSpritesDict[tile]);
 
-            slider.RegisterValueChangedCallback(evt => SetTileRewardHandler(evt, tile, label));
+            slider.RegisterCallback<ChangeEvent<float>>(evt => SetTileRewardHandler(evt, tile, label, slider));
 
             _rewardContainer.Add(rewardAdjuster);
         }
     }
 
-    void SetTileRewardHandler(ChangeEvent<float> evt, TileType tile, Label label)
+    void SetTileRewardHandler(ChangeEvent<float> evt, TileType tile, Label label, Slider slider)
     {
-        _manager.SetReward(tile, evt.newValue);
-        label.text = evt.newValue.ToString();
+        var value = evt.newValue;
+
+        // Snap to 0, 0.5, 1
+        value = SnapToValue(value, 0, 0.05f);
+
+        value = SnapToValue(value, 0.5f, 0.05f);
+        value = SnapToValue(value, 1f, 0.05f);
+
+        value = SnapToValue(value, -0.5f, 0.05f);
+        value = SnapToValue(value, -1f, 0.05f);
+
+        _manager.SetReward(tile, value);
+        slider.value = value;
+        label.text = value.ToString();
     }
 
     void StartTrainingHandler(ClickEvent evt)
@@ -229,9 +247,9 @@ public class RLController : MonoBehaviour
         }
         return GetComponent<TutorialController>();
     }
-    public EvaluationController EvaluationController()
+    public RLEvaluationController EvaluationController()
     {
-        return GetComponent<EvaluationController>();
+        return GetComponent<RLEvaluationController>();
     }
 
     public void LoadLevel()
@@ -244,5 +262,14 @@ public class RLController : MonoBehaviour
         level1,
         level2,
         level3
+    }
+
+    float SnapToValue(float input, float snapToValue, float sensitivity)
+    {
+
+        if (input <= (snapToValue + sensitivity) && snapToValue <= input) return snapToValue;
+        if (input >= (snapToValue - sensitivity) && snapToValue >= input) return snapToValue;
+
+        return input;
     }
 }

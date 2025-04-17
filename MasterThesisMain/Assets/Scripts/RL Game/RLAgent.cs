@@ -28,6 +28,8 @@ public class RLAgent : MonoBehaviour
     public float totalReward = 0;
     public float currentEpochReward = 0;
     public int totalStepCount = 0;
+    public float totalTaskCompleted = 0;
+    public int currentEpochStepCount = 0;
 
     protected bool _calculatingMove = false;
     protected float _waitTime = 1f;
@@ -85,6 +87,7 @@ public class RLAgent : MonoBehaviour
         controller.ResetAgent();
         _finishedEpoch = false;
         currentEpochReward = 0;
+        currentEpochStepCount = 0;
     }
 
     virtual public void ResetModel()

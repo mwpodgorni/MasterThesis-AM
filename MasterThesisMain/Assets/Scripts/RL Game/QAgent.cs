@@ -46,6 +46,7 @@ public class QAgent : RLAgent
             controller.MoveToSelectedAction(action);
 
             totalStepCount++;
+            currentEpochStepCount++;
             _epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-_decayRate * totalStepCount);
         }
 

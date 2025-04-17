@@ -1822,6 +1822,11 @@ PrefabInstance:
       objectReference: {fileID: 5346545438083304740}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
+      propertyPath: maxEpisodes
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
       propertyPath: _observedTiles.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1834,6 +1839,11 @@ PrefabInstance:
         type: 3}
       propertyPath: '_observedTiles.Array.data[1]'
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
+      propertyPath: requiredCountOfCompletedTask
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 944764996325108040, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}

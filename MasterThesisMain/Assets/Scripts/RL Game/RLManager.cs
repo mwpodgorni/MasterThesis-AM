@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Alexwsu.EventChannels;
+using JetBrains.Annotations;
 
 public class RLManager : MonoBehaviour
 {
@@ -17,16 +18,23 @@ public class RLManager : MonoBehaviour
     [SerializeField] float _fastSpeed = 3f;
     [SerializeField] float _fasterSpeed = 5f;
 
-    public int episodeCount = 1;
-    public int maxEpisodes = 30;
-    public int maxStepPerEpoch = 20;
-
     [Header("Statistics")]
     public float maxReward = 0;
     public float avgRewardPerEpoch = 0;
 
     bool _training = false;
     int _taskCompletedCount = 0;
+
+    public int episodeCount = 1; // How many episodes the agent has been through since the last reward change.
+
+    public float[] episodeReward; // Shows if the agent is earning more reward.
+    public float[] successRateRolling; // Rolling average success rate over the last N episodes
+    public float[] stepsToCompletion; // To indicate whether the agent is becoming more efficient
+
+    public int maxEpisodes = 30;
+    public int maxStepPerEpoch = 20;
+
+    public RLEvaluationData currentEval;
 
     public bool LevelCompleted
     {
@@ -45,21 +53,27 @@ public class RLManager : MonoBehaviour
         SetSpeed(_speed);
         _player.maxSteps = maxStepPerEpoch;
 
+        episodeReward = new float[maxEpisodes];
+        successRateRolling = new float[maxEpisodes];
+        stepsToCompletion = new float[maxEpisodes];
+
         SetReward(TileType.Enemy, 0);
         SetReward(TileType.Goal, 0);
         SetReward(TileType.Collectible, 0);
         SetReward(TileType.Buff, 0);
+
+        currentEval = new RLEvaluationData();
     }
 
     private void Update()
     {
         if (_player.FinishedEpoch && _training)
         {
-            if (episodeCount >= maxEpisodes || _taskCompletedCount >= requiredCountOfCompletedTask)
+            if (episodeCount >= maxEpisodes)
             {
                 // Training finished
+                UpdateEval();
                 _training = false;
-                avgRewardPerEpoch = _player.avgRewardPerEpoch;
                 episodeCount = 0;
                 DeactivateAgents();
                 ResetTraining();
@@ -78,6 +92,11 @@ public class RLManager : MonoBehaviour
             {
                 Debug.Log("Episode Finished");
                 episodeCount++;
+
+                episodeReward[episodeCount - 1] = _player.currentEpochReward;
+                successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / episodeCount;
+                stepsToCompletion[episodeCount - 1] = _player.currentEpochStepCount / maxStepPerEpoch;
+
                 ResetTraining(); // Reset for next epoch
             }
         }
@@ -195,6 +214,18 @@ public class RLManager : MonoBehaviour
         return _observedTiles;
     }
 
+    public void UpdateEval()
+    {
+        currentEval.episodeReward = episodeReward;
+        currentEval.successRateRolling = successRateRolling;
+        currentEval.stepsToCompletion = stepsToCompletion;
+
+        currentEval.avgEpisodeReturn = _player.totalReward / maxEpisodes;
+        currentEval.successRate = _player.totalTaskCompleted / maxEpisodes;
+        currentEval.completionTime = _player.totalStepCount / (maxStepPerEpoch * maxEpisodes);
+        currentEval.episodeCount = episodeCount;
+    }
+
     public enum GameSpeed
     {
         Normal,
@@ -205,13 +236,12 @@ public class RLManager : MonoBehaviour
 
 public struct RLEvaluationData
 {
-    public float learningRate;   // Alpha (α)
-    public float discountFactor; // Gamma (γ);
-    public float decayRate;
-    public float epsilonMin;
-    public int maxSteps;
+    public float avgEpisodeReturn; // total accumulated reward in a single episode.
+    public float successRate; // Percentage of episodes where the agent successfully completed the task.
+    public float completionTime; // How long it takes the agent to complete the task (if it does).
+    public float episodeCount; // How many episodes the agent has been through since the last reward change.
 
-    public float avgEpisodeReward; // total reward avg
-    public float avgEpisodeLength; // number of steps 
-    public float successRate; // rate of how successful it completes tasks
+    public float[] episodeReward; // Shows if the agent is earning more reward.
+    public float[] successRateRolling; // Rolling average success rate over the last N episodes
+    public float[] stepsToCompletion; // To indicate whether the agent is becoming more efficient
 }
