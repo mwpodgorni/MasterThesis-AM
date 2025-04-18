@@ -28,6 +28,18 @@
     padding: 50px;
 }
 
+.unity-base-slider__tracker{
+    background-color: #823A30;
+    height:10px; 
+}
+.unity-base-slider__dragger{
+    background-color: #21634F;
+    height: 30px;
+    width: 10px;
+    border-radius: 5px;
+}
+  
+
 .unity-button {
     color: rgb(254, 238, 212);
     background-color: rgba(0, 20, 35, 0.9);

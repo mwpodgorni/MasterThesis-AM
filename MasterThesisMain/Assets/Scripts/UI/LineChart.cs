@@ -54,34 +54,29 @@ public class LineChart : VisualElement
         float paddedMax = globalMax + padding;
         float paddedRange = Mathf.Max(paddedMax - globalMin, 0.0001f);
 
-        // --- background ---
-        painter.strokeColor = Color.white;
-        painter.lineWidth = 1;
+        // --- background, axes & grid (same as before) ---
+        painter.fillColor = new Color(0.1f, 0.1f, 0.1f, 1);
         painter.BeginPath();
-        painter.MoveTo(new Vector2(rect.xMin, rect.yMin));         // top‑left
-        painter.LineTo(new Vector2(rect.xMax, rect.yMin));         // top‑right
-        painter.LineTo(new Vector2(rect.xMax, rect.yMax));         // bottom‑right
-        painter.LineTo(new Vector2(rect.xMin, rect.yMax));         // bottom‑left
+        painter.MoveTo(rect.min);
+        painter.LineTo(new Vector2(rect.xMax, rect.yMin));
+        painter.LineTo(rect.max);
+        painter.LineTo(new Vector2(rect.xMin, rect.yMax));
         painter.ClosePath();
-        painter.Stroke();
+        painter.Fill();
 
-        // --- axes & grid ---
         painter.strokeColor = Color.white;
         painter.lineWidth = 1;
-
         // X axis
         painter.BeginPath();
         painter.MoveTo(new Vector2(rect.xMin, rect.yMax));
         painter.LineTo(new Vector2(rect.xMax, rect.yMax));
         painter.Stroke();
-
         // Y axis
         painter.BeginPath();
         painter.MoveTo(new Vector2(rect.xMin, rect.yMin));
         painter.LineTo(new Vector2(rect.xMin, rect.yMax));
         painter.Stroke();
 
-        // horizontal grid lines
         painter.strokeColor = new Color(1, 1, 1, 0.2f);
         for (int i = 0; i <= 4; i++)
         {
@@ -93,27 +88,57 @@ public class LineChart : VisualElement
             painter.Stroke();
         }
 
-        // --- plot each dataset with padded range ---
+        // --- plot each dataset with smoother curves & thicker lines ---
+        int smoothSteps = 8;                   // subdivisions per segment
+        painter.lineWidth = lineWidth * 1.5f; // 50% thicker
+
         foreach (var (vals, col) in seriesList)
         {
             painter.strokeColor = col;
-            painter.lineWidth = lineWidth;
 
+            // build list of points
+            var pts = new List<Vector2>(pointCount);
+            for (int i = 0; i < pointCount; i++)
+            {
+                float x = rect.xMin + i * step;
+                float y = rect.yMax - ((vals[i] - globalMin) / paddedRange) * h;
+                pts.Add(new Vector2(x, y));
+            }
+
+            // spline‐interpolate each span
             for (int i = 0; i < pointCount - 1; i++)
             {
-                float x1 = rect.xMin + i * step;
-                float y1 = rect.yMax - ((vals[i] - globalMin) / paddedRange) * h;
-                float x2 = rect.xMin + (i + 1) * step;
-                float y2 = rect.yMax - ((vals[i + 1] - globalMin) / paddedRange) * h;
+                // neighbors p0 & p3 for Catmull–Rom
+                var p1 = pts[i];
+                var p2 = pts[i + 1];
+                var p0 = i > 0 ? pts[i - 1] : p1 + (p1 - p2);
+                var p3 = i < pointCount - 2 ? pts[i + 2] : p2 + (p2 - p1);
 
                 painter.BeginPath();
-                painter.MoveTo(new Vector2(x1, y1));
-                painter.LineTo(new Vector2(x2, y2));
+                painter.MoveTo(p1);
+
+                for (int s = 1; s <= smoothSteps; s++)
+                {
+                    float t = s / (float)smoothSteps;
+                    Vector2 q = CatmullRom(p0, p1, p2, p3, t);
+                    painter.LineTo(q);
+                }
+
                 painter.Stroke();
             }
         }
     }
 
+    // fixed‑tension Catmull–Rom (tension = 0.5)
+    private Vector2 CatmullRom(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, float t)
+    {
+        float t2 = t * t;
+        float t3 = t2 * t;
+        return 0.5f * ((2f * p1) +
+                       (-p0 + p2) * t +
+                       (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2 +
+                       (-p0 + 3f * p1 - 3f * p2 + p3) * t3);
+    }
     private void OnGeometryChanged(GeometryChangedEvent evt)
     {
         AddAxisLabels();
