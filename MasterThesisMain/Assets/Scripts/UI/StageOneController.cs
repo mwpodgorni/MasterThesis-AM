@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using Unity.VisualScripting;
 
 public class StageOneController : MonoBehaviour
 {
@@ -21,7 +22,6 @@ public class StageOneController : MonoBehaviour
     public Button evaluationCloseButton;
     public VisualElement helpPanel;
     public VisualElement topbar;
-    public bool firstEvaluationView = true;
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -61,7 +61,8 @@ public class StageOneController : MonoBehaviour
         evaluationOpenButton.clicked += OnEvaluationOpenButtonClicked;
         evaluationCloseButton = ui.Q<Button>("EvaluationCloseButton");
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
-
+        workshopOpenButton.AddToClassList("opacity-none");
+        evaluationOpenButton.AddToClassList("opacity-none");
 
         StartCoroutine(StartTutorial());
         // TODO: remove this debug code
@@ -80,6 +81,10 @@ public class StageOneController : MonoBehaviour
     }
     public void OnWorkshopOpenButtonClicked()
     {
+        if (StateManager.Instance.CurrentStage == GameStage.StartingPoint)
+        {
+            StateManager.Instance.SetState(GameStage.FirstWorkshopOpen);
+        }
         workshopPanel.RemoveFromClassList("panel-up");
         topbar.AddToClassList("opacity-none");
     }
@@ -91,15 +96,27 @@ public class StageOneController : MonoBehaviour
     }
     public void OnEvaluationOpenButtonClicked()
     {
-        if (firstEvaluationView && StateManager.Instance.MiniGame2Solved)
+        // if ( StateManager.Instance.MiniGame2Solved)
+        // {
+        //     TutorialController().ShowNextButton();
+        //     TutorialController().SetTypeText(true);
+        //     TutorialController().SetTutorialSteps(DataReader.Instance.ThirdPuzzleSolved());
+        //     TutorialController().StartTutorial();
+        // }
+        if (StateManager.Instance.CurrentStage == GameStage.SecondNetworkTrained)
         {
-            firstEvaluationView = false;
-            TutorialController().ShowNextButton();
-            TutorialController().SetTypeText(true);
-            TutorialController().SetTutorialSteps(DataReader.Instance.ThirdPuzzleSolved());
-            TutorialController().StartTutorial();
+            int finishedCycles = StageOneController.Instance.EvaluationController().GetFinishedCycles();
+            int correctPredictions = StageOneController.Instance.EvaluationController().GetCorrectPredictions();
+            Debug.Log($"Finished Cycles: {finishedCycles}, Correct Predictions: {correctPredictions}");
+            if (finishedCycles / 2 > correctPredictions)
+            {
+                StateManager.Instance.SetState(GameStage.SecondNetworkTrainedBad);
+            }
+            else
+            {
+                StateManager.Instance.SetState(GameStage.StageOneCompleted);
+            }
         }
-
         evaluationPanel.RemoveFromClassList("panel-up");
         topbar.AddToClassList("opacity-none");
     }
@@ -133,5 +150,13 @@ public class StageOneController : MonoBehaviour
     public void LoadSecondStage()
     {
         SceneManager.LoadScene(stageTwoScene.name);
+    }
+    public void ShowWorkshopOpenButton()
+    {
+        workshopOpenButton.RemoveFromClassList("opacity-none");
+    }
+    public void ShowEvaluationOpenButton()
+    {
+        evaluationOpenButton.RemoveFromClassList("opacity-none");
     }
 }

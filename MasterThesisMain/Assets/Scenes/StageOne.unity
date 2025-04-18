@@ -3445,6 +3445,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3223621426168229975, guid: e0b2e34b811976842a53ca70abea1f27,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223621426168229975, guid: e0b2e34b811976842a53ca70abea1f27,
+        type: 3}
       propertyPath: _maxDistance
       value: 100
       objectReference: {fileID: 0}

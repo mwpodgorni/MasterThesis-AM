@@ -24,6 +24,14 @@
       "The number of nodes in the output layer depends on the problem you're trying to solve, such as one node for a binary decision or multiple nodes for multiple categories."
     ]
   },
+  "TrainingCycle": {
+    "title": "TBD",
+    "description": ["TBD"]
+  },
+  "LearningRate": {
+    "title": "TBD",
+    "description": ["TBD"]
+  },
   "rewardAdjuster": {
     "title": "Reward Adjuster",
     "description": [

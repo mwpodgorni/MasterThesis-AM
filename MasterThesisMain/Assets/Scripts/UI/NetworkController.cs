@@ -24,6 +24,7 @@ public class NetworkController : MonoBehaviour
     VisualElement _inputLayerPanel;
     VisualElement _outputLayerPanel;
     VisualElement networkActionPanel;
+
     SliderInt trainingCycleSlider;
     Label trainingCycleLabel;
     Slider learningRateSlider;
@@ -48,8 +49,7 @@ public class NetworkController : MonoBehaviour
         _inputLayerPanel = ui.Q<VisualElement>("InputLayerPanel");
         _outputLayerPanel = ui.Q<VisualElement>("OutputLayerPanel");
         networkActionPanel = ui.Q<VisualElement>("NetworkActionPanel");
-        // networkActionPanel.style.display = DisplayStyle.None;
-
+        HideNetworkActionPanel();
 
         InitializeSliders();
 
@@ -122,10 +122,10 @@ public class NetworkController : MonoBehaviour
     }
     public void AddNode(VisualElement layer)
     {
-        Debug.Log("ADding node to 1:" + GP.Instance.maxNodes);
-        Debug.Log("ADding node to 2:" + layer.childCount);
+        // Debug.Log("ADding node to 1:" + GP.Instance.maxNodes);
+        // Debug.Log("ADding node to 2:" + layer.childCount);
         var childCount = layer.Q<VisualElement>("NodeWrapper").childCount;
-        Debug.Log("ADding node to 3:" + childCount);
+        // Debug.Log("ADding node to 3:" + childCount);
         if (childCount >= GP.Instance.maxNodes) return;
         if (layer.name == "InputLayerPanel")
         {
@@ -171,36 +171,31 @@ public class NetworkController : MonoBehaviour
     }
     public void OnTestNetworkButtonClicked()
     {
-        if (!StateManager.Instance.MiniGame1Solved)
+        Debug.Log("TestNetworkButton clicked" + StateManager.Instance.CurrentStage);
+        if (StateManager.Instance.CurrentStage == GameStage.FirstHelpOpen)
         {
             if (neuralNetwork.IsNetworkValid())
             {
-                StageOneController.Instance.TutorialController().ShowNextButton();
-                StageOneController.Instance.TutorialController().SetTypeText(false);
-                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleSolved());
-                StageOneController.Instance.TutorialController().StartTutorial();
-                StateManager.Instance.MarkMiniGameSolved(1);
+
+                StateManager.Instance.SetState(GameStage.FirstNetworkValidated);
             }
             else
             {
                 Debug.Log("Network is not valid. Please add nodes to the network.");
                 StageOneController.Instance.TutorialController().HideNextButton();
                 StageOneController.Instance.TutorialController().SetTypeText(false);
-
                 StageOneController.Instance.TutorialController().SetDisplayTime(5f);
-                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstPuzzleNotSolved());
+                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstNetworkNotValid());
                 StageOneController.Instance.TutorialController().StartTutorial();
             }
         }
-        else if (!StateManager.Instance.MiniGame2Solved)
+        else if (StateManager.Instance.CurrentStage == GameStage.FirstNetworkValidated)
         {
+            Debug.Log("TestNetworkButton clicked2");
             if (minigame2Solution.Matches(neuralNetwork))
             {
-                StageOneController.Instance.TutorialController().ShowNextButton();
-                StageOneController.Instance.TutorialController().SetTypeText(false);
-                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondPuzzleSolved());
-                StageOneController.Instance.TutorialController().StartTutorial();
-                StateManager.Instance.MarkMiniGameSolved(2);
+                Debug.Log("TestNetworkButton clicked3");
+                StateManager.Instance.SetState(GameStage.SecondNetworkValidated);
             }
             else
             {
@@ -208,7 +203,7 @@ public class NetworkController : MonoBehaviour
                 StageOneController.Instance.TutorialController().HideNextButton();
                 StageOneController.Instance.TutorialController().SetTypeText(false);
                 StageOneController.Instance.TutorialController().SetDisplayTime(5f);
-                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondPuzzleNotSolved());
+                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondNetworkNotValid());
                 StageOneController.Instance.TutorialController().StartTutorial();
             }
         }
@@ -218,14 +213,11 @@ public class NetworkController : MonoBehaviour
         if (neuralNetwork.IsNetworkValid())
         {
             neuralNetwork.TrainNetwork(trainingCycleSlider.value, learningRateSlider.value);
-            // TODO: make better validation of whether it is completed or not
-            StateManager.Instance.MarkMiniGameSolved(3);
-
+            StateManager.Instance.SetState(GameStage.SecondNetworkTrained);
         }
         else
         {
             Debug.Log("Network is not valid. Please add nodes to the network.");
-
         }
     }
     public void ClearLines()
@@ -349,19 +341,16 @@ public class NetworkController : MonoBehaviour
         AddNode(_outputLayerPanel);
         RedrawConnections();
     }
-    public void SetMiniGameObjective(string objective)
-    {
-        objectiveText.text = objective;
-    }
     public void SetUpHelpClickEvents()
     {
         MakeLabelClickable(ui.Q<Label>("HelpInputLayer"), "InputLayer");
         MakeLabelClickable(ui.Q<Label>("HelpHiddenLayers"), "HiddenLayers");
         MakeLabelClickable(ui.Q<Label>("HelpOutputLayer"), "OutputLayer");
+        MakeLabelClickable(ui.Q<Label>("HelpTrainingCycle"), "TrainingCycle");
+        MakeLabelClickable(ui.Q<Label>("HelpLearningRate"), "LearningRate");
     }
     void MakeLabelClickable(Label label, string helpKey)
     {
-        Debug.Log($"MakeLabelClickable: {label.name}");
         label.RegisterCallback<ClickEvent>(_ => StageOneController.Instance.HelpController().ShowHelp(helpKey));
     }
     public void ResetNetwork()
@@ -373,11 +362,6 @@ public class NetworkController : MonoBehaviour
         RedrawConnections();
 
         neuralNetwork.ResetNetwork();
-    }
-    public void EnableTraining()
-    {
-        // testNetworkButton.style.display = DisplayStyle.None;
-        networkActionPanel.style.display = DisplayStyle.Flex;
     }
     private void InitializeSliders()
     {
@@ -398,7 +382,76 @@ public class NetworkController : MonoBehaviour
             learningRateLabel.text = evt.newValue.ToString("F3");
         });
     }
-
+    public void DisableInputLayerButtons()
+    {
+        inputNodeAddBtn.SetEnabled(false);
+        inputNodeRemoveBtn.SetEnabled(false);
+    }
+    public void EnableInputLayerButtons()
+    {
+        inputNodeAddBtn.SetEnabled(true);
+        inputNodeRemoveBtn.SetEnabled(true);
+    }
+    public void DisableHiddenLayerButtons()
+    {
+        hiddenLayerAddBtn.SetEnabled(false);
+        hiddenLayerRemoveBtn.SetEnabled(false);
+    }
+    public void EnableHiddenLayerButtons()
+    {
+        hiddenLayerAddBtn.SetEnabled(true);
+        hiddenLayerRemoveBtn.SetEnabled(true);
+    }
+    public void DisableOutputLayerButtons()
+    {
+        outputNodeAddBtn.SetEnabled(false);
+        outputNodeRemoveBtn.SetEnabled(false);
+    }
+    public void EnableOutputLayerButtons()
+    {
+        outputNodeAddBtn.SetEnabled(true);
+        outputNodeRemoveBtn.SetEnabled(true);
+    }
+    public void HideNetworkActionPanel()
+    {
+        networkActionPanel.style.display = DisplayStyle.None;
+    }
+    public void ShowNetworkActionPanel()
+    {
+        networkActionPanel.style.display = DisplayStyle.Flex;
+    }
+    public void HideTrainingCycleForm()
+    {
+        ui.Q<VisualElement>("TrainingCycleForm").style.display = DisplayStyle.None;
+    }
+    public void ShowTrainingCycleForm()
+    {
+        ui.Q<VisualElement>("TrainingCycleForm").style.display = DisplayStyle.Flex;
+    }
+    public void HideLearningRateForm()
+    {
+        ui.Q<VisualElement>("LearningRateForm").style.display = DisplayStyle.None;
+    }
+    public void ShowLearningRateForm()
+    {
+        ui.Q<VisualElement>("LearningRateForm").style.display = DisplayStyle.Flex;
+    }
+    public void ShowTestButton()
+    {
+        ui.Q<Button>("TestNetworkButton").style.display = DisplayStyle.Flex;
+    }
+    public void HideTestButton()
+    {
+        ui.Q<Button>("TestNetworkButton").style.display = DisplayStyle.None;
+    }
+    public void ShowTrainButton()
+    {
+        ui.Q<Button>("TrainNetworkButton").style.display = DisplayStyle.Flex;
+    }
+    public void HideTrainButton()
+    {
+        ui.Q<Button>("TrainNetworkButton").style.display = DisplayStyle.None;
+    }
 
 }
 

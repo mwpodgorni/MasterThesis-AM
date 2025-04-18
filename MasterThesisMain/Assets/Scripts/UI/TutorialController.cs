@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using System.Text;
-
+using System.Linq;
+using System.Reflection;
 public class TutorialController : MonoBehaviour
 {
     public VisualElement ui;
@@ -14,7 +15,7 @@ public class TutorialController : MonoBehaviour
     public Label tutorialContent;
     private List<TutorialStep> messages;
     private int currentStep = 0;
-    private float typingSpeed = 0.03f;
+    private float typingSpeed = 0.02f;
     private float interpunctuationDelay = 0.4f;
     private float skipSpeedup = 5f;
 
@@ -72,7 +73,7 @@ public class TutorialController : MonoBehaviour
         messages = steps;
         currentStep = 0;
     }
-    private void OnNextButtonClicked()
+    public void OnNextButtonClicked()
     {
         currentStep++;
         if (currentStep < messages.Count)
@@ -86,11 +87,11 @@ public class TutorialController : MonoBehaviour
             Debug.Log("Tutorial Complete");
             ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
             StartCoroutine(HideTutorialPanel());
-            if (StateManager.Instance.MiniGame3Solved)
-            {
-                StageOneController.Instance.LoadSecondStage();
+            // if (StateManager.Instance.MiniGame3Solved)
+            // {
+            //     StageOneController.Instance.LoadSecondStage();
 
-            }
+            // }
         }
     }
     private IEnumerator HideTutorialPanel(float delay = 0f)
@@ -105,13 +106,19 @@ public class TutorialController : MonoBehaviour
     }
     public void StartTypingTutorialStep()
     {
-        if (currentStep < messages.Count)
-        {
-            StopAllCoroutines();
-            tutorialTitle.text = "";
-            tutorialContent.text = "";
-            StartCoroutine(ShowTitle(messages[currentStep].Title));
-        }
+        if (currentStep >= messages.Count) return;
+
+        var step = messages[currentStep];
+
+        // 1) begin typing…
+        StopAllCoroutines();
+        tutorialTitle.text = "";
+        tutorialContent.text = "";
+        StartCoroutine(ShowTitle(step.Title));
+
+        // 2) if there’s an EventName in JSON, try to call it
+        if (!string.IsNullOrEmpty(step.EventName))
+            InvokeStepEvent(step.EventName);
     }
 
     public void SetTypeText(bool value)
@@ -127,7 +134,7 @@ public class TutorialController : MonoBehaviour
             StartCoroutine(ShowText(tutorialContent, string.Join("\n", messages[currentStep].Content)));
         }
     }
-
+    // "Tip: Hidden layers of the same size often help the network discover complex relationships more effectively."
     private IEnumerator ShowText(Label label, string text)
     {
         StringBuilder sb = new StringBuilder(text);
@@ -172,5 +179,29 @@ public class TutorialController : MonoBehaviour
     public void SetDisplayTime(float time)
     {
         displayTime = time;
+    }
+    private void InvokeStepEvent(string methodName)
+    {
+        // look for a method on this class with exactly that name, no args
+        var mi = GetType().GetMethod(
+            methodName,
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+        );
+        if (mi != null)
+        {
+            mi.Invoke(this, null);
+        }
+        else
+        {
+            Debug.LogWarning($"TutorialController: no method named '{methodName}'");
+        }
+    }
+
+
+    // Event firing methods
+    public void ShowWorkshopButton()
+    {
+        StageOneController.Instance.ShowWorkshopOpenButton();
+        nextButton.style.display = DisplayStyle.None;
     }
 }

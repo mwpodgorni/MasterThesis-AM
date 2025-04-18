@@ -29,13 +29,14 @@
 }
 
 .unity-base-slider__tracker{
-    background-color: #823A30;
+    background-color: #21634F;
     height:10px; 
+    border-radius: 5px;
 }
 .unity-base-slider__dragger{
-    background-color: #21634F;
+    background-color: #823A30;
     height: 30px;
-    width: 10px;
+    width: 14px;
     border-radius: 5px;
 }
   

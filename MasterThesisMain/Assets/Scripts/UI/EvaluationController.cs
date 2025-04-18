@@ -72,4 +72,12 @@ public class EvaluationController : MonoBehaviour
 
         return downsampledData;
     }
+    public int GetFinishedCycles()
+    {
+        return int.Parse(finishedCyclesValue.text);
+    }
+    public int GetCorrectPredictions()
+    {
+        return int.Parse(correctPredictionsValue.text);
+    }
 }

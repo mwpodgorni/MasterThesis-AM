@@ -399,6 +399,7 @@ public class NeuralNetwork
         avgLoss = 0.0f;
         hasTrained = false;
     }
+
 }
 public struct EvaluationData
 {

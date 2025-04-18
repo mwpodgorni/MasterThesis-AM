@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TutorialData.Model;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -26,6 +27,10 @@ public class HelpController : MonoBehaviour
 
     public void ShowHelp(string keyword)
     {
+        if (StateManager.Instance.CurrentStage == GameStage.FirstWorkshopOpen)
+        {
+            StateManager.Instance.SetState(GameStage.FirstHelpOpen);
+        }
         helpPanel.style.display = DisplayStyle.Flex;
         helpPanel.RemoveFromClassList("help-hidden");
         HelpText helpText = DataReader.Instance.GetHelpText(keyword);

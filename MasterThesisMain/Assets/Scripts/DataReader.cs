@@ -53,30 +53,30 @@ public class DataReader : MonoBehaviour
     {
         return helpTexts != null && helpTexts.TryGetValue(key, out HelpText value) ? value : null;
     }
-    public List<TutorialStep> FirstPuzzleNotSolved()
+    public List<TutorialStep> FirstNetworkNotValid()
     {
-        return tutorialData.TryGetValue("firstPuzzleNotSolved", out var steps) ? steps : new List<TutorialStep>();
+        return tutorialData.TryGetValue("firstNetworkNotValid", out var steps) ? steps : new List<TutorialStep>();
     }
 
-    public List<TutorialStep> FirstPuzzleSolved()
+    public List<TutorialStep> FirstNetworkValid()
     {
-        return tutorialData.TryGetValue("firstPuzzleSolved", out var steps) ? steps : new List<TutorialStep>();
+        return tutorialData.TryGetValue("firstNetworkValid", out var steps) ? steps : new List<TutorialStep>();
     }
-    public List<TutorialStep> SecondPuzzleNotSolved()
+    public List<TutorialStep> SecondNetworkNotValid()
     {
-        return tutorialData.TryGetValue("secondPuzzleNotSolved", out var steps) ? steps : new List<TutorialStep>();
+        return tutorialData.TryGetValue("secondNetworkNotValid", out var steps) ? steps : new List<TutorialStep>();
     }
-    public List<TutorialStep> SecondPuzzleSolved()
+    public List<TutorialStep> SecondNetworkValid()
     {
-        return tutorialData.TryGetValue("secondPuzzleSolved", out var steps) ? steps : new List<TutorialStep>();
+        return tutorialData.TryGetValue("secondNetworkValid", out var steps) ? steps : new List<TutorialStep>();
     }
-    public List<TutorialStep> ThirdPuzzleNotSolved()
+    public List<TutorialStep> SecondNetworkTrainedBad()
     {
-        return tutorialData.TryGetValue("thirdPuzzleNotSolved", out var steps) ? steps : new List<TutorialStep>();
+        return tutorialData.TryGetValue("secondNetworkTrainedBad", out var steps) ? steps : new List<TutorialStep>();
     }
-    public List<TutorialStep> ThirdPuzzleSolved()
+    public List<TutorialStep> SecondNetworkTrainedGood()
     {
-        return tutorialData.TryGetValue("thirdPuzzleSolved", out var steps) ? steps : new List<TutorialStep>();
+        return tutorialData.TryGetValue("secondNetworkTrainedGood", out var steps) ? steps : new List<TutorialStep>();
     }
     public List<TutorialStep> GetRLIntroduction()
     {
