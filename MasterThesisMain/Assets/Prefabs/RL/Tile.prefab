@@ -69,8 +69,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 0
-  reward: 0
   point: {fileID: 7738253112705168618}
+  model: {fileID: 0}
+  _channel: {fileID: 0}
 --- !u!1 &7127634689938087857
 GameObject:
   m_ObjectHideFlags: 0

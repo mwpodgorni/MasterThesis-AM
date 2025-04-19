@@ -1083,6 +1083,11 @@ PrefabInstance:
       objectReference: {fileID: 5346545438083304740}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
+      propertyPath: maxEpisodes
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
       propertyPath: _enemies.Array.size
       value: 2
       objectReference: {fileID: 0}

@@ -103,7 +103,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -118,7 +118,7 @@ PrefabInstance:
     - target: {fileID: 427281959311475705, guid: 44a9f258314c7944491bfde9ce4eb6ee,
         type: 3}
       propertyPath: _type
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 427281959311475705, guid: 44a9f258314c7944491bfde9ce4eb6ee,
         type: 3}
@@ -128,7 +128,7 @@ PrefabInstance:
     - target: {fileID: 5680720094375188559, guid: 44a9f258314c7944491bfde9ce4eb6ee,
         type: 3}
       propertyPath: m_Name
-      value: BuffTile Variant
+      value: BuffTile
       objectReference: {fileID: 0}
     - target: {fileID: 7724116643416377513, guid: 44a9f258314c7944491bfde9ce4eb6ee,
         type: 3}

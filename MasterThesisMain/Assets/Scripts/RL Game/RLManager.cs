@@ -74,13 +74,9 @@ public class RLManager : MonoBehaviour
                 // Training finished
                 UpdateEval();
 
-                _training = false;
-                episodeCount = 0;
-                DeactivateAgents();
-                ResetTraining();
-
                 _unsolvedChannel.Invoke(_taskCompletedCount >= requiredCountOfCompletedTask);
-                
+
+                StopTraining();         
             }
             else
             {
@@ -98,15 +94,29 @@ public class RLManager : MonoBehaviour
 
     public void StartTraining()
     {
-        if (!_training)
-        {
-            _training = true;
-            ResetModel();
-            ResetTraining();
-            ActivateAgents();
-            episodeCount = 1;
-        }
+        if (_training) return;
+
+        _training = true;
+        ResetModel();
+        ResetTraining();
+        ActivateAgents();
+        episodeCount = 1;
     }
+
+    public void StopTraining() 
+    {
+        if (!_training) return;
+
+        _training = false;
+        DeactivateAgents();
+        ResetModel();
+        ResetTraining();
+        episodeCount = 1;
+
+        SetSpeed(GameSpeed.Normal);
+        _speed = GameSpeed.Normal;
+    }
+
 
     public void ResetTraining()
     {

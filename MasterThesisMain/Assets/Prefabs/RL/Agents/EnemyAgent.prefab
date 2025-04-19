@@ -130,14 +130,18 @@ MonoBehaviour:
   _epsilon: 1
   _epsilonMin: 0.01
   _maxSteps: 20
-  _controller: {fileID: 7784304551042158714}
+  controller: {fileID: 7784304551042158714}
+  tasks: []
+  taskCompletedChannel: {fileID: 0}
   avgRewardPerEpoch: 0
   totalReward: 0
+  currentEpochReward: 0
   totalStepCount: 0
+  totalTaskCompleted: 0
+  currentEpochStepCount: 0
   maxSteps: 20
   _player: {fileID: 0}
   _randomMovement: 1
-  _hideBody: 0
 --- !u!114 &4959516120569158061
 MonoBehaviour:
   m_ObjectHideFlags: 0
