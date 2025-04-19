@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StageOne.unity
     guid: 26cc1e8bc29e2624085156ef1e558f32
+  - enabled: 1
+    path: Assets/Scenes/RL Game/Level 1.unity
+    guid: d79293076e810d84a97bf0fcdc960e41
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

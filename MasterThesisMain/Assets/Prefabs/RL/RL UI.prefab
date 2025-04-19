@@ -14,8 +14,7 @@ GameObject:
   - component: {fileID: 9037521230314887118}
   - component: {fileID: 6497872793563327903}
   - component: {fileID: 7857610196580312700}
-  - component: {fileID: 1167303264167513242}
-  - component: {fileID: 7373823709635233000}
+  - component: {fileID: 2194581380793564409}
   m_Layer: 5
   m_Name: RL UI
   m_TagString: Untagged
@@ -119,7 +118,7 @@ MonoBehaviour:
   tutorialCompletedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1167303264167513242
+--- !u!114 &2194581380793564409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,10 +127,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2572256214517772843}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91403a80715542b42866ee2647d0383d, type: 3}
+  m_Script: {fileID: 11500000, guid: 36603cebe64fe734282144ef13edafa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventChannel: {fileID: 11400000, guid: 3a181cfd23e385642a1aa2e1fa00ba88, type: 2}
+  eventChannel: {fileID: 11400000, guid: 3dbb5a1b603e30f49b00ee7d1998a33c, type: 2}
   unityEvent:
     m_PersistentCalls:
       m_Calls:
@@ -162,47 +161,7 @@ MonoBehaviour:
       - m_Target: {fileID: 2485696466133725976}
         m_TargetAssemblyTypeName: RLController, Assembly-CSharp
         m_MethodName: OnLevelFinished
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &7373823709635233000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2572256214517772843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91403a80715542b42866ee2647d0383d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventChannel: {fileID: 11400000, guid: 324fa409f3d511047bb074fed5916bc6, type: 2}
-  unityEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2485696466133725976}
-        m_TargetAssemblyTypeName: RLController, Assembly-CSharp
-        m_MethodName: OnEvaluationOpenButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2485696466133725976}
-        m_TargetAssemblyTypeName: RLController, Assembly-CSharp
-        m_MethodName: OnLevelFinished
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

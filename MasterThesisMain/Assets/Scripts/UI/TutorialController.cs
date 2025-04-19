@@ -197,6 +197,11 @@ public class TutorialController : MonoBehaviour
         }
     }
 
+    public void AddToEvent(UnityAction action)
+    {
+        tutorialCompletedEvent.AddListener(action);
+    }
+
 
     // Event firing methods
     public void ShowWorkshopButton()

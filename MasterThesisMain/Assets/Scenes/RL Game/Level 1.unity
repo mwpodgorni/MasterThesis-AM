@@ -2030,12 +2030,6 @@ PrefabInstance:
       objectReference: {fileID: 144091810}
     - target: {fileID: 5842877518839972324, guid: a6439c78ebb9b73438c2fb70623b4aac,
         type: 3}
-      propertyPath: taskCompletedChannel
-      value: 
-      objectReference: {fileID: 11400000, guid: d0ee72df02a34a94285fa17a86c056eb,
-        type: 2}
-    - target: {fileID: 5842877518839972324, guid: a6439c78ebb9b73438c2fb70623b4aac,
-        type: 3}
       propertyPath: _tilesToReset.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -2124,6 +2118,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 512653631}
     m_Modifications:
+    - target: {fileID: 1167303264167513242, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: eventChannel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
         type: 3}
       propertyPath: _manager

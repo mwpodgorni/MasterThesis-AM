@@ -32,7 +32,6 @@ public class RLController : MonoBehaviour
     [SerializeField] RLLevel _rlLevel = RLLevel.level1;
 
     Dictionary<TileType, Sprite> _tileSpritesDict = new();
-    bool _solved = false;
 
     string GetTutorialText
     {
@@ -160,9 +159,10 @@ public class RLController : MonoBehaviour
         evaluationOpenButton.RemoveFromClassList("opacity-none");
     }
 
-    public void OnLevelFinished()
+    public void OnLevelFinished(bool solved)
     {
-        StartCoroutine(StartTutorial(GetSolvedText(_manager.LevelCompleted)));
+        if (solved) TutorialController().AddToEvent(LoadLevel);
+        StartCoroutine(StartTutorial(GetSolvedText(solved))); 
     }
 
     void LoadRewardAdjusters()

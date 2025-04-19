@@ -17,6 +17,7 @@ public class RLManager : MonoBehaviour
     [SerializeField] float _normalSpeed = 1f;
     [SerializeField] float _fastSpeed = 3f;
     [SerializeField] float _fasterSpeed = 5f;
+    [SerializeField] float _fastestSpeed = 8f;
 
     [Header("Statistics")]
     public float maxReward = 0;
@@ -45,8 +46,7 @@ public class RLManager : MonoBehaviour
     }
 
     [Tooltip("Invokes this event channel when training is finished")]
-    [SerializeField] EventChannel _unsolvedChannel;
-    [SerializeField] EventChannel _solvedChannel;
+    [SerializeField] BoolEventChannel _unsolvedChannel;
 
     private void Start()
     {
@@ -79,14 +79,7 @@ public class RLManager : MonoBehaviour
                 DeactivateAgents();
                 ResetTraining();
 
-                if (_taskCompletedCount < requiredCountOfCompletedTask)
-                {
-                    _unsolvedChannel.Invoke(new Empty());
-                }
-                else
-                {
-                    _solvedChannel.Invoke(new Empty());
-                }
+                _unsolvedChannel.Invoke(_taskCompletedCount >= requiredCountOfCompletedTask);
                 
             }
             else
@@ -139,6 +132,7 @@ public class RLManager : MonoBehaviour
     public void ResetModel()
     {
         _player.ResetModel();
+        _taskCompletedCount = 0;
     }
 
     public void SetSpeed(GameSpeed mode)
@@ -153,6 +147,9 @@ public class RLManager : MonoBehaviour
                 break;
             case GameSpeed.Faster:
                 Time.timeScale = _fasterSpeed;
+                break;
+            case GameSpeed.Fastest:
+                Time.timeScale = _fastestSpeed;
                 break;
         }
     }
@@ -174,6 +171,9 @@ public class RLManager : MonoBehaviour
                 _speed = GameSpeed.Faster;
                 break;
             case GameSpeed.Faster:
+                _speed = GameSpeed.Fastest;
+                break;
+            case GameSpeed.Fastest:
                 _speed = GameSpeed.Normal;
                 break;
         }
@@ -231,7 +231,8 @@ public class RLManager : MonoBehaviour
     {
         Normal,
         Fast, 
-        Faster
+        Faster,
+        Fastest
     }
 }
 
