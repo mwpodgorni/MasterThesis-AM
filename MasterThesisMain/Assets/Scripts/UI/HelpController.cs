@@ -4,24 +4,32 @@ using TutorialData.Model;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 public class HelpController : MonoBehaviour
 {
-    public VisualElement ui;
-    public VisualElement helpPanel;
+    VisualElement ui;
+    VisualElement helpPanel;
 
-    public Label helpTitle;
-    public Label helpContent;
-    public Button closeButton;
-    public void Awake()
+    Label helpTitle;
+    VisualElement helpImage;
+    Label helpDescription;
+    Label helpHighlights;
+    Button closeButton;
+
+    void Awake()
     {
+        Debug.Log("HELP AWAKE");
         ui = GetComponent<UIDocument>().rootVisualElement;
         helpPanel = ui.Q<VisualElement>("HelpPanel");
         helpTitle = ui.Q<Label>("HelpTitle");
-        helpContent = ui.Q<Label>("HelpContent");
+        helpImage = ui.Q<VisualElement>("HelpImage");
+        helpDescription = ui.Q<Label>("HelpDescription");
+        helpHighlights = ui.Q<Label>("HelpHighlights");
         closeButton = ui.Q<Button>("HelpCloseButton");
+
         closeButton.clicked += OnCloseButtonClicked;
-        helpPanel.style.display = DisplayStyle.Flex;
+
+        // start hidden
+        helpPanel.style.display = DisplayStyle.None;
         helpPanel.AddToClassList("help-hidden");
     }
 
@@ -31,23 +39,61 @@ public class HelpController : MonoBehaviour
         {
             StateManager.Instance.SetState(GameStage.FirstHelpOpen);
         }
-        helpPanel.style.display = DisplayStyle.Flex;
+        // un-hide
         helpPanel.RemoveFromClassList("help-hidden");
-        HelpText helpText = DataReader.Instance.GetHelpText(keyword);
-        if (helpText != null)
+        helpPanel.style.display = DisplayStyle.Flex;
+
+        Debug.Log("Showing help for: " + keyword);
+        var helpText = DataReader.Instance.GetHelpText(keyword);
+        Debug.Log("Help text: " + helpText);
+        if (helpText == null)
         {
-            helpTitle.text = helpText.title;
-            helpContent.text = string.Join("\n\n", helpText.description);
+            helpTitle.text = "Help not found";
+            helpDescription.text = "No help available for this topic.";
+            helpImage.style.display =
+            helpHighlights.style.display = DisplayStyle.None;
+            return;
+        }
+
+        helpTitle.text = helpText.Title;
+        helpDescription.text = string.Join("\n\n", helpText.Description);
+
+        // — Visual (image) —
+        if (!string.IsNullOrEmpty(helpText.Visual))
+        {
+            Debug.Log($"[Help] Loading image at Resources/{helpText.Visual}");
+            var tex = Resources.Load<Texture2D>(helpText.Visual);
+            if (tex != null)
+            {
+                Debug.Log($"[Help] Successfully loaded texture: {tex.name}");
+                helpImage.style.backgroundImage = new StyleBackground(tex);
+                helpImage.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                Debug.LogError($"[Help] Failed to load texture at path: {helpText.Visual}");
+                helpImage.style.display = DisplayStyle.None;
+            }
         }
         else
         {
-            helpTitle.text = "Help not found";
-            helpContent.text = "No help available for this keyword.";
+            Debug.LogWarning("[Help] No visual path provided.");
+            helpImage.style.display = DisplayStyle.None;
         }
+
+        // highlights
+        if (helpText.Highlights?.Count > 0)
+        {
+            helpHighlights.text = "• " + string.Join("\n• ", helpText.Highlights);
+            helpHighlights.style.display = DisplayStyle.Flex;
+        }
+        else helpHighlights.style.display = DisplayStyle.None;
+
     }
-    public void OnCloseButtonClicked()
+
+    void OnCloseButtonClicked()
     {
-        helpPanel.style.display = DisplayStyle.None;
         helpPanel.AddToClassList("help-hidden");
+        helpPanel.style.display = DisplayStyle.None;
     }
 }

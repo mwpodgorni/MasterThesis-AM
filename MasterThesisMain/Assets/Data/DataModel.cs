@@ -24,7 +24,21 @@ namespace TutorialData.Model
     }
     public class HelpText
     {
-        public string title { get; set; }
-        public List<string> description { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("description")]
+        public List<string> Description { get; set; }
+
+        // simple image path (no extra struct)
+        [JsonProperty("visual")]
+        public string Visual { get; set; }
+
+
+        [JsonProperty("highlights")]
+        public List<string> Highlights { get; set; }
+
     }
+
+
 }

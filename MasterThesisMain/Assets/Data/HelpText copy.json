@@ -1,0 +1,49 @@
+{
+  "HiddenLayers": {
+    "title": "Hidden Layers",
+    "description": [
+      "Hidden Layers are the layers between the input and output layers in a neural network. These layers are where the network does most of its thinking.",
+      "When data enters the input layer, it gets passed through the hidden layers, which process the information by looking for patterns or relationships in the data.",
+      "Each hidden layer contains multiple nodes or neurons that work together to transform the input data into something meaningful, like predicting a result. The network learns to recognize these patterns through training, which helps it make better predictions in the future.",
+      "You don’t directly see what happens in these layers, which is why they're called hidden. They are essential for enabling the network to solve complex problems."
+    ]
+  },
+  "OutputLayer": {
+    "description": [
+      "Output Layer is the final layer in a neural network. This layer produces the network's result after processing all the data through the input and hidden layers.",
+      "It takes the transformed information and converts it into the final output, which could be a prediction, classification, or decision depending on the task.",
+      "For example, if the neural network is used to predict whether an image is of a cat or a dog, the output layer will give the network's final decision, such as cat or dog",
+      "The number of nodes in the output layer depends on the problem you're trying to solve, such as one node for a binary decision or multiple nodes for multiple categories."
+    ]
+  },
+  "TrainingCycle": {
+    "title": "TBD",
+    "visual": {},
+    "description": ["TBD"]
+  },
+  "LearningRate": {
+    "title": "TBD",
+    "visual": {},
+    "description": ["TBD"],
+    "highlights": [],
+    "example": {
+      "code": "",
+      "caption": ""
+    }
+  },
+  "rewardAdjuster": {
+    "title": "Reward Adjuster",
+    "visual": {},
+    "description": [
+      "The Reward Adjuster is a component that helps the agent learn from its mistakes and successes. It adjusts the rewards given to the agent based on the tiles it walks on.",
+      "When the agent moves to a tile, it receives a reward based on the your selected value for that tile.",
+      "If the agent receives a positive reward, it means it made a good choice and should continue to explore similar paths in the future. If it receives a negative reward, it indicates a bad choice, and the agent should learn to avoid that path next time.",
+      "This feedback loop helps the agent improve over time by learning from its experiences and making better decisions in the future."
+    ],
+    "highlights": [],
+    "example": {
+      "code": "",
+      "caption": ""
+    }
+  }
+}

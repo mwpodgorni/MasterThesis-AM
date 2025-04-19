@@ -9,13 +9,13 @@ public class StateManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("StateManager Awake called");
+        // Debug.Log("StateManager Awake called");
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        Debug.Log("StateManager Awake called2");
+        // Debug.Log("StateManager Awake called2");
         Instance = this;
         DontDestroyOnLoad(gameObject);
         CurrentStage = GameStage.StartingPoint;

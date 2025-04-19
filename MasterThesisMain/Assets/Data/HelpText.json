@@ -1,44 +1,72 @@
 {
   "InputLayer": {
     "title": "Input Layer",
+    "visual": "Images/InputLayer",
     "description": [
-      "The Input Layer is the first part of a neural network. It's where data enters the network. Think of it like a set of sensors that collect information.",
-      "For example, if you're trying to recognize an image, the input layer would take in the pixel values of that image. Each sensor in the input layer represents one piece of data, like a pixel, feature, or measurement, and sends that information into the next layer for processing."
+      "The input layer is the network’s entry point, where raw data enters.",
+      "Each node takes in one feature—such as weight, durability, or material type—and hands it off to the next layer."
+    ],
+    "highlights": [
+      "One node per feature",
+      "No computation—just data intake",
+      "Feeds raw values into the network",
+      "Sets the foundation for all later processing"
     ]
   },
   "HiddenLayers": {
     "title": "Hidden Layers",
+    "visual": "Images/HiddenLayers",
     "description": [
-      "Hidden Layers are the layers between the input and output layers in a neural network. These layers are where the network does most of its thinking.",
-      "When data enters the input layer, it gets passed through the hidden layers, which process the information by looking for patterns or relationships in the data.",
-      "Each hidden layer contains multiple nodes or neurons that work together to transform the input data into something meaningful, like predicting a result. The network learns to recognize these patterns through training, which helps it make better predictions in the future.",
-      "You don’t directly see what happens in these layers, which is why they're called hidden. They are essential for enabling the network to solve complex problems."
+      "Hidden layers sit between the input and output and perform the network’s “thinking” by extracting patterns from data.",
+      "Each node applies weights and an activation function, passing its result on until the final output layer makes a decision."
+    ],
+    "highlights": [
+      "Stacked layers let the network learn increasingly abstract features",
+      "More layers can capture complex relationships—but risk overfitting if overused",
+      "Each node transforms its inputs via weighted sums and activations",
+      "Choosing the right layer count is key to balancing accuracy and generalization"
     ]
   },
   "OutputLayer": {
     "title": "Output Layer",
+    "visual": "Images/OutputLayer",
     "description": [
-      "Output Layer is the final layer in a neural network. This layer produces the network's result after processing all the data through the input and hidden layers.",
-      "It takes the transformed information and converts it into the final output, which could be a prediction, classification, or decision depending on the task.",
-      "For example, if the neural network is used to predict whether an image is of a cat or a dog, the output layer will give the network's final decision, such as cat or dog",
-      "The number of nodes in the output layer depends on the problem you're trying to solve, such as one node for a binary decision or multiple nodes for multiple categories."
+      "The output layer turns the final activations into your network’s predictions.",
+      "Each node represents one category, and the highest value indicates the chosen class."
+    ],
+    "highlights": [
+      "Number of nodes = number of classes",
+      "Commonly uses softmax to produce probabilities",
+      "Pick the node with the highest output as the decision",
+      "Outputs can be interpreted as confidence scores"
     ]
   },
   "TrainingCycle": {
-    "title": "TBD",
-    "description": ["TBD"]
+    "title": "Training Cycles",
+    "visual": "Images/TrainingCycles",
+    "description": [
+      "A training cycle (or epoch) means running the entire dataset through the network once.",
+      "More cycles can help the network learn better—but too many can lead to overfitting."
+    ],
+    "highlights": [
+      "One cycle = one full pass over all training samples",
+      "Increasing cycles usually lowers loss but may overfit",
+      "Watch evaluation metrics to find the sweet spot",
+      "Longer training takes more time and compute"
+    ]
   },
   "LearningRate": {
-    "title": "TBD",
-    "description": ["TBD"]
-  },
-  "rewardAdjuster": {
-    "title": "Reward Adjuster",
+    "title": "Learning Rate",
+    "visual": "Images/LearningRate",
     "description": [
-      "The Reward Adjuster is a component that helps the agent learn from its mistakes and successes. It adjusts the rewards given to the agent based on the tiles it walks on.",
-      "When the agent moves to a tile, it receives a reward based on the your selected value for that tile.",
-      "If the agent receives a positive reward, it means it made a good choice and should continue to explore similar paths in the future. If it receives a negative reward, it indicates a bad choice, and the agent should learn to avoid that path next time.",
-      "This feedback loop helps the agent improve over time by learning from its experiences and making better decisions in the future."
+      "The learning rate controls how much the network’s weights adjust on each update.",
+      "A higher rate speeds up learning but can overshoot the optimum; a lower rate is more precise but slower."
+    ],
+    "highlights": [
+      "Too high → training may diverge or oscillate",
+      "Too low → training can stall or take too long",
+      "Common starting values range from 0.001 to 0.1",
+      "Adjust based on loss curve behavior"
     ]
   }
 }

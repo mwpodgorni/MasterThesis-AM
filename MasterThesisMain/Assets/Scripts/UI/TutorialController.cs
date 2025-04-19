@@ -30,7 +30,7 @@ public class TutorialController : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("TutorialController Awake called");
+        // Debug.Log("TutorialController Awake called");
         ui = GetComponent<UIDocument>().rootVisualElement;
         nextButton = ui.Q<Button>("NextButton");
         tutorialTitle = ui.Q<Label>("TutorialTitle");
@@ -84,7 +84,7 @@ public class TutorialController : MonoBehaviour
         {
             typeText = true;
             tutorialCompletedEvent?.Invoke();
-            Debug.Log("Tutorial Complete");
+            // Debug.Log("Tutorial Complete");
             ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
             StartCoroutine(HideTutorialPanel());
             // if (StateManager.Instance.MiniGame3Solved)
