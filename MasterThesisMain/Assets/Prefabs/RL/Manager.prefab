@@ -54,13 +54,15 @@ MonoBehaviour:
   _normalSpeed: 1
   _fastSpeed: 2
   _fasterSpeed: 4
-  episodeCount: 1
-  maxEpisodes: 20
-  maxStepPerEpoch: 20
   maxReward: 0
   avgRewardPerEpoch: 0
-  _unsolvedChannel: {fileID: 11400000, guid: 3a181cfd23e385642a1aa2e1fa00ba88, type: 2}
-  _solvedChannel: {fileID: 11400000, guid: 324fa409f3d511047bb074fed5916bc6, type: 2}
+  episodeCount: 1
+  episodeReward: []
+  successRateRolling: []
+  stepsToCompletion: []
+  maxEpisodes: 20
+  maxStepPerEpoch: 20
+  _unsolvedChannel: {fileID: 11400000, guid: 3dbb5a1b603e30f49b00ee7d1998a33c, type: 2}
 --- !u!114 &5379140843783717463
 MonoBehaviour:
   m_ObjectHideFlags: 0

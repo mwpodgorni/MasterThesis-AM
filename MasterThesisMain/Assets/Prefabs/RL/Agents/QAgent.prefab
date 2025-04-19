@@ -129,11 +129,15 @@ MonoBehaviour:
   _epsilonMin: 0.01
   _maxSteps: 20
   controller: {fileID: 4202400201549563252}
-  task: {fileID: 0}
+  tasks: []
+  taskCompletedChannel: {fileID: 11400000, guid: d0ee72df02a34a94285fa17a86c056eb,
+    type: 2}
   avgRewardPerEpoch: 0
   totalReward: 0
   currentEpochReward: 0
   totalStepCount: 0
+  totalTaskCompleted: 0
+  currentEpochStepCount: 0
   maxSteps: 20
 --- !u!114 &4202400201549563252 stripped
 MonoBehaviour:
