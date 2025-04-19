@@ -11,6 +11,7 @@ public class RLController : MonoBehaviour
 {
     Button _start;
     Button _speedUp;
+    Label _help;
     VisualElement _UI;
     VisualElement _rewardContainer;
 
@@ -97,11 +98,13 @@ public class RLController : MonoBehaviour
         tutorialPanel.style.display = DisplayStyle.Flex;
 
         workshopPanel = _UI.Q<VisualElement>("WorkshopPanel");
+        _help = _UI.Q<Label>("HelpRewardAdjuster");
         _rewardContainer = workshopPanel.Q<VisualElement>("RewardContainer");
         _start = workshopPanel.Q<Button>("Start");
         _speedUp = workshopPanel.Q<Button>("SpeedUp");
         _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
         _speedUp.RegisterCallback<ClickEvent>(SpeedUpHandler);
+        _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("rewardAdjuster"));
         workshopPanel.style.display = DisplayStyle.Flex;
         workshopPanel.AddToClassList("panel-up");
 
