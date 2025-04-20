@@ -117,8 +117,8 @@
       "title": "Task incomplete",
       "content": [
         "The training of your network did not go well.",
-        "(Add instructions on what to do here)",
-        "(Add instructions on what to do here)"
+        "Maybe you should try to increase the number of training cycles.",
+        "Keeping the learning rate low can also help the network learn better."
       ]
     }
   ],

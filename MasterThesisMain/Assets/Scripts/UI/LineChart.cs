@@ -29,7 +29,12 @@ public class LineChart : VisualElement
         hierarchy.Add(labelContainer);
         RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
     }
-
+    public void Refresh()
+    {
+        labelContainer.Clear();
+        MarkDirtyRepaint();
+        AddAxisLabels();
+    }
     void OnGenerateVisualContent(MeshGenerationContext ctx)
     {
         // pick series (fall back to single data if none in datasets)
@@ -146,6 +151,7 @@ public class LineChart : VisualElement
 
     private void AddAxisLabels()
     {
+        Debug.Log("Adding axis labels" + datasets.Count);
         labelContainer.Clear();
 
         // 1) same seriesList as used in drawing
@@ -172,6 +178,7 @@ public class LineChart : VisualElement
         int yTicks = 4;
         for (int i = 0; i <= yTicks; i++)
         {
+            Debug.Log($"Adding Y-axis label {i}");
             float t = i / (float)yTicks;
             float y = Mathf.Lerp(rect.yMax, rect.yMin, t);
             float val = Mathf.Lerp(globalMin, globalMax, t);
@@ -190,6 +197,7 @@ public class LineChart : VisualElement
         int xStepCount = Mathf.Max(1, (pointCount - 1) / (maxXTicks - 1));
         for (int i = 0; i < pointCount; i += xStepCount)
         {
+            Debug.Log($"Adding X-axis label {i}");
             float x = rect.xMin + i * stepX;
 
             var lbl = new Label(i.ToString());

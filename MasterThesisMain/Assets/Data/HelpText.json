@@ -4,11 +4,11 @@
     "visual": "Images/InputLayer",
     "description": [
       "The input layer is the network’s entry point, where raw data enters.",
-      "Each node takes in one feature—such as weight, durability, or material type—and hands it off to the next layer."
+      "Each node takes in one feature - such as weight, durability, or material type - and hands it off to the next layer."
     ],
     "highlights": [
       "One node per feature",
-      "No computation—just data intake",
+      "No computation - just data intake",
       "Feeds raw values into the network",
       "Sets the foundation for all later processing"
     ]
@@ -22,7 +22,7 @@
     ],
     "highlights": [
       "Stacked layers let the network learn increasingly abstract features",
-      "More layers can capture complex relationships—but risk overfitting if overused",
+      "More layers can capture complex relationships - but risk overfitting if overused",
       "Each node transforms its inputs via weighted sums and activations",
       "Choosing the right layer count is key to balancing accuracy and generalization"
     ]
@@ -46,7 +46,7 @@
     "visual": "Images/TrainingCycles",
     "description": [
       "A training cycle (or epoch) means running the entire dataset through the network once.",
-      "More cycles can help the network learn better—but too many can lead to overfitting."
+      "More cycles can help the network learn better - but too many can lead to overfitting."
     ],
     "highlights": [
       "One cycle = one full pass over all training samples",

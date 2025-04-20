@@ -56,7 +56,7 @@ public class EvaluationController : MonoBehaviour
         chart.datasets = new List<Tuple<List<float>, Color>> {
             Tuple.Create(downsampled, Color.cyan)
         };
-        chart.MarkDirtyRepaint();
+        chart.Refresh();
     }
     private List<float> DownsampleLossData(List<float> lossData, int maxDataPoints = 1000)
     {

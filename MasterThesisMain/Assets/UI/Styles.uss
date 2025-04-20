@@ -174,7 +174,7 @@
 }
 
 .help-hidden {
-    right: -500px;
+    right: -600px;
 }
 
 .opacity-default {
