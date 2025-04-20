@@ -209,4 +209,9 @@ public class TutorialController : MonoBehaviour
         StageOneController.Instance.ShowWorkshopOpenButton();
         nextButton.style.display = DisplayStyle.None;
     }
+    public void RLShowWorkshopButton()
+    {
+        Debug.Log("RLShowWorkshopButton called");
+        RLController.Instance.ShowWorkshopOpenButton();
+    }
 }

@@ -96,13 +96,6 @@ public class StageOneController : MonoBehaviour
     }
     public void OnEvaluationOpenButtonClicked()
     {
-        // if ( StateManager.Instance.MiniGame2Solved)
-        // {
-        //     TutorialController().ShowNextButton();
-        //     TutorialController().SetTypeText(true);
-        //     TutorialController().SetTutorialSteps(DataReader.Instance.ThirdPuzzleSolved());
-        //     TutorialController().StartTutorial();
-        // }
         if (StateManager.Instance.CurrentStage == GameStage.SecondNetworkTrained)
         {
             int finishedCycles = StageOneController.Instance.EvaluationController().GetFinishedCycles();

@@ -40,10 +40,6 @@
       "If the agent receives a positive reward, it means it made a good choice and should continue to explore similar paths in the future. If it receives a negative reward, it indicates a bad choice, and the agent should learn to avoid that path next time.",
       "This feedback loop helps the agent improve over time by learning from its experiences and making better decisions in the future."
     ],
-    "highlights": [],
-    "example": {
-      "code": "",
-      "caption": ""
-    }
+    "highlights": []
   }
 }

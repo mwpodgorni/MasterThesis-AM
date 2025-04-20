@@ -68,5 +68,19 @@
       "Common starting values range from 0.001 to 0.1",
       "Adjust based on loss curve behavior"
     ]
+  },
+  "RewardAdjuster": {
+    "title": "Reward Adjuster",
+    "visual": "Images/RewardAdjuster",
+    "description": [
+      "Use the Reward Adjuster to assign positive or negative values to each tile in the environment.",
+      "These rewards guide the agent’s learning: stepping on high‑value tiles is encouraged, while low or negative values deter the agent."
+    ],
+    "highlights": [
+      "Positive rewards reinforce good actions",
+      "Negative rewards discourage mistakes",
+      "Zero reward gives no feedback",
+      "Balancing rewards speeds up learning"
+    ]
   }
 }

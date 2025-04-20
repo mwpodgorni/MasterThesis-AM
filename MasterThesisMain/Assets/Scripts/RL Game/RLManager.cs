@@ -2,6 +2,7 @@
 using UnityEngine;
 using Alexwsu.EventChannels;
 using JetBrains.Annotations;
+using UnityEngine.UIElements;
 
 public class RLManager : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class RLManager : MonoBehaviour
     public int maxStepPerEpoch = 20;
 
     public RLEvaluationData currentEval;
-
+    ProgressBar _progressBar;
     public bool LevelCompleted
     {
         get
@@ -50,6 +51,7 @@ public class RLManager : MonoBehaviour
 
     private void Start()
     {
+
         SetSpeed(_speed);
         _player.maxSteps = maxStepPerEpoch;
 
@@ -63,7 +65,14 @@ public class RLManager : MonoBehaviour
         SetReward(TileType.Buff, 0);
 
         currentEval = new RLEvaluationData();
+        var uiDoc = Object.FindFirstObjectByType<UIDocument>();
+        var ui = uiDoc.rootVisualElement;
+        _progressBar = ui.Q<ProgressBar>("ProgressBar");
+        _progressBar.lowValue = 0;
+        _progressBar.highValue = maxEpisodes;
+        _progressBar.value = episodeCount;
     }
+
 
     private void Update()
     {
@@ -75,8 +84,8 @@ public class RLManager : MonoBehaviour
                 UpdateEval();
 
                 _unsolvedChannel.Invoke(_taskCompletedCount >= requiredCountOfCompletedTask);
-
-                StopTraining();         
+                _progressBar.value = episodeCount;
+                StopTraining();
             }
             else
             {
@@ -84,9 +93,9 @@ public class RLManager : MonoBehaviour
                 episodeCount++;
 
                 episodeReward[episodeCount - 1] = _player.currentEpochReward;
-                successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / (float) episodeCount;
-                stepsToCompletion[episodeCount - 1] = (float) _player.currentEpochStepCount / (float) maxStepPerEpoch;
-
+                successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / (float)episodeCount;
+                stepsToCompletion[episodeCount - 1] = (float)_player.currentEpochStepCount / (float)maxStepPerEpoch;
+                _progressBar.value = episodeCount;
                 ResetTraining(); // Reset for next epoch
             }
         }
@@ -103,7 +112,7 @@ public class RLManager : MonoBehaviour
         episodeCount = 1;
     }
 
-    public void StopTraining() 
+    public void StopTraining()
     {
         if (!_training) return;
 
@@ -121,7 +130,7 @@ public class RLManager : MonoBehaviour
     public void ResetTraining()
     {
         _player.ResetAgent();
-        
+
         if (_enemies.Count > 0)
         {
             foreach (var enemy in _enemies)
@@ -153,7 +162,7 @@ public class RLManager : MonoBehaviour
                 Time.timeScale = _normalSpeed;
                 break;
             case GameSpeed.Fast:
-                Time.timeScale = _fastSpeed; 
+                Time.timeScale = _fastSpeed;
                 break;
             case GameSpeed.Faster:
                 Time.timeScale = _fasterSpeed;
@@ -237,15 +246,15 @@ public class RLManager : MonoBehaviour
         currentEval.episodeCount = episodeCount;
     }
 
-    public enum GameSpeed
-    {
-        Normal,
-        Fast, 
-        Faster,
-        Fastest
-    }
 }
 
+public enum GameSpeed
+{
+    Normal,
+    Fast,
+    Faster,
+    Fastest
+}
 public struct RLEvaluationData
 {
     public float avgEpisodeReturn; // total accumulated reward in a single episode.

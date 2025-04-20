@@ -213,34 +213,24 @@
       "title": "Level 1",
       "content": [
         "For this level, you need to set up the reward values for the tiles, such that the robot can learn to navigate the environment and reach the goal.",
-        "How well your setup performs will be evaluated based on the robot's ability to reach the goal efficiently."
-      ]
+        "How well your setup performs will be evaluated based on the robot's ability to reach the goal efficiently.",
+        "Adjust the rewards and start the training."
+      ],
+      "event": "RLShowWorkshopButton"
     }
   ],
-  "RLPuzzle2": [
+  "RLPuzzleCompleted": [
     {
-      "title": "Level 2",
-      "content": [
-        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to defeat its enemies by taking a buff and then attacking them.",
-        "How well your setup performs will be evaluated based on the robot's ability defeat both enemies."
-      ]
-    }
-  ],
-  "RLPuzzle3": [
-    {
-      "title": "Level 3",
-      "content": [
-        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to grab collectibles and reach the goal.",
-        "There will be enemies in the level that the robot should try and avoid.",
-        "How well your setup performs will be evaluated based on the robot's ability navigate efficiently."
-      ]
+      "title": "Training completed!",
+      "content": ["The training has been completed. Now open the evaluation tab to see the outcome of the training."]
     }
   ],
   "RLPuzzle1Solved": [
     {
       "title": "Task completed!",
       "content": [
-        "You successfully set up the reward values for the tiles, allowing the robot to learn to navigate the environment and reach the goal."
+        "You successfully set up the reward values for the tiles, allowing the robot to learn to navigate the environment and reach the goal.",
+        "When you are ready, proceed to the next level."
       ]
     }
   ],
@@ -253,6 +243,28 @@
       ]
     }
   ],
+  "RLPuzzle2": [
+    {
+      "title": "Level 2",
+      "content": [
+        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to defeat its enemies by taking a buff and then attacking them.",
+        "How well your setup performs will be evaluated based on the robot's ability defeat both enemies."
+      ],
+      "event": "RLShowWorkshopButton"
+    }
+  ],
+  "RLPuzzle3": [
+    {
+      "title": "Level 3",
+      "content": [
+        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to grab collectibles and reach the goal.",
+        "There will be enemies in the level that the robot should try and avoid.",
+        "How well your setup performs will be evaluated based on the robot's ability navigate efficiently."
+      ],
+      "event": "RLShowWorkshopButton"
+    }
+  ],
+
   "RLPuzzle2Solved": [
     {
       "title": "Task completed!",

@@ -9,8 +9,8 @@ public class RLEvaluationController : MonoBehaviour
     VisualElement ui;
     Label avgEpisodeReturn;
     Label successRate;
-    Label completionTime; 
-    Label episodeCount; 
+    Label completionTime;
+    Label episodeCount;
 
     LineChart chart;
 
@@ -33,13 +33,14 @@ public class RLEvaluationController : MonoBehaviour
     {
         // Debug.Log($"Updating evaluation data: {data}");
         avgEpisodeReturn.text = data.avgEpisodeReturn.ToString();
-        successRate.text =      data.successRate.ToString();
-        completionTime.text =   data.completionTime.ToString();
-        episodeCount.text =     data.episodeCount.ToString();
+        successRate.text = data.successRate.ToString();
+        completionTime.text = data.completionTime.ToString();
+        episodeCount.text = data.episodeCount.ToString();
 
         chart.datasets.Add(new Tuple<List<float>, Color>(DownsampleData(data.episodeReward, (int)data.episodeCount), Color.green));
         chart.datasets.Add(new Tuple<List<float>, Color>(DownsampleData(data.successRateRolling, (int)data.episodeCount), Color.red));
         chart.datasets.Add(new Tuple<List<float>, Color>(DownsampleData(data.stepsToCompletion, (int)data.episodeCount), Color.blue));
+        chart.Refresh();
     }
     private List<float> DownsampleData(float[] lossData, int maxDataPoints = 1000)
     {

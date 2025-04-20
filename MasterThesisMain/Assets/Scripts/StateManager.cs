@@ -9,7 +9,7 @@ public class StateManager : MonoBehaviour
 
     private void Awake()
     {
-        // Debug.Log("StateManager Awake called");
+        Debug.Log("StateManager Awake called");
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -21,23 +21,6 @@ public class StateManager : MonoBehaviour
         CurrentStage = GameStage.StartingPoint;
     }
 
-    public void MarkMiniGameSolved(int miniGameIndex)
-    {
-        // switch (miniGameIndex)
-        // {
-        //     case 1:
-        //         CurrentStage = GameStage.MiniGame2;
-        //         StageOneController.Instance.NetworkController().ResetNetwork();
-        //         break;
-        //     case 2:
-        //         CurrentStage = GameStage.MiniGame3;
-        //         StageOneController.Instance.NetworkController().EnableTraining();
-        //         break;
-        //     case 3:
-        //         CurrentStage = GameStage.QLearning1;
-        //         break;
-        // }
-    }
     public void SetState(GameStage newState)
     {
         CurrentStage = newState;
@@ -88,7 +71,6 @@ public class StateManager : MonoBehaviour
                 StageOneController.Instance.ShowEvaluationOpenButton();
                 break;
             case GameStage.SecondNetworkTrainedBad:
-                Debug.Log("SecondNetworkTrainedBad state reached");
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondNetworkTrainedBad());
                 StageOneController.Instance.TutorialController().StartTutorial();
                 break;
@@ -96,6 +78,54 @@ public class StateManager : MonoBehaviour
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondNetworkTrainedGood());
                 StageOneController.Instance.TutorialController().StartTutorial();
                 break;
+            case GameStage.RLOneStart:
+                RLController.Instance.HideProgressBar();
+                RLController.Instance.HideEvaluationOpenButton();
+                RLController.Instance.HideWorkshopOpenButton();
+                break;
+            case GameStage.RLOneStarted:
+                RLController.Instance.DisableRewardAdjusters();
+                RLController.Instance.DisableStartButton();
+                RLController.Instance.EnableStopButton();
+                RLController.Instance.ShowSpeedButtons();
+                RLController.Instance.ShowProgressBar();
+                break;
+            case GameStage.RLOneCompletedGood:
+                RLController.Instance.ShowNextLevelButton();
+                RLController.Instance.DisableStopButton();
+                RLController.Instance.EnableStartButton();
+                RLController.Instance.ShowEvaluationOpenButton();
+                break;
+            case GameStage.RLOneCompletedBad:
+                RLController.Instance.DisableStopButton();
+                RLController.Instance.EnableStartButton();
+                RLController.Instance.ShowEvaluationOpenButton();
+                break;
+            case GameStage.RLTwoStart:
+            case GameStage.RLThreeStart:
+                RLController.Instance.HideProgressBar();
+                RLController.Instance.HideEvaluationOpenButton();
+                break;
+            case GameStage.RLTwoStarted:
+            case GameStage.RLThreeStarted:
+                RLController.Instance.ShowEvaluationOpenButton();
+                RLController.Instance.DisableRewardAdjusters();
+                RLController.Instance.DisableStartButton();
+                RLController.Instance.EnableStopButton();
+                RLController.Instance.EnableSpeedButtons();
+                RLController.Instance.ShowProgressBar();
+                break;
+            case GameStage.RLTwoCompletedBad:
+                break;
+            case GameStage.RLTwoCompletedGood:
+                RLController.Instance.ShowNextLevelButton();
+                break;
+            case GameStage.RLThreeCompletedGood:
+                RLController.Instance.ShowNextLevelButton();
+                break;
+            case GameStage.RLThreeCompletedBad:
+                break;
+
         }
     }
 }
@@ -110,6 +140,16 @@ public enum GameStage
     SecondNetworkTrained,
     SecondNetworkTrainedBad,
     StageOneCompleted,
-    QLearning1,
-    Completed
+    RLOneStart,
+    RLOneStarted,
+    RLOneCompletedGood,
+    RLOneCompletedBad,
+    RLTwoStart,
+    RLTwoStarted,
+    RLTwoCompletedBad,
+    RLTwoCompletedGood,
+    RLThreeStart,
+    RLThreeStarted,
+    RLThreeCompletedBad,
+    RLThreeCompletedGood,
 }

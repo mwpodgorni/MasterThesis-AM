@@ -2,6 +2,7 @@ using Google.Protobuf.WellKnownTypes;
 using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,7 +11,10 @@ using UnityEngine.UIElements;
 public class RLController : MonoBehaviour
 {
     Button _start;
-    Button _speedUp;
+    Button _speedNormal;
+    Button _speed2x;
+    Button _speed4x;
+    Button _speed6x;
     Button _stop;
     Label _help;
     VisualElement _UI;
@@ -23,6 +27,7 @@ public class RLController : MonoBehaviour
     public Button workshopCloseButton;
     public Button evaluationOpenButton;
     public Button evaluationCloseButton;
+    public Button nextLevelButton;
     public VisualElement helpPanel;
 
     [SerializeField] VisualTreeAsset _rewardAdjusterTemplate;
@@ -34,6 +39,8 @@ public class RLController : MonoBehaviour
     [SerializeField] RLLevel _rlLevel = RLLevel.level1;
 
     Dictionary<TileType, Sprite> _tileSpritesDict = new();
+    public static RLController Instance { get; private set; }
+    ProgressBar _progressBar;
 
     string GetTutorialText
     {
@@ -80,11 +87,21 @@ public class RLController : MonoBehaviour
         return "";
 
     }
-
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+
         _tileSpritesDict.Add(TileType.Normal, _tileSprites[0]);
         _tileSpritesDict.Add(TileType.Wall, _tileSprites[1]);
         _tileSpritesDict.Add(TileType.Dangerous, _tileSprites[2]);
@@ -103,11 +120,22 @@ public class RLController : MonoBehaviour
         _rewardContainer = workshopPanel.Q<VisualElement>("RewardContainer");
         _start = workshopPanel.Q<Button>("Start");
         _stop = workshopPanel.Q<Button>("Stop");
-        _speedUp = workshopPanel.Q<Button>("SpeedUp");
+
+        // speed buttons
+        _speedNormal = workshopPanel.Q<Button>("Speed1X");
+        _speed2x = workshopPanel.Q<Button>("Speed2X");
+        _speed4x = workshopPanel.Q<Button>("Speed4X");
+        _speed6x = workshopPanel.Q<Button>("Speed6X");
+        _speedNormal.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Normal);
+        _speed2x.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Fast);
+        _speed4x.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Faster);
+        _speed6x.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Fastest);
+
+
         _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
         _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
-        _speedUp.RegisterCallback<ClickEvent>(SpeedUpHandler);
-        _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("rewardAdjuster"));
+
+        _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
         workshopPanel.style.display = DisplayStyle.Flex;
         workshopPanel.AddToClassList("panel-up");
 
@@ -129,16 +157,28 @@ public class RLController : MonoBehaviour
         evaluationCloseButton = _UI.Q<Button>("EvaluationCloseButton");
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
 
+        nextLevelButton = _UI.Q<Button>("NextLevelButton");
+        nextLevelButton.clicked += LoadLevel;
+
+
+        _progressBar = _UI.Q<ProgressBar>("ProgressBar");
+
         LoadRewardAdjusters();
         DisableStopButton();
-        DisableSpeedButton();
+        HideSpeedButtons();
         StartCoroutine(StartTutorial(GetTutorialText));
+        if (_rlLevel == RLLevel.level1)
+            StateManager.Instance.SetState(GameStage.RLOneStart);
+        else if (_rlLevel == RLLevel.level2)
+            StateManager.Instance.SetState(GameStage.RLTwoStart);
+        else if (_rlLevel == RLLevel.level3)
+            StateManager.Instance.SetState(GameStage.RLThreeStart);
     }
 
     IEnumerator StartTutorial(string name)
     {
         yield return new WaitForSeconds(1f);
-        Debug.Log("Starting tutorial");
+        // Debug.Log("Starting tutorial");
         tutorialPanel.RemoveFromClassList("opacity-none");
         var steps = DataReader.Instance.GetTutorialSteps(name);
         TutorialController().SetTutorialSteps(steps);
@@ -157,6 +197,26 @@ public class RLController : MonoBehaviour
     }
     public void OnEvaluationOpenButtonClicked()
     {
+        var good = new[]
+            {
+                GameStage.RLOneCompletedGood,
+                GameStage.RLTwoCompletedGood,
+                GameStage.RLThreeCompletedGood
+            };
+        var bad = new[]
+            {
+                GameStage.RLOneCompletedBad,
+                GameStage.RLTwoCompletedBad,
+                GameStage.RLThreeCompletedBad
+            };
+        if (good.Contains(StateManager.Instance.CurrentStage))
+        {
+            StartCoroutine(StartTutorial(GetSolvedText(true)));
+        }
+        else if (bad.Contains(StateManager.Instance.CurrentStage))
+        {
+            StartCoroutine(StartTutorial(GetSolvedText(false)));
+        }
         EvaluationController().UpdateEvaluationData(_manager.currentEval);
         evaluationPanel.RemoveFromClassList("panel-up");
         evaluationOpenButton.AddToClassList("opacity-none");
@@ -166,14 +226,52 @@ public class RLController : MonoBehaviour
         evaluationPanel.AddToClassList("panel-up");
         evaluationOpenButton.RemoveFromClassList("opacity-none");
     }
-
+    public void HideProgressBar()
+    {
+        _progressBar.AddToClassList("opacity-none");
+    }
+    public void ShowProgressBar()
+    {
+        _progressBar.RemoveFromClassList("opacity-none");
+    }
     public void OnLevelFinished(bool solved)
     {
-        if (solved) TutorialController().AddToEvent(LoadLevel);
-        StartCoroutine(StartTutorial(GetSolvedText(solved)));
+        if (solved)
+        {
+            if (_rlLevel == RLLevel.level1)
+            {
+                StateManager.Instance.SetState(GameStage.RLOneCompletedGood);
+            }
+            else if (_rlLevel == RLLevel.level2)
+            {
+                StateManager.Instance.SetState(GameStage.RLTwoCompletedGood);
+            }
+            else if (_rlLevel == RLLevel.level3)
+            {
+                StateManager.Instance.SetState(GameStage.RLThreeCompletedGood);
+            }
+        }
+        else
+        {
+            if (_rlLevel == RLLevel.level1)
+            {
+                StateManager.Instance.SetState(GameStage.RLOneCompletedBad);
+            }
+            else if (_rlLevel == RLLevel.level2)
+            {
+                StateManager.Instance.SetState(GameStage.RLTwoCompletedBad);
+            }
+            else if (_rlLevel == RLLevel.level3)
+            {
+                StateManager.Instance.SetState(GameStage.RLThreeCompletedBad);
+            }
+        }
+        // StartT
+        // RLPuzzle1Completed
+        // StartCoroutine(StartTutorial(GetSolvedText(solved)));
+        StartCoroutine(StartTutorial("RLPuzzleCompleted"));
 
-        DisableStopButton();
-        EnableStartButton();
+
     }
 
     void LoadRewardAdjusters()
@@ -216,10 +314,18 @@ public class RLController : MonoBehaviour
 
     void StartTrainingHandler(ClickEvent evt)
     {
-        DisableRewardAdjusters();
-        DisableStartButton();
-        EnableStopButton();
-        EnableSpeedButton();
+        if (StateManager.Instance.CurrentStage == GameStage.RLOneStart)
+        {
+            StateManager.Instance.SetState(GameStage.RLOneStarted);
+        }
+        else if (StateManager.Instance.CurrentStage == GameStage.RLTwoStart)
+        {
+            StateManager.Instance.SetState(GameStage.RLTwoStarted);
+        }
+        else if (StateManager.Instance.CurrentStage == GameStage.RLThreeStart)
+        {
+            StateManager.Instance.SetState(GameStage.RLThreeStarted);
+        }
         _manager.StartTraining();
     }
 
@@ -232,9 +338,9 @@ public class RLController : MonoBehaviour
         _manager.StopTraining();
     }
 
-    void SpeedUpHandler(ClickEvent evt)
+    void SpeedUpHandler(ClickEvent evt, GameSpeed s)
     {
-        _manager.ToggleSpeed();
+        _manager.SetSpeed(s);
     }
 
     public void EnableRewardAdjusters()
@@ -277,14 +383,30 @@ public class RLController : MonoBehaviour
         _stop.SetEnabled(false);
     }
 
-    public void EnableSpeedButton()
+    public void ShowSpeedButtons()
     {
-        _speedUp.SetEnabled(true);
+        _speedNormal.RemoveFromClassList("opacity-none");
+        _speed2x.RemoveFromClassList("opacity-none");
+        _speed4x.RemoveFromClassList("opacity-none");
+        _speed6x.RemoveFromClassList("opacity-none");
     }
-    
+    public void HideSpeedButtons()
+    {
+        _speedNormal.AddToClassList("opacity-none");
+        _speed2x.AddToClassList("opacity-none");
+        _speed4x.AddToClassList("opacity-none");
+        _speed6x.AddToClassList("opacity-none");
+    }
+    public void EnableSpeedButtons()
+    {
+        _speedNormal.SetEnabled(true);
+        _speed2x.SetEnabled(true);
+        _speed4x.SetEnabled(true);
+        _speed6x.SetEnabled(true);
+    }
     public void DisableSpeedButton()
     {
-        _speedUp.SetEnabled(false);
+        _speedNormal.SetEnabled(false);
     }
 
     public HelpController HelpController()
@@ -305,12 +427,30 @@ public class RLController : MonoBehaviour
     {
         return GetComponent<RLEvaluationController>();
     }
-
+    public void ShowWorkshopOpenButton()
+    {
+        workshopOpenButton.RemoveFromClassList("opacity-none");
+    }
+    public void ShowEvaluationOpenButton()
+    {
+        evaluationOpenButton.RemoveFromClassList("opacity-none");
+    }
+    public void HideWorkshopOpenButton()
+    {
+        workshopOpenButton.AddToClassList("opacity-none");
+    }
+    public void HideEvaluationOpenButton()
+    {
+        evaluationOpenButton.AddToClassList("opacity-none");
+    }
     public void LoadLevel()
     {
         SceneManager.LoadScene(_nextScene.name);
     }
-
+    public void ShowNextLevelButton()
+    {
+        nextLevelButton.style.display = DisplayStyle.Flex;
+    }
     public enum RLLevel
     {
         level1,
