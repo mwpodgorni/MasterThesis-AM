@@ -3106,11 +3106,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7784304551042158714, guid: f59ea9d6592655d4cabb05ca7e08886d,
         type: 3}
-      propertyPath: isEnemy
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7784304551042158714, guid: f59ea9d6592655d4cabb05ca7e08886d,
-        type: 3}
       propertyPath: currentTile
       value: 
       objectReference: {fileID: 1509220639}

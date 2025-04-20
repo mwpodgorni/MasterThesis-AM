@@ -11,6 +11,8 @@ public class RLController : MonoBehaviour
 {
     Button _start;
     Button _speedUp;
+    Button _stop;
+    Label _help;
     VisualElement _UI;
     VisualElement _rewardContainer;
 
@@ -97,11 +99,15 @@ public class RLController : MonoBehaviour
         tutorialPanel.style.display = DisplayStyle.Flex;
 
         workshopPanel = _UI.Q<VisualElement>("WorkshopPanel");
+        _help = _UI.Q<Label>("HelpRewardAdjuster");
         _rewardContainer = workshopPanel.Q<VisualElement>("RewardContainer");
         _start = workshopPanel.Q<Button>("Start");
+        _stop = workshopPanel.Q<Button>("Stop");
         _speedUp = workshopPanel.Q<Button>("SpeedUp");
         _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
+        _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
         _speedUp.RegisterCallback<ClickEvent>(SpeedUpHandler);
+        _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("rewardAdjuster"));
         workshopPanel.style.display = DisplayStyle.Flex;
         workshopPanel.AddToClassList("panel-up");
 
@@ -124,6 +130,7 @@ public class RLController : MonoBehaviour
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
 
         LoadRewardAdjusters();
+        DisableStopButton();
         StartCoroutine(StartTutorial(GetTutorialText));
     }
 
@@ -162,7 +169,10 @@ public class RLController : MonoBehaviour
     public void OnLevelFinished(bool solved)
     {
         if (solved) TutorialController().AddToEvent(LoadLevel);
-        StartCoroutine(StartTutorial(GetSolvedText(solved))); 
+        StartCoroutine(StartTutorial(GetSolvedText(solved)));
+
+        DisableStopButton();
+        EnableStartButton();
     }
 
     void LoadRewardAdjusters()
@@ -206,7 +216,17 @@ public class RLController : MonoBehaviour
     void StartTrainingHandler(ClickEvent evt)
     {
         DisableRewardAdjusters();
+        DisableStartButton();
+        EnableStopButton();
         _manager.StartTraining();
+    }
+
+    void StopTrainingHandler(ClickEvent evt)
+    {
+        EnableRewardAdjusters();
+        EnableStartButton();
+        DisableStopButton();
+        _manager.StopTraining();
     }
 
     void SpeedUpHandler(ClickEvent evt)
@@ -233,6 +253,27 @@ public class RLController : MonoBehaviour
             adjuster.SetEnabled(false);
         }
     }
+
+    public void EnableStartButton()
+    {
+        _start.SetEnabled(true);
+    }
+
+    public void DisableStartButton()
+    {
+        _start.SetEnabled(false);
+    }
+
+    public void EnableStopButton()
+    {
+        _stop.SetEnabled(true);
+    }
+
+    public void DisableStopButton()
+    {
+        _stop.SetEnabled(false);
+    }
+
     public HelpController HelpController()
     {
         return GetComponent<HelpController>();
