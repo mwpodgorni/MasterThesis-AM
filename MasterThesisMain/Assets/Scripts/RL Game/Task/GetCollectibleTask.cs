@@ -9,9 +9,9 @@ public class GetCollectibleTask : Task
     {
         foreach (var tile in collectibleTiles)
         {
-            if (!tile.isUsed) return false;
+            if (tile.isUsed) return true;
         }
 
-        return true;
+        return false;
     }
 }
