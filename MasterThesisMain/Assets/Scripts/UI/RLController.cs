@@ -131,6 +131,7 @@ public class RLController : MonoBehaviour
 
         LoadRewardAdjusters();
         DisableStopButton();
+        DisableSpeedButton();
         StartCoroutine(StartTutorial(GetTutorialText));
     }
 
@@ -218,6 +219,7 @@ public class RLController : MonoBehaviour
         DisableRewardAdjusters();
         DisableStartButton();
         EnableStopButton();
+        EnableSpeedButton();
         _manager.StartTraining();
     }
 
@@ -226,6 +228,7 @@ public class RLController : MonoBehaviour
         EnableRewardAdjusters();
         EnableStartButton();
         DisableStopButton();
+        DisableSpeedButton();
         _manager.StopTraining();
     }
 
@@ -272,6 +275,16 @@ public class RLController : MonoBehaviour
     public void DisableStopButton()
     {
         _stop.SetEnabled(false);
+    }
+
+    public void EnableSpeedButton()
+    {
+        _speedUp.SetEnabled(true);
+    }
+    
+    public void DisableSpeedButton()
+    {
+        _speedUp.SetEnabled(false);
     }
 
     public HelpController HelpController()
