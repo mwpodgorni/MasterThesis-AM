@@ -40,7 +40,7 @@ public class NetworkController : MonoBehaviour
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
         miniGamePanel = ui.Q<VisualElement>("MiniGamePanel");
-        neuralNetwork = new NeuralNetwork();
+        neuralNetwork = new NeuralNetwork(this);
     }
     public void OnEnable()
     {
