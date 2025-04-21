@@ -9,14 +9,14 @@ using Random = UnityEngine.Random;
 public class RLAgent : MonoBehaviour
 {
     [Header("Hyper Parameters")]
-    [SerializeField] protected float _learningRate = 0.1f;   // Alpha (α)
+    [SerializeField] public float learningRate = 0.1f;   // Alpha (α)
     [SerializeField] protected float _discountFactor = 0.9f; // Gamma (γ);
-    [SerializeField] protected float _decayRate = 0.01f;
+    [SerializeField] public float decayRate = 0.01f;
 
     [SerializeField] protected float _epsilon = 1f;
     [SerializeField] protected float _epsilonMin = 0.01f;
 
-    [SerializeField] protected int _maxSteps = 20;
+    [SerializeField] public int maxSteps = 20;
 
     [Header("Properties")]
     public AgentController controller;
@@ -35,8 +35,6 @@ public class RLAgent : MonoBehaviour
     protected float _waitTime = 1f;
     protected float _timer = 0f;
     protected bool _finishedEpoch = false;
-
-    public int maxSteps = 20;
 
     protected Dictionary<TileType, float> _rewards = new Dictionary<TileType, float>();
     protected Action[] _actions = { Action.Up, Action.Down, Action.Left, Action.Right };

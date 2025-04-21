@@ -22,6 +22,8 @@ public class RLController : MonoBehaviour
 
     public VisualElement tutorialPanel;
     public VisualElement workshopPanel;
+    public VisualElement rewardAdjustments;
+    public VisualElement settingsAdjustments;
     public VisualElement evaluationPanel;
     public Button workshopOpenButton;
     public Button workshopCloseButton;
@@ -115,25 +117,40 @@ public class RLController : MonoBehaviour
         tutorialPanel = _UI.Q<VisualElement>("TutorialPanel");
         tutorialPanel.style.display = DisplayStyle.Flex;
 
+        // Workshop Panel
         workshopPanel = _UI.Q<VisualElement>("WorkshopPanel");
-        _help = _UI.Q<Label>("HelpRewardAdjuster");
-        _rewardContainer = workshopPanel.Q<VisualElement>("RewardContainer");
-        _start = workshopPanel.Q<Button>("Start");
-        _stop = workshopPanel.Q<Button>("Stop");
+        rewardAdjustments = _UI.Q<VisualElement>("Reward");
+        settingsAdjustments = _UI.Q<VisualElement>("Settings");
+
+        // Reward Adjustments
+        _help = rewardAdjustments.Q<Label>("HelpRewardAdjuster");
+        _rewardContainer = rewardAdjustments.Q<VisualElement>("RewardContainer");
+        _start = rewardAdjustments.Q<Button>("Start");
+        _stop = rewardAdjustments.Q<Button>("Stop");
 
         // speed buttons
-        _speedNormal = workshopPanel.Q<Button>("Speed1X");
-        _speed2x = workshopPanel.Q<Button>("Speed2X");
-        _speed4x = workshopPanel.Q<Button>("Speed4X");
-        _speed6x = workshopPanel.Q<Button>("Speed6X");
+        _speedNormal = rewardAdjustments.Q<Button>("Speed1X");
+        _speed2x = rewardAdjustments.Q<Button>("Speed2X");
+        _speed4x = rewardAdjustments.Q<Button>("Speed4X");
+        _speed6x = rewardAdjustments.Q<Button>("Speed6X");
         _speedNormal.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Normal);
         _speed2x.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Fast);
         _speed4x.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Faster);
         _speed6x.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Fastest);
 
-
         _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
         _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
+
+        // Settings Adjustements
+        var learningRate = settingsAdjustments.Q<VisualElement>("LearningRate").Q<Slider>();
+        var decayRate = settingsAdjustments.Q<VisualElement>("DecayRate").Q<Slider>();
+        var maxSteps = settingsAdjustments.Q<VisualElement>("MaxSteps").Q<Slider>();
+        var maxEpisodes = settingsAdjustments.Q<VisualElement>("MaxEpisodes").Q<Slider>();
+
+        learningRate.RegisterCallback<ChangeEvent<float>>(SetLearningRateHandler);
+        decayRate.RegisterCallback<ChangeEvent<float>>(SetDecayRateHandler);
+        maxSteps.RegisterCallback<ChangeEvent<float>>(SetMaxStepsHandler);
+        maxEpisodes.RegisterCallback<ChangeEvent<float>>(SetMaxEpisodesHandler);
 
         _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
         workshopPanel.style.display = DisplayStyle.Flex;
@@ -159,7 +176,6 @@ public class RLController : MonoBehaviour
 
         nextLevelButton = _UI.Q<Button>("NextLevelButton");
         nextLevelButton.clicked += LoadLevel;
-
 
         _progressBar = _UI.Q<ProgressBar>("ProgressBar");
 
@@ -416,6 +432,26 @@ public class RLController : MonoBehaviour
         _speed2x.SetEnabled(false);
         _speed4x.SetEnabled(false);
         _speed6x.SetEnabled(false);
+    }
+
+    void SetDecayRateHandler(ChangeEvent<float> evt)
+    {
+        _manager.epsilonDecayRate = evt.newValue;
+    }
+
+    void SetMaxStepsHandler(ChangeEvent<float> evt)
+    {
+        _manager.maxStepPerEpoch = (int) evt.newValue;
+    }
+
+    void SetMaxEpisodesHandler(ChangeEvent<float> evt)
+    {
+        _manager.maxEpisodes = (int) evt.newValue;
+    }
+
+    void SetLearningRateHandler(ChangeEvent<float> evt)
+    {
+        _manager.learningRate = evt.newValue;
     }
 
     public HelpController HelpController()
