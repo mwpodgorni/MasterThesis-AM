@@ -37,7 +37,8 @@ public class HelpController : MonoBehaviour
     {
         if (StateManager.Instance.CurrentStage == GameStage.FirstWorkshopOpen)
         {
-            StartCoroutine(DelayedStateUpdate());
+            StateManager.Instance.SetState(GameStage.FirstHelpOpen);
+            // StartCoroutine(DelayedStateUpdate());
         }
         // un-hide
         helpPanel.RemoveFromClassList("help-hidden");

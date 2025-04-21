@@ -105,7 +105,9 @@ public class NetworkController : MonoBehaviour
     }
     public void UpdateTrainingCompleted()
     {
+
         StageOneController.Instance.SetFinishedTraining(true);
+        progressBar.value = 0;
     }
     public void AddHiddenLayer()
     {

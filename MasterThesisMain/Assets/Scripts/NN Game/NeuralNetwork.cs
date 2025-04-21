@@ -11,9 +11,9 @@ public class NeuralNetwork
     public int finishedCycles;
     public float finalAverageLoss;
     public int correctPredictions;
-    public int errorLessThan005;
-    public int error005to01;
-    public int errorGreaterThan01;
+    public int errorAbove05;
+    public int error03to05;
+    public int errorBelow03;
     public List<float> lossPerStep = new();
     // ---
     public Layer inputLayer;
@@ -174,7 +174,7 @@ public class NeuralNetwork
         }
 
         // Reset tracking
-        correctPredictions = errorLessThan005 = error005to01 = errorGreaterThan01 = 0;
+        correctPredictions = errorAbove05 = error03to05 = errorBelow03 = 0;
         lossPerStep.Clear();
         float totalLoss = 0f;
 
@@ -200,9 +200,10 @@ public class NeuralNetwork
 
             // error buckets (optional UI)
             float avgError = expectedOutput.Zip(actualOutput, (e, a) => Mathf.Abs(e - a)).Average();
-            if (avgError < 0.05f) errorLessThan005++;
-            else if (avgError < 0.1f) error005to01++;
-            else errorGreaterThan01++;
+            Debug.Log("AvgError: " + avgError);
+            if (avgError > 0.5f) errorAbove05++;
+            else if (avgError > 0.3f) error03to05++;
+            else errorBelow03++;
 
             // periodic callback + yield
             if ((i + 1) % 10 == 0)
@@ -213,9 +214,9 @@ public class NeuralNetwork
                     learningRate = learningRate,
                     finalAverageLoss = totalLoss / (i + 1),
                     correctPredictions = correctPredictions,
-                    errorLow = errorLessThan005,
-                    errorMid = error005to01,
-                    errorHigh = errorGreaterThan01,
+                    errorLow = errorBelow03,
+                    errorMid = error03to05,
+                    errorHigh = errorAbove05,
                     lossData = new List<float>(lossPerStep)
                 });
                 yield return null;
@@ -231,9 +232,9 @@ public class NeuralNetwork
             learningRate = learningRate,
             finalAverageLoss = finalAverageLoss,
             correctPredictions = correctPredictions,
-            errorLow = errorLessThan005,
-            errorMid = error005to01,
-            errorHigh = errorGreaterThan01,
+            errorLow = errorBelow03,
+            errorMid = error03to05,
+            errorHigh = errorAbove05,
             lossData = new List<float>(lossPerStep)
         });
         OnTrainingCompleted?.Invoke();
