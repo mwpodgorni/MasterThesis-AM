@@ -47,7 +47,7 @@ public class QAgent : RLAgent
 
             totalStepCount++;
             currentEpochStepCount++;
-            _epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-_decayRate * totalStepCount);
+            _epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-decayRate * totalStepCount);
         }
 
         if (_calculatingMove && _timer < _waitTime)
@@ -119,7 +119,7 @@ public class QAgent : RLAgent
         }
 
         // Q-learning formula
-        float newQ = oldQ + _learningRate * (reward + _discountFactor * maxFutureQ - oldQ);
+        float newQ = oldQ + learningRate * (reward + _discountFactor * maxFutureQ - oldQ);
 
         // Update Q-table
         _qTable[prevState][action] = newQ;

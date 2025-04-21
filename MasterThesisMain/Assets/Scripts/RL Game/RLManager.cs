@@ -13,12 +13,18 @@ public class RLManager : MonoBehaviour
     [SerializeField] List<TileType> _observedTiles;
 
     [Header("Level Settings")]
-    [SerializeField] int requiredCountOfCompletedTask = 3;
     [SerializeField] GameSpeed _speed = GameSpeed.Normal;
     [SerializeField] float _normalSpeed = 1f;
     [SerializeField] float _fastSpeed = 3f;
     [SerializeField] float _fasterSpeed = 5f;
     [SerializeField] float _fastestSpeed = 8f;
+
+    [Header("Agent Settings")]
+    public int requiredCountOfCompletedTask = 3;
+    public int maxEpisodes = 30;
+    public int maxStepPerEpoch = 20;
+    public float epsilonDecayRate = 0.01f;
+    public float learningRate = 0.1f;
 
     [Header("Statistics")]
     public float maxReward = 0;
@@ -32,9 +38,6 @@ public class RLManager : MonoBehaviour
     public float[] episodeReward; // Shows if the agent is earning more reward.
     public float[] successRateRolling; // Rolling average success rate over the last N episodes
     public float[] stepsToCompletion; // To indicate whether the agent is becoming more efficient
-
-    public int maxEpisodes = 30;
-    public int maxStepPerEpoch = 20;
 
     public RLEvaluationData currentEval;
     ProgressBar _progressBar;
@@ -51,9 +54,7 @@ public class RLManager : MonoBehaviour
 
     private void Start()
     {
-
         SetSpeed(_speed);
-        _player.maxSteps = maxStepPerEpoch;
 
         episodeReward = new float[maxEpisodes];
         successRateRolling = new float[maxEpisodes];
@@ -73,7 +74,6 @@ public class RLManager : MonoBehaviour
         _progressBar.highValue = maxEpisodes;
         _progressBar.value = episodeCount;
     }
-
 
     private void Update()
     {
@@ -104,10 +104,18 @@ public class RLManager : MonoBehaviour
         }
     }
 
+    public void SetTraining()
+    {
+        _player.maxSteps = maxStepPerEpoch;
+        _player.decayRate = epsilonDecayRate;
+        _player.learningRate = learningRate;
+    }
+
     public void StartTraining()
     {
         if (_training) return;
 
+        SetTraining();
         _training = true;
         ResetModel();
         ResetTraining();
