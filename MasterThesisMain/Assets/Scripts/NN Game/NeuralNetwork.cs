@@ -28,8 +28,10 @@ public class NeuralNetwork
 
     float learningRate = 0.001f;
     public Action<EvaluationData> OnEvaluationUpdate;
+    public System.Action OnTrainingCompleted;
     bool hasTrained = false;
     private MonoBehaviour _runner;
+    private int currentEpoch = 0;
     public NeuralNetwork(MonoBehaviour coroutineRunner)
     {
         _runner = coroutineRunner;
@@ -179,6 +181,7 @@ public class NeuralNetwork
         // Main training loop, yielding every 10 steps
         for (int i = 0; i < epoch; i++)
         {
+            currentEpoch = i + 1;
             var set = trainingSet.data[Random.Range(0, trainingSet.data.Length)];
             var actualOutput = ForwardPass(set.input);
             var expectedOutput = set.expected;
@@ -233,6 +236,7 @@ public class NeuralNetwork
             errorHigh = errorGreaterThan01,
             lossData = new List<float>(lossPerStep)
         });
+        OnTrainingCompleted?.Invoke();
     }
 
     public float CalculateLoss(float[] outputs, float[] targets)
@@ -320,7 +324,10 @@ public class NeuralNetwork
         outputLayer.RemoveNode();
         InitializeWeights();
     }
-
+    public int GetCurrentEpoch()
+    {
+        return currentEpoch;
+    }
     public struct TrainingSet
     {
         public TrainingData[] data;
@@ -376,6 +383,7 @@ public class NeuralNetwork
         hiddenLayers.Clear();
         loss = 0.0f;
         avgLoss = 0.0f;
+        currentEpoch = 0;
         hasTrained = false;
     }
 

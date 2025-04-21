@@ -20,8 +20,11 @@ public class StageOneController : MonoBehaviour
     public Button workshopCloseButton;
     public Button evaluationOpenButton;
     public Button evaluationCloseButton;
+    public Button nextLevelButton;
     public VisualElement helpPanel;
     public VisualElement topbar;
+    ProgressBar progressBar;
+    public bool finishedTraining = false;
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -61,8 +64,13 @@ public class StageOneController : MonoBehaviour
         evaluationOpenButton.clicked += OnEvaluationOpenButtonClicked;
         evaluationCloseButton = ui.Q<Button>("EvaluationCloseButton");
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
+        nextLevelButton = ui.Q<Button>("NextLevelButton");
+        nextLevelButton.clicked += LoadSecondStage;
         workshopOpenButton.AddToClassList("opacity-none");
         evaluationOpenButton.AddToClassList("opacity-none");
+
+        progressBar = ui.Q<ProgressBar>("ProgressBar");
+        HideProgressBar();
 
         StartCoroutine(StartTutorial());
         // TODO: remove this debug code
@@ -96,7 +104,14 @@ public class StageOneController : MonoBehaviour
     }
     public void OnEvaluationOpenButtonClicked()
     {
-        if (StateManager.Instance.CurrentStage == GameStage.SecondNetworkTrained)
+        CheckIfCompleted();
+        evaluationPanel.RemoveFromClassList("panel-up");
+        topbar.AddToClassList("opacity-none");
+    }
+    public void CheckIfCompleted()
+    {
+        if (StateManager.Instance.CurrentStage == GameStage.SecondNetworkTrained
+            && finishedTraining)
         {
             int finishedCycles = StageOneController.Instance.EvaluationController().GetFinishedCycles();
             int correctPredictions = StageOneController.Instance.EvaluationController().GetCorrectPredictions();
@@ -110,8 +125,6 @@ public class StageOneController : MonoBehaviour
                 StateManager.Instance.SetState(GameStage.StageOneCompleted);
             }
         }
-        evaluationPanel.RemoveFromClassList("panel-up");
-        topbar.AddToClassList("opacity-none");
     }
     public void OnEvaluationCloseButtonClicked()
     {
@@ -151,5 +164,23 @@ public class StageOneController : MonoBehaviour
     public void ShowEvaluationOpenButton()
     {
         evaluationOpenButton.RemoveFromClassList("opacity-none");
+    }
+    public void ShowProgressBar()
+    {
+        progressBar.style.display = DisplayStyle.Flex;
+    }
+    public void HideProgressBar()
+    {
+        progressBar.style.display = DisplayStyle.None;
+    }
+    public void SetFinishedTraining(bool finished)
+    {
+
+        finishedTraining = finished;
+        CheckIfCompleted();
+    }
+    public void ShowNextLevelButton()
+    {
+        nextLevelButton.style.display = DisplayStyle.Flex;
     }
 }

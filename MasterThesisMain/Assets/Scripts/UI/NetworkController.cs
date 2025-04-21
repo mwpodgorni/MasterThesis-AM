@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor;
 using System.Linq;
+using UnityEditor.SceneManagement;
 public class NetworkController : MonoBehaviour
 {
     // input layer
@@ -34,6 +35,7 @@ public class NetworkController : MonoBehaviour
 
     NeuralNetwork neuralNetwork;
     ConnectionLines _connectionLines;
+    ProgressBar progressBar;
     NetworkSolution minigame2Solution = new NetworkSolution(3, 3, 2, new int[] { 4, 4 });
 
     public void Awake()
@@ -88,13 +90,22 @@ public class NetworkController : MonoBehaviour
         _connectionLines.pickingMode = PickingMode.Ignore;
 
         neuralNetwork.OnEvaluationUpdate = UpdateEvaluationData;
+        neuralNetwork.OnTrainingCompleted = UpdateTrainingCompleted;
 
-        // TODO: REMOVE THIS LINE
+        progressBar = ui.Q<ProgressBar>("ProgressBar");
+        progressBar.lowValue = 0;
+        progressBar.value = 0;
+
         StartCoroutine(DelayedSetup());
     }
     public void UpdateEvaluationData(EvaluationData data)
     {
         StageOneController.Instance.EvaluationController().UpdateEvaluationData(data);
+        progressBar.value = neuralNetwork.GetCurrentEpoch();
+    }
+    public void UpdateTrainingCompleted()
+    {
+        StageOneController.Instance.SetFinishedTraining(true);
     }
     public void AddHiddenLayer()
     {
@@ -315,7 +326,7 @@ public class NetworkController : MonoBehaviour
     }
     IEnumerator DelayedSetup()
     {
-        yield return null; // wait one frame
+        yield return null;
         // SetupTestNetwork();
         SetUpHelpClickEvents();
     }
@@ -360,7 +371,7 @@ public class NetworkController : MonoBehaviour
         var hiddenLayersContainer = _hiddenLayerPanel.Q<VisualElement>("HiddenLayers");
         hiddenLayersContainer.Clear();
         RedrawConnections();
-
+        StageOneController.Instance.SetFinishedTraining(false);
         neuralNetwork.ResetNetwork();
     }
     private void InitializeSliders()
@@ -375,6 +386,8 @@ public class NetworkController : MonoBehaviour
         trainingCycleSlider.RegisterValueChangedCallback(evt =>
         {
             trainingCycleLabel.text = evt.newValue.ToString();
+            progressBar.highValue = evt.newValue;
+
         });
 
         learningRateSlider.RegisterValueChangedCallback(evt =>

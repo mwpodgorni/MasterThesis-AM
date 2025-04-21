@@ -71,7 +71,7 @@ public class HelpController : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"[Help] Failed to load texture at path: {helpText.Visual}");
+                Debug.Log($"[Help] Failed to load texture at path: {helpText.Visual}");
                 helpImage.style.display = DisplayStyle.None;
             }
         }

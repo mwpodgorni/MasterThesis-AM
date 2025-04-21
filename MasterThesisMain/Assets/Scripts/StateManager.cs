@@ -66,6 +66,7 @@ public class StateManager : MonoBehaviour
                 StageOneController.Instance.NetworkController().ShowTrainingCycleForm();
                 StageOneController.Instance.NetworkController().ShowLearningRateForm();
                 StageOneController.Instance.NetworkController().ShowTrainButton();
+                StageOneController.Instance.ShowProgressBar();
                 break;
             case GameStage.SecondNetworkTrained:
                 StageOneController.Instance.ShowEvaluationOpenButton();
@@ -77,6 +78,7 @@ public class StateManager : MonoBehaviour
             case GameStage.StageOneCompleted:
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondNetworkTrainedGood());
                 StageOneController.Instance.TutorialController().StartTutorial();
+                StageOneController.Instance.ShowNextLevelButton();
                 break;
             case GameStage.RLOneStart:
                 RLController.Instance.HideProgressBar();
