@@ -218,7 +218,8 @@ public class RLController : MonoBehaviour
         {
             StartCoroutine(StartTutorial(GetSolvedText(false)));
         }
-        EvaluationController().UpdateEvaluationData(_manager.currentEval);
+        Debug.Log("Updating evaluation data" + _manager.currentEval);
+        UpdateEvaluation();
         evaluationPanel.RemoveFromClassList("panel-up");
         evaluationOpenButton.AddToClassList("opacity-none");
     }
@@ -234,6 +235,10 @@ public class RLController : MonoBehaviour
     public void ShowProgressBar()
     {
         _progressBar.RemoveFromClassList("opacity-none");
+    }
+    public void UpdateEvaluation()
+    {
+        EvaluationController().UpdateEvaluationData(_manager.currentEval);
     }
     public void OnLevelFinished(bool solved)
     {

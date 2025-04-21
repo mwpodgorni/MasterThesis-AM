@@ -65,6 +65,7 @@ public class RLManager : MonoBehaviour
         SetReward(TileType.Buff, 0);
 
         currentEval = new RLEvaluationData();
+
         var uiDoc = Object.FindFirstObjectByType<UIDocument>();
         var ui = uiDoc.rootVisualElement;
         _progressBar = ui.Q<ProgressBar>("ProgressBar");
@@ -97,6 +98,8 @@ public class RLManager : MonoBehaviour
                 stepsToCompletion[episodeCount - 1] = (float)_player.currentEpochStepCount / (float)maxStepPerEpoch;
                 _progressBar.value = episodeCount;
                 ResetTraining(); // Reset for next epoch
+                UpdateEval();
+                RLController.Instance.UpdateEvaluation();
             }
         }
     }

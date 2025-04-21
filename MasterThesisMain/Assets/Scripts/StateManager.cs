@@ -118,6 +118,9 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.EnableSpeedButtons();
                 break;
             case GameStage.RLTwoCompletedBad:
+            case GameStage.RLThreeCompletedBad:
+                RLController.Instance.DisableStopButton();
+                RLController.Instance.EnableStartButton();
                 break;
             case GameStage.RLTwoCompletedGood:
                 RLController.Instance.ShowNextLevelButton();
@@ -125,8 +128,7 @@ public class StateManager : MonoBehaviour
             case GameStage.RLThreeCompletedGood:
                 RLController.Instance.ShowNextLevelButton();
                 break;
-            case GameStage.RLThreeCompletedBad:
-                break;
+
 
         }
     }
