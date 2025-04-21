@@ -212,6 +212,7 @@ public class RLController : MonoBehaviour
         if (good.Contains(StateManager.Instance.CurrentStage))
         {
             StartCoroutine(StartTutorial(GetSolvedText(true)));
+            // TutorialController().AddToEvent(LoadLevel);
         }
         else if (bad.Contains(StateManager.Instance.CurrentStage))
         {
@@ -334,7 +335,7 @@ public class RLController : MonoBehaviour
         EnableRewardAdjusters();
         EnableStartButton();
         DisableStopButton();
-        DisableSpeedButton();
+        DisableSpeedButtons();
         _manager.StopTraining();
     }
 
@@ -404,9 +405,12 @@ public class RLController : MonoBehaviour
         _speed4x.SetEnabled(true);
         _speed6x.SetEnabled(true);
     }
-    public void DisableSpeedButton()
+    public void DisableSpeedButtons()
     {
         _speedNormal.SetEnabled(false);
+        _speed2x.SetEnabled(false);
+        _speed4x.SetEnabled(false);
+        _speed6x.SetEnabled(false);
     }
 
     public HelpController HelpController()

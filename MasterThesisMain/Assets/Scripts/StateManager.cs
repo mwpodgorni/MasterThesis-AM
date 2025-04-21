@@ -105,6 +105,8 @@ public class StateManager : MonoBehaviour
             case GameStage.RLThreeStart:
                 RLController.Instance.HideProgressBar();
                 RLController.Instance.HideEvaluationOpenButton();
+                RLController.Instance.ShowSpeedButtons();
+                RLController.Instance.DisableSpeedButtons();
                 break;
             case GameStage.RLTwoStarted:
             case GameStage.RLThreeStarted:
@@ -112,8 +114,8 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.DisableRewardAdjusters();
                 RLController.Instance.DisableStartButton();
                 RLController.Instance.EnableStopButton();
-                RLController.Instance.EnableSpeedButtons();
                 RLController.Instance.ShowProgressBar();
+                RLController.Instance.EnableSpeedButtons();
                 break;
             case GameStage.RLTwoCompletedBad:
                 break;
