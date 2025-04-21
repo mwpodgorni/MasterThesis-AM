@@ -26,6 +26,8 @@ public class RLManager : MonoBehaviour
     public float epsilonDecayRate = 0.01f;
     public float learningRate = 0.1f;
 
+    [SerializeField] List<RLSettings> _rlSettings;
+
     [Header("Statistics")]
     public float maxReward = 0;
     public float avgRewardPerEpoch = 0;
@@ -245,6 +247,11 @@ public class RLManager : MonoBehaviour
         return _observedTiles;
     }
 
+    public List<RLSettings> GetRLSettings()
+    {
+        return _rlSettings;
+    }
+
     public void UpdateEval()
     {
         currentEval.episodeReward = episodeReward;
@@ -257,6 +264,14 @@ public class RLManager : MonoBehaviour
         currentEval.episodeCount = episodeCount;
     }
 
+}
+
+public enum RLSettings
+{
+    LearningRate,
+    DecayRate,
+    Steps,
+    Episodes
 }
 
 public enum GameSpeed

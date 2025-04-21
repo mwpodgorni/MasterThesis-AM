@@ -32,6 +32,11 @@ public class RLController : MonoBehaviour
     public Button nextLevelButton;
     public VisualElement helpPanel;
 
+    public VisualElement learningRate;
+    public VisualElement decayRate;
+    public VisualElement maxSteps;
+    public VisualElement maxEpisodes;
+
     [SerializeField] VisualTreeAsset _rewardAdjusterTemplate;
     [SerializeField] RLManager _manager;
 
@@ -142,15 +147,20 @@ public class RLController : MonoBehaviour
         _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
 
         // Settings Adjustements
-        var learningRate = settingsAdjustments.Q<VisualElement>("LearningRate").Q<Slider>();
-        var decayRate = settingsAdjustments.Q<VisualElement>("DecayRate").Q<Slider>();
-        var maxSteps = settingsAdjustments.Q<VisualElement>("MaxSteps").Q<Slider>();
-        var maxEpisodes = settingsAdjustments.Q<VisualElement>("MaxEpisodes").Q<Slider>();
+        learningRate = settingsAdjustments.Q<VisualElement>("LearningRate");
+        decayRate = settingsAdjustments.Q<VisualElement>("DecayRate");
+        maxSteps = settingsAdjustments.Q<VisualElement>("MaxSteps");
+        maxEpisodes = settingsAdjustments.Q<VisualElement>("MaxEpisodes");
 
-        learningRate.RegisterCallback<ChangeEvent<float>>(SetLearningRateHandler);
-        decayRate.RegisterCallback<ChangeEvent<float>>(SetDecayRateHandler);
-        maxSteps.RegisterCallback<ChangeEvent<float>>(SetMaxStepsHandler);
-        maxEpisodes.RegisterCallback<ChangeEvent<float>>(SetMaxEpisodesHandler);
+        learningRate.Q<Slider>().RegisterCallback<ChangeEvent<float>>(SetLearningRateHandler);
+        decayRate.Q<Slider>().RegisterCallback<ChangeEvent<float>>(SetDecayRateHandler);
+        maxSteps.Q<Slider>().RegisterCallback<ChangeEvent<float>>(SetMaxStepsHandler);
+        maxEpisodes.Q<Slider>().RegisterCallback<ChangeEvent<float>>(SetMaxEpisodesHandler);
+
+        learningRate.style.display = DisplayStyle.None;
+        decayRate.style.display = DisplayStyle.None;
+        maxSteps.style.display = DisplayStyle.None;
+        maxEpisodes.style.display = DisplayStyle.None;
 
         _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
         workshopPanel.style.display = DisplayStyle.Flex;
@@ -179,6 +189,30 @@ public class RLController : MonoBehaviour
 
         _progressBar = _UI.Q<ProgressBar>("ProgressBar");
 
+        foreach (var setting in _manager.GetRLSettings())
+        {
+            if (setting == RLSettings.LearningRate)
+            {
+                learningRate.style.display = DisplayStyle.Flex;
+                continue;
+            }
+            if (setting == RLSettings.DecayRate)
+            {
+                decayRate.style.display = DisplayStyle.Flex;
+                continue;
+            }
+            if (setting == RLSettings.Steps)
+            {
+                maxSteps.style.display = DisplayStyle.Flex;
+                continue;
+            }
+            if (setting == RLSettings.Episodes)
+            {
+                maxEpisodes.style.display = DisplayStyle.Flex;
+                continue;
+            }
+        }
+
         LoadRewardAdjusters();
         DisableStopButton();
         HideSpeedButtons();
@@ -189,6 +223,8 @@ public class RLController : MonoBehaviour
             StateManager.Instance.SetState(GameStage.RLTwoStart);
         else if (_rlLevel == RLLevel.level3)
             StateManager.Instance.SetState(GameStage.RLThreeStart);
+
+        
     }
 
     IEnumerator StartTutorial(string name)
@@ -365,46 +401,6 @@ public class RLController : MonoBehaviour
         _manager.SetSpeed(s);
     }
 
-    public void EnableRewardAdjusters()
-    {
-        var rewardAdjusters = _rewardContainer.Query("RewardAdjuster").ToList();
-
-        foreach (var adjuster in rewardAdjusters)
-        {
-            adjuster.SetEnabled(true);
-        }
-    }
-
-    public void DisableRewardAdjusters()
-    {
-        var rewardAdjusters = _rewardContainer.Query("RewardAdjuster").ToList();
-
-        foreach (var adjuster in rewardAdjusters)
-        {
-            adjuster.SetEnabled(false);
-        }
-    }
-
-    public void EnableStartButton()
-    {
-        _start.SetEnabled(true);
-    }
-
-    public void DisableStartButton()
-    {
-        _start.SetEnabled(false);
-    }
-
-    public void EnableStopButton()
-    {
-        _stop.SetEnabled(true);
-    }
-
-    public void DisableStopButton()
-    {
-        _stop.SetEnabled(false);
-    }
-
     public void ShowSpeedButtons()
     {
         _speedNormal.RemoveFromClassList("opacity-none");
@@ -419,20 +415,6 @@ public class RLController : MonoBehaviour
         _speed4x.AddToClassList("opacity-none");
         _speed6x.AddToClassList("opacity-none");
     }
-    public void EnableSpeedButtons()
-    {
-        _speedNormal.SetEnabled(true);
-        _speed2x.SetEnabled(true);
-        _speed4x.SetEnabled(true);
-        _speed6x.SetEnabled(true);
-    }
-    public void DisableSpeedButtons()
-    {
-        _speedNormal.SetEnabled(false);
-        _speed2x.SetEnabled(false);
-        _speed4x.SetEnabled(false);
-        _speed6x.SetEnabled(false);
-    }
 
     void SetDecayRateHandler(ChangeEvent<float> evt)
     {
@@ -441,12 +423,12 @@ public class RLController : MonoBehaviour
 
     void SetMaxStepsHandler(ChangeEvent<float> evt)
     {
-        _manager.maxStepPerEpoch = (int) evt.newValue;
+        _manager.maxStepPerEpoch = (int)evt.newValue;
     }
 
     void SetMaxEpisodesHandler(ChangeEvent<float> evt)
     {
-        _manager.maxEpisodes = (int) evt.newValue;
+        _manager.maxEpisodes = (int)evt.newValue;
     }
 
     void SetLearningRateHandler(ChangeEvent<float> evt)
@@ -511,4 +493,102 @@ public class RLController : MonoBehaviour
 
         return input;
     }
+
+    #region EnableDisable
+    public void EnableRewardAdjusters()
+    {
+        var rewardAdjusters = _rewardContainer.Query("RewardAdjuster").ToList();
+
+        foreach (var adjuster in rewardAdjusters)
+        {
+            adjuster.SetEnabled(true);
+        }
+    }
+
+    public void DisableRewardAdjusters()
+    {
+        var rewardAdjusters = _rewardContainer.Query("RewardAdjuster").ToList();
+
+        foreach (var adjuster in rewardAdjusters)
+        {
+            adjuster.SetEnabled(false);
+        }
+    }
+
+    public void EnableStartButton()
+    {
+        _start.SetEnabled(true);
+    }
+
+    public void DisableStartButton()
+    {
+        _start.SetEnabled(false);
+    }
+
+    public void EnableStopButton()
+    {
+        _stop.SetEnabled(true);
+    }
+
+    public void DisableStopButton()
+    {
+        _stop.SetEnabled(false);
+    }
+
+    public void EnableSpeedButtons()
+    {
+        _speedNormal.SetEnabled(true);
+        _speed2x.SetEnabled(true);
+        _speed4x.SetEnabled(true);
+        _speed6x.SetEnabled(true);
+    }
+    public void DisableSpeedButtons()
+    {
+        _speedNormal.SetEnabled(false);
+        _speed2x.SetEnabled(false);
+        _speed4x.SetEnabled(false);
+        _speed6x.SetEnabled(false);
+    }
+
+    public void EnableLearningRate()
+    {
+        learningRate.SetEnabled(true);
+    }
+
+    public void DisableLearningRate()
+    {
+        learningRate.SetEnabled(false);
+    }
+
+    public void EnableDecayRate()
+    {
+        decayRate.SetEnabled(true);
+    }
+
+    public void DisableDecayRate()
+    {
+        decayRate.SetEnabled(false);
+    }
+
+    public void EnableMaxSteps()
+    {
+        maxSteps.SetEnabled(true);
+    }
+
+    public void DisableMaxSteps()
+    {
+        maxSteps.SetEnabled(false);
+    }
+
+    public void EnableMaxEpisodes()
+    {
+        maxEpisodes.SetEnabled(true);
+    }
+
+    public void DisableMaxEpisodes()
+    {
+        maxEpisodes.SetEnabled(false);
+    }
+    # endregion
+    
 }
