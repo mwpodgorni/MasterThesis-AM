@@ -128,7 +128,7 @@ public class RLController : MonoBehaviour
         settingsAdjustments = _UI.Q<VisualElement>("Settings");
 
         // Reward Adjustments
-        _help = rewardAdjustments.Q<Label>("HelpRewardAdjuster");
+        _help = _UI.Q<Label>("HelpRewardAdjuster");
         _rewardContainer = rewardAdjustments.Q<VisualElement>("RewardContainer");
         _start = rewardAdjustments.Q<Button>("Start");
         _stop = rewardAdjustments.Q<Button>("Stop");
@@ -161,7 +161,6 @@ public class RLController : MonoBehaviour
         decayRate.style.display = DisplayStyle.None;
         maxSteps.style.display = DisplayStyle.None;
         maxEpisodes.style.display = DisplayStyle.None;
-
         _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
         workshopPanel.style.display = DisplayStyle.Flex;
         workshopPanel.AddToClassList("panel-up");
@@ -224,7 +223,7 @@ public class RLController : MonoBehaviour
         else if (_rlLevel == RLLevel.level3)
             StateManager.Instance.SetState(GameStage.RLThreeStart);
 
-        
+
     }
 
     IEnumerator StartTutorial(string name)
@@ -589,6 +588,6 @@ public class RLController : MonoBehaviour
     {
         maxEpisodes.SetEnabled(false);
     }
-    # endregion
-    
+    #endregion
+
 }

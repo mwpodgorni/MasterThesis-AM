@@ -11,10 +11,10 @@ public class LineChart : VisualElement
     public Color lineColor = Color.green;
     public float lineWidth = 2f;
 
-    public List<Tuple<List<float>, Color>> datasets = new();
+    public List<(List<float> values, Color color, string label)> datasets = new();
 
     private VisualElement labelContainer;
-
+    private VisualElement legendContainer;
     public LineChart()
     {
         generateVisualContent += OnGenerateVisualContent;
@@ -27,6 +27,15 @@ public class LineChart : VisualElement
         labelContainer = new VisualElement();
         labelContainer.pickingMode = PickingMode.Ignore;
         hierarchy.Add(labelContainer);
+
+        legendContainer = new VisualElement();
+        legendContainer.style.flexDirection = FlexDirection.Row;
+        legendContainer.style.flexWrap = Wrap.Wrap;
+        legendContainer.style.marginTop = 8;
+        hierarchy.Add(legendContainer);
+
+
+
         RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
     }
     public void Refresh()
@@ -34,13 +43,14 @@ public class LineChart : VisualElement
         labelContainer.Clear();
         MarkDirtyRepaint();
         AddAxisLabels();
+        RefreshLegend();
     }
     void OnGenerateVisualContent(MeshGenerationContext ctx)
     {
         // pick series (fall back to single data if none in datasets)
         var seriesList = datasets.Count > 0
             ? datasets
-            : new List<Tuple<List<float>, Color>> { Tuple.Create(data, lineColor) };
+            : new List<(List<float>, Color, string)> { (data, lineColor, "Default") };
 
         int pointCount = seriesList[0].Item1.Count;
         if (pointCount < 2)
@@ -97,7 +107,7 @@ public class LineChart : VisualElement
         int smoothSteps = 8;                   // subdivisions per segment
         painter.lineWidth = lineWidth * 1.5f; // 50% thicker
 
-        foreach (var (vals, col) in seriesList)
+        foreach (var (vals, col, _) in seriesList)
         {
             painter.strokeColor = col;
 
@@ -157,7 +167,7 @@ public class LineChart : VisualElement
         // 1) same seriesList as used in drawing
         var seriesList = datasets.Count > 0
             ? datasets
-            : new List<Tuple<List<float>, Color>> { Tuple.Create(data, lineColor) };
+            : new List<(List<float>, Color, string)> { (data, lineColor, "Default") };
 
         var values = seriesList.SelectMany(s => s.Item1).ToList();
         if (values.Count < 2)
@@ -207,6 +217,38 @@ public class LineChart : VisualElement
             lbl.style.fontSize = 12;
             lbl.style.color = Color.white;
             labelContainer.Add(lbl);
+        }
+    }
+    private void RefreshLegend()
+    {
+        legendContainer.Clear(); // ← This is the fix
+
+        var seriesList = datasets.Count > 0
+            ? datasets
+            : new List<(List<float>, Color, string)> { (data, lineColor, "Default") };
+
+        foreach (var (_, color, label) in seriesList)
+        {
+            var item = new VisualElement();
+            item.style.flexDirection = FlexDirection.Row;
+            item.style.alignItems = Align.Center;
+            item.style.marginRight = 8;
+            item.style.marginLeft = 8;
+            item.style.marginBottom = 24;
+
+            var colorBox = new VisualElement();
+            colorBox.style.width = 12;
+            colorBox.style.height = 12;
+            colorBox.style.marginRight = 4;
+            colorBox.style.backgroundColor = color;
+
+            var text = new Label(label);
+            text.style.color = Color.white;
+            text.style.fontSize = 12;
+
+            item.Add(colorBox);
+            item.Add(text);
+            legendContainer.Add(item);
         }
     }
 }

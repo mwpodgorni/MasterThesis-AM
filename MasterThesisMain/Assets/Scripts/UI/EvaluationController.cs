@@ -36,10 +36,10 @@ public class EvaluationController : MonoBehaviour
         var seriesC = new List<float> { 3f, 3f, 1f, 3f, 3f };
 
         // dummy data
-        // chart.datasets = new List<Tuple<List<float>, Color>> {
-        //     Tuple.Create(seriesA, Color.green),
-        //     Tuple.Create(seriesB, Color.yellow),
-        //     Tuple.Create(seriesC, Color.red)
+        // chart.datasets = new List<(List<float>, Color, string)> {
+        //     (seriesA, Color.green, "Series A"),
+        //     (seriesB, Color.yellow, "Series B"),
+        //     (seriesC, Color.red, "Series C")
         // };
     }
     public void UpdateEvaluationData(EvaluationData data)
@@ -53,8 +53,8 @@ public class EvaluationController : MonoBehaviour
         errorMidValue.text = data.errorMid.ToString();
         errorHighValue.text = data.errorHigh.ToString();
         var downsampled = DownsampleLossData(data.lossData, 100);
-        chart.datasets = new List<Tuple<List<float>, Color>> {
-            Tuple.Create(downsampled, Color.cyan)
+        chart.datasets = new List<(List<float>, Color, string)> {
+            (downsampled, Color.cyan, "Loss Data"),
         };
         chart.Refresh();
     }

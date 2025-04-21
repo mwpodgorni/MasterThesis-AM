@@ -37,9 +37,9 @@ public class RLEvaluationController : MonoBehaviour
         completionTime.text = data.completionTime.ToString();
         episodeCount.text = data.episodeCount.ToString();
 
-        chart.datasets.Add(new Tuple<List<float>, Color>(DownsampleData(data.episodeReward), Color.green));
-        chart.datasets.Add(new Tuple<List<float>, Color>(DownsampleData(data.successRateRolling), Color.red));
-        chart.datasets.Add(new Tuple<List<float>, Color>(DownsampleData(data.stepsToCompletion), Color.blue));
+        chart.datasets.Add((DownsampleData(data.episodeReward), Color.green, "Episode Reward"));
+        chart.datasets.Add((DownsampleData(data.successRateRolling), Color.red, "Success Rate"));
+        chart.datasets.Add((DownsampleData(data.stepsToCompletion), Color.blue, "Steps to Completion"));
         chart.Refresh();
     }
     private List<float> DownsampleData(float[] lossData, int maxDataPoints = 1000)
