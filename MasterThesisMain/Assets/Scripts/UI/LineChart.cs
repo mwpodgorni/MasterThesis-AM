@@ -221,7 +221,7 @@ public class LineChart : VisualElement
     }
     private void RefreshLegend()
     {
-        legendContainer.Clear(); // ← This is the fix
+        legendContainer.Clear();
 
         var seriesList = datasets.Count > 0
             ? datasets

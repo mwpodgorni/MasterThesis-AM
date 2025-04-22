@@ -129,7 +129,7 @@ public class RLController : MonoBehaviour
 
         // Reward Adjustments
         _help = _UI.Q<Label>("HelpRewardAdjuster");
-        _rewardContainer = rewardAdjustments.Q<VisualElement>("RewardContainer");
+        _rewardContainer = _UI.Q<VisualElement>("RewardContainer");
         _start = rewardAdjustments.Q<Button>("Start");
         _stop = rewardAdjustments.Q<Button>("Stop");
 
@@ -223,7 +223,7 @@ public class RLController : MonoBehaviour
         else if (_rlLevel == RLLevel.level3)
             StateManager.Instance.SetState(GameStage.RLThreeStart);
 
-
+        SetUpSettingsImages();
     }
 
     IEnumerator StartTutorial(string name)
@@ -346,7 +346,8 @@ public class RLController : MonoBehaviour
             image.style.backgroundImage = new StyleBackground(_tileSpritesDict[tile]);
 
             slider.RegisterCallback<ChangeEvent<float>>(evt => SetTileRewardHandler(evt, tile, label, slider));
-
+            Debug.Log("REwards" + rewardAdjuster);
+            Debug.Log("REwards2" + _rewardContainer);
             _rewardContainer.Add(rewardAdjuster);
         }
     }
@@ -492,7 +493,26 @@ public class RLController : MonoBehaviour
 
         return input;
     }
+    public void SetUpSettingsImages()
+    {
+        var learningRateDown = _UI.Q<VisualElement>("LearningRate").Q<VisualElement>("ImageDown");
+        var learningRateUp = _UI.Q<VisualElement>("LearningRate").Q<VisualElement>("ImageUp");
+        var decayRateDown = _UI.Q<VisualElement>("DecayRate").Q<VisualElement>("ImageDown");
+        var decayRateUp = _UI.Q<VisualElement>("DecayRate").Q<VisualElement>("ImageUp");
+        var maxStepsDown = _UI.Q<VisualElement>("MaxSteps").Q<VisualElement>("ImageDown");
+        var maxStepsUp = _UI.Q<VisualElement>("MaxSteps").Q<VisualElement>("ImageUp");
+        var maxEpisodesDown = _UI.Q<VisualElement>("MaxEpisodes").Q<VisualElement>("ImageDown");
+        var maxEpisodesUp = _UI.Q<VisualElement>("MaxEpisodes").Q<VisualElement>("ImageUp");
 
+        learningRateDown.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/learningRateDown"));
+        learningRateUp.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/learningRateUp"));
+        decayRateDown.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/explorationDown"));
+        decayRateUp.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/explorationUp"));
+        maxStepsDown.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/stepsDown"));
+        maxStepsUp.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/stepsUp"));
+        maxEpisodesDown.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/episodesDown"));
+        maxEpisodesUp.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/episodesUp"));
+    }
     #region EnableDisable
     public void EnableRewardAdjusters()
     {

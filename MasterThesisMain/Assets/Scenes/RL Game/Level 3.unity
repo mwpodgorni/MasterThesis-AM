@@ -775,6 +775,11 @@ PrefabInstance:
       objectReference: {fileID: 754486332}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
+      propertyPath: _rlSettings.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
       propertyPath: _tilesToReset.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -782,6 +787,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _observedTiles.Array.size
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
+      propertyPath: '_rlSettings.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
+      propertyPath: '_rlSettings.Array.data[2]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
+      propertyPath: '_rlSettings.Array.data[3]'
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
@@ -2759,6 +2779,35 @@ PrefabInstance:
       propertyPath: _nextScene
       value: 
       objectReference: {fileID: 102900000, guid: 953d7472f954354468debaf637c523d0,
+        type: 3}
+    - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: _settingSprites.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: '_settingSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 21300000, guid: c42c9096f8739e544a45d713eff7f09c,
+        type: 3}
+    - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: '_settingSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 21300000, guid: c4d94597a1b4f9b41a729d183d905816,
+        type: 3}
+    - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: '_settingSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 552bffc43f49c644f9d9dcc3c8141569,
+        type: 3}
+    - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: '_settingSprites.Array.data[3]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 2e29bc9cac29cd840b30a8ac1dbe8d37,
         type: 3}
     - target: {fileID: 2572256214517772843, guid: 59a8b29d716545a41be872128386c648,
         type: 3}

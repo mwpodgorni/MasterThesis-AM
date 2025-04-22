@@ -2163,7 +2163,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
+      propertyPath: _rlSettings.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
       propertyPath: _observedTiles.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
+      propertyPath: '_rlSettings.Array.data[1]'
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,

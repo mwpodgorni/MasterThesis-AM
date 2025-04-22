@@ -565,6 +565,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7857610196580312700, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: tutorialCompletedEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7857610196580312700, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: tutorialCompletedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7857610196580312700, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: tutorialCompletedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -816,6 +831,7 @@ Transform:
   - {fileID: 793925659}
   - {fileID: 145059413}
   - {fileID: 1062457051}
+  - {fileID: 949010499}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &233573772
@@ -1060,6 +1076,11 @@ PrefabInstance:
       objectReference: {fileID: 754486332}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
+      propertyPath: _rlSettings.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
       propertyPath: _tilesToReset.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1067,6 +1088,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _observedTiles.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
+      propertyPath: '_rlSettings.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
+        type: 3}
+      propertyPath: '_rlSettings.Array.data[2]'
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
@@ -1729,7 +1760,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949010498}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.4352598, y: -53.1168, z: -58.98966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1737,7 +1768,7 @@ Transform:
   - {fileID: 1856559338}
   - {fileID: 784883176}
   - {fileID: 957791075}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 199124962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &956258463 stripped
 MonoBehaviour:
@@ -3052,4 +3083,3 @@ SceneRoots:
   - {fileID: 3456497185054281149}
   - {fileID: 501081630}
   - {fileID: 199124962}
-  - {fileID: 949010499}
