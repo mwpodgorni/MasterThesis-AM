@@ -49,6 +49,7 @@ public class RLController : MonoBehaviour
     public static RLController Instance { get; private set; }
     ProgressBar _progressBar;
 
+    bool _workShopFirstTime = true;
     string GetTutorialText
     {
         get
@@ -224,6 +225,7 @@ public class RLController : MonoBehaviour
             StateManager.Instance.SetState(GameStage.RLThreeStart);
 
         SetUpSettingsImages();
+        if (_rlLevel != RLLevel.level1) _workShopFirstTime = false;
     }
 
     IEnumerator StartTutorial(string name)
@@ -238,6 +240,12 @@ public class RLController : MonoBehaviour
 
     public void OnWorkshopOpenButtonClicked()
     {
+        if (_workShopFirstTime)
+        {
+            _workShopFirstTime = false;
+            StartCoroutine(StartTutorial("RLWorkshop"));
+        }
+
         workshopPanel.RemoveFromClassList("panel-up");
         workshopOpenButton.AddToClassList("opacity-none");
     }

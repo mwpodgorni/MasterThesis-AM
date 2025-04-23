@@ -210,8 +210,7 @@
       "title": "Level 1",
       "content": [
         "For this level, you need to set up the reward values for the tiles, such that the robot can learn to navigate the environment and reach the goal.",
-        "How well your setup performs will be evaluated based on the robot's ability to reach the goal efficiently.",
-        "Adjust the rewards and start the training."
+        "How well your setup performs will be evaluated based on the robot's ability to reach the goal efficiently."
       ]
     }
   ],
