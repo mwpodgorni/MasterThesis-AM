@@ -246,7 +246,7 @@
         "How well your setup performs will be evaluated based on the robot's ability defeat both enemies."
       ]
     },{
-      "title": "",
+      "title": "Training Settings",
       "content": [
         "There are some additional parameters next to the reward adjusters that you can adjust inside the workshop window.",
         "These settings will affect the training process of the robot."
@@ -293,8 +293,35 @@
     {
       "title": "",
       "content": [
+        "Since there are more elements in this level, we are going to introduce a new element \"Exploration vs. Exploitation\", and the \"Epsilon-Greedy\" strategy."
+      ]
+    },
+    {
+      "title": "Exploration vs. Exploitation",
+      "content": [
+        "Exploration is when the robot tries out different actions to see what happens. It explores the environment and learns about the consequences of its actions.",
+        "Exploitation is then when the robot uses what it has already learned to make the best decisions."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "Both elements are important for the robot to learn effectively. If the robot only explores, it won't learn anything useful.",
+        "If it only exploits, it might miss out on better actions that could lead to higher rewards."
+      ]
+    },
+    {
+      "title": "Epsilon-Greedy",
+      "content": [
+        "Therefore, we use a strategy called \"Epsilon-Greedy\" to help the robot balance exploration and exploitation.",
+        "In this strategy, we use a probability value called \"epsilon\" to determine if the robot should choose to explore or exploit.",
+        "The epsilon value will slowly decay over time, allowing the robot to mainly explore in the beginning and exploit later."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
         "In this case, the robot is more likely to make random actions in the beginning to explore different possible states and their effects.",
-        "This helps the robot to learn about the environment and find the best actions to take.",
         "As the robot learns, it will gradually shift towards exploitation, where it will choose the actions that yield the highest rewards based on its learned experiences."
       ]
     },
