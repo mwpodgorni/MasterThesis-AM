@@ -140,7 +140,7 @@
   ],
   "ReinforcementLearning": [
     {
-      "title": "Welcome to our tile-based game!",
+      "title": "Welcome to our RL tile-based game!",
       "content": [
         "In this game, you will train a robot to navigate a tile-based environment.",
         "The type of machine learning used in this game is called reinforcement learning."
@@ -163,51 +163,46 @@
       ]
     },
     {
-      "title": "How does it work?",
+      "title": "",
       "content": [
         "At each step, the agent is provided a \"state\", which is a representation of the environment at that moment.",
         "The agent then chooses an action based on its current state and receives a reward based on the action it took."
       ]
     },
     {
-      "title": "How does it work?",
+      "title": "",
       "content": [
         "When the agent picks an action that we consider good, it receives a positive reward.",
         "If the action is bad, it receives a negative reward.",
-        "The agent uses this feedback to learn which actions are better in different states."
+        "The agent goes through multiple iterations of this process, learning from its experiences and improving its performance over time."
       ]
     },
     {
-      "title": "How does it work?",
+      "title": "",
       "content": [
-        "Over time, the agent learns to maximize its rewards by finding the best actions to take in different situations."
+        "Try opening up the workshop window to see how the robot is set up."
+      ]
+    }
+  ],
+  "RLWorkshop": [
+    {
+      "title": "Your new task!",
+      "content": [
+        "Here, you will be able to set up the robot's reward parameters and train it to learn how the environment impacts it."
       ]
     },
     {
-      "title": "Your new tasks",
+      "title": "",
       "content": [
-        "Now that you understand how reinforcement learning work, it's time to train your robot.",
-        "You will need to set up reward values that will help the robot learn and solve different tasks."
-      ]
-    },
-    {
-      "title": "Instructions",
-      "content": [
-        "In this tile-based game, you can adjusts the reward values for each special tile inside the workshop window.",
+        "You can adjusts the reward values for each special tile presented in the level.",
         "The robot will receive a reward based on the value you set for the tile it steps on."
       ]
     },
     {
-      "title": "Instructions",
-      "content": [
-        "You can also set the reward value for to zero, which means the robot won't receive any feedback when stepping on it."
-      ]
-    },
-    {
-      "title": "Instructions",
+      "title": "",
       "content": [
         "When you're ready to train the agent, press the \"Play\" button to begin the training.",
-        "You can also speed up the training by pressing the \"Fast-Forward\" button."
+        "You can also speed up the training by pressing one of the different speed options."
       ]
     },
     {
@@ -250,8 +245,41 @@
       "content": [
         "For this level, you need to set up the reward values for the tiles, such that the robot can learn to defeat its enemies by taking a buff and then attacking them.",
         "How well your setup performs will be evaluated based on the robot's ability defeat both enemies."
-      ],
-      "event": "RLShowWorkshopButton"
+      ]
+    },{
+      "title": "",
+      "content": [
+        "There are some additional parameters next to the reward adjusters that you can adjust inside the workshop window.",
+        "These settings will affect the training process of the robot."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "The \"Learning Rate\" determines how strongly the reward values effect the robot's learning process.",
+        "If it’s too high, the robot might never settle on a good solution. If it’s too low, it learns super slowly and might get stuck with a bad solution."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "The \"Steps\" parameter determines how many steps the robot is allowed to take before a single iteration ends.",
+        "Adjusting this parameter could help the robot explore the environment more thoroughly, but it also makes the training longer."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "The \"Episode\" parameter determines how many iterations the robot will train through, before it is evaluated.",
+        "Adjusting this parameter could make the tranining more efficient, but it also makes the training longer."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "Depending on how you set these parameters, will affect the training time and the robot's performance.",
+        "Try to find the best combination of parameters that will allow the robot to learn efficiently."
+      ]
     }
   ],
   "RLPuzzle3": [
@@ -261,6 +289,34 @@
         "For this level, you need to set up the reward values for the tiles, such that the robot can learn to grab collectibles and reach the goal.",
         "There will be enemies in the level that the robot should try and avoid.",
         "How well your setup performs will be evaluated based on the robot's ability navigate efficiently."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "Since there are more elements that the robot needs to learn to deal with, we are using a strategy called \"epsilon-greedy\".",
+        "When talking about reinforcement learning, this strategy is used to balance exploration and exploitation."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "In this case, the robot is more likely to make random actions in the beginning to explore different possible states and their effects.",
+        "This helps the robot to learn about the environment and find the best actions to take.",
+        "As the robot learns, it will gradually shift towards exploitation, where it will choose the actions that yield the highest rewards based on its learned experiences."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "The \"Decay Rate\" parameter determines how quickly the robot will shift from exploration to exploitation.",
+        "A higher decay rate means the robot will quickly start exploiting its learned experiences, while a lower decay rate means it will continue exploring for a longer time."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "Try to find the best combination of parameters that will allow the robot to learn efficiently."
       ],
       "event": "RLShowWorkshopButton"
     }
