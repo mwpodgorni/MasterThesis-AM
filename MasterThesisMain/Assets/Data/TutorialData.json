@@ -165,8 +165,8 @@
     {
       "title": "",
       "content": [
-        "At each step, the agent is provided a \"state\", which is a representation of the environment at that moment.",
-        "The agent then chooses an action based on its current state and receives a reward based on the action it took."
+        "A \"state\" is a representation of the environment at that moment.",
+        "The agent chooses an action based on its current state and receives a reward based on the action it took."
       ]
     },
     {
@@ -181,7 +181,8 @@
       "title": "",
       "content": [
         "Try opening up the workshop window to see how the robot is set up."
-      ]
+      ],
+      "event": "RLShowWorkshopButton"
     }
   ],
   "RLWorkshop": [
@@ -211,8 +212,7 @@
         "For this level, you need to set up the reward values for the tiles, such that the robot can learn to navigate the environment and reach the goal.",
         "How well your setup performs will be evaluated based on the robot's ability to reach the goal efficiently.",
         "Adjust the rewards and start the training."
-      ],
-      "event": "RLShowWorkshopButton"
+      ]
     }
   ],
   "RLPuzzleCompleted": [
@@ -289,13 +289,6 @@
         "For this level, you need to set up the reward values for the tiles, such that the robot can learn to grab collectibles and reach the goal.",
         "There will be enemies in the level that the robot should try and avoid.",
         "How well your setup performs will be evaluated based on the robot's ability navigate efficiently."
-      ]
-    },
-    {
-      "title": "",
-      "content": [
-        "Since there are more elements that the robot needs to learn to deal with, we are using a strategy called \"epsilon-greedy\".",
-        "When talking about reinforcement learning, this strategy is used to balance exploration and exploitation."
       ]
     },
     {
