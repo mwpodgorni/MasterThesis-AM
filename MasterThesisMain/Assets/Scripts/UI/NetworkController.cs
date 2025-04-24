@@ -38,6 +38,7 @@ public class NetworkController : MonoBehaviour
     ProgressBar progressBar;
     NetworkSolution minigame2Solution = new NetworkSolution(3, 3, 2, new int[] { 4, 4 });
 
+    Button classifyButton;
     public void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -65,6 +66,9 @@ public class NetworkController : MonoBehaviour
         inputNodeAddBtn.clicked += () => AddNode(_inputLayerPanel);
         inputNodeRemoveBtn = ui.Q<Button>("InputNodeRemoveBtn");
         inputNodeRemoveBtn.clicked += () => RemoveNode(_inputLayerPanel);
+
+        classifyButton = ui.Q<Button>("ClassifyButton");
+        // classifyButton.clicked += () => ClassifyNetworkData();
 
         hiddenLayerAddBtn = ui.Q<Button>("HiddenLayerAddBtn");
         hiddenLayerAddBtn.clicked += AddHiddenLayer;
@@ -98,6 +102,17 @@ public class NetworkController : MonoBehaviour
 
         StartCoroutine(DelayedSetup());
     }
+    public void ClassifyNetworkData()
+    {
+        if (neuralNetwork == null)
+        {
+            Debug.LogError("Neural network not initialized.");
+            return;
+        }
+
+        neuralNetwork.ClassifyExamplesFromTrainingSet();
+    }
+
     public void UpdateEvaluationData(EvaluationData data)
     {
         StageOneController.Instance.EvaluationController().UpdateEvaluationData(data);

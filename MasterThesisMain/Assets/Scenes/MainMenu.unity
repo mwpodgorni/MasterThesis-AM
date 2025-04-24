@@ -371,7 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ff01d258c94fc4ebef31dcbdcdf198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageOneScene: {fileID: 102900000, guid: 26cc1e8bc29e2624085156ef1e558f32, type: 3}
+  stageOneScene: {fileID: 102900000, guid: a76c21ca1ec17ab4ba40f43c50c58838, type: 3}
 --- !u!4 &5424659736712591273
 Transform:
   m_ObjectHideFlags: 0

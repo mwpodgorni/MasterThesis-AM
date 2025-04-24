@@ -239,7 +239,26 @@ public class NeuralNetwork
         });
         OnTrainingCompleted?.Invoke();
     }
+    public void ClassifyExamplesFromTrainingSet()
+    {
+        var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
+        if (trainingSet.data == null || trainingSet.data.Length == 0)
+        {
+            Debug.LogError("Training data is empty or null.");
+            return;
+        }
 
+        var examples = trainingSet.data.OrderBy(x => Random.value).Take(10).ToList();
+
+        foreach (var sample in examples)
+        {
+            var output = ForwardPass(sample.input);
+            int predicted = Array.IndexOf(output, output.Max());
+            int expected = Array.IndexOf(sample.expected, sample.expected.Max());
+
+            Debug.Log($"Input: [{string.Join(", ", sample.input)}] → Predicted: {predicted}, Expected: {expected}");
+        }
+    }
     public float CalculateLoss(float[] outputs, float[] targets)
     {
         float loss = 0f;
