@@ -243,8 +243,8 @@
     bottom: -1px;
     left: 0;
     display: flex;
-    max-width: 1100px;
-    min-width: 1000px;
+    max-width: 1200px;
+    min-width: 1100px;
     background-color: rgba(90, 176, 114, 0);
     max-height: 500px;
     min-height: 500px;

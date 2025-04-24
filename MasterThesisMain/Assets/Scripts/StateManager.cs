@@ -112,7 +112,7 @@ public class StateManager : MonoBehaviour
                 break;
             case GameStage.RLTwoStarted:
             case GameStage.RLThreeStarted:
-                RLController.Instance.ShowEvaluationOpenButton();
+
                 RLController.Instance.DisableRewardAdjusters();
                 RLController.Instance.DisableStartButton();
                 RLController.Instance.EnableStopButton();

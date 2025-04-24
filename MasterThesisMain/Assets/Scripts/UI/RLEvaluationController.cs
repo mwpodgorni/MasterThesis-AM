@@ -31,6 +31,12 @@ public class RLEvaluationController : MonoBehaviour
     }
     public void UpdateEvaluationData(RLEvaluationData data)
     {
+        if (StateManager.Instance.CurrentStage == GameStage.RLTwoStarted
+        || StateManager.Instance.CurrentStage == GameStage.RLThreeStarted
+        )
+        {
+            RLController.Instance.ShowEvaluationOpenButton();
+        }
         // Debug.Log($"Updating evaluation data: {data}");
         avgEpisodeReturn.text = data.avgEpisodeReturn.ToString();
         successRate.text = data.successRate.ToString();

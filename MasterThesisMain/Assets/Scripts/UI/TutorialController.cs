@@ -15,7 +15,7 @@ public class TutorialController : MonoBehaviour
     public Label tutorialContent;
     private List<TutorialStep> messages;
     private int currentStep = 0;
-    private float typingSpeed = 0.02f;
+    private float typingSpeed = 0.01f;
     private float interpunctuationDelay = 0.4f;
     private float skipSpeedup = 5f;
 

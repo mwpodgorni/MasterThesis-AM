@@ -284,9 +284,8 @@
     {
       "title": "Level 3",
       "content": [
-        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to grab collectibles and reach the goal.",
-        "There will be enemies in the level that the robot should try and avoid.",
-        "How well your setup performs will be evaluated based on the robot's ability navigate efficiently."
+        "For this level, set tile rewards so the robot learns to collect items and reach the goal.",
+        "It should avoid enemies, and your setup will be judged by how efficiently it navigates."
       ]
     },
     {
