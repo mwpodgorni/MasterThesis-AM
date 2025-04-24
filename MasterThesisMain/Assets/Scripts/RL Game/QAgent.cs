@@ -94,7 +94,7 @@ public class QAgent : RLAgent
                 chosenAction = act;
             }
         }
-        
+
         return chosenAction;
     }
 
@@ -102,7 +102,7 @@ public class QAgent : RLAgent
     {
         if (!_qTable.ContainsKey(prevState))
         {
-            Debug.Log("New State Discovered");
+            // Debug.Log("New State Discovered");
             _qTable[prevState] = new Dictionary<Action, float>();
         }
         if (!_qTable[prevState].ContainsKey(action))

@@ -61,7 +61,7 @@ public class RLController : MonoBehaviour
                 case RLLevel.level2:
                     return "RLPuzzle2";
                 case RLLevel.level3:
-                    return "RLPuzzle2";
+                    return "RLPuzzle3";
             }
 
             return "";
