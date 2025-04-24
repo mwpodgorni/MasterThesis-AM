@@ -179,9 +179,7 @@
     },
     {
       "title": "",
-      "content": [
-        "Try opening up the workshop window to see how the robot is set up."
-      ],
+      "content": ["Try opening up the workshop window to see how the robot is set up."],
       "event": "RLShowWorkshopButton"
     }
   ],
@@ -245,7 +243,8 @@
         "For this level, you need to set up the reward values for the tiles, such that the robot can learn to defeat its enemies by taking a buff and then attacking them.",
         "How well your setup performs will be evaluated based on the robot's ability defeat both enemies."
       ]
-    },{
+    },
+    {
       "title": "Training Settings",
       "content": [
         "There are some additional parameters next to the reward adjusters that you can adjust inside the workshop window.",
@@ -328,15 +327,13 @@
     {
       "title": "",
       "content": [
-        "The \"Decay Rate\" parameter determines how quickly the robot will shift from exploration to exploitation.",
-        "A higher decay rate means the robot will quickly start exploiting its learned experiences, while a lower decay rate means it will continue exploring for a longer time."
+        "The \"Exploration Rate\" parameter controls how much the robot tries new actions instead of relying on what it already knows.",
+        "A higher exploration rate means the robot explores more, while a lower exploration rate means it mostly exploits its current knowledge."
       ]
     },
     {
       "title": "",
-      "content": [
-        "Try to find the best combination of parameters that will allow the robot to learn efficiently."
-      ],
+      "content": ["Try to find the best combination of parameters that will allow the robot to learn efficiently."],
       "event": "RLShowWorkshopButton"
     }
   ],

@@ -520,6 +520,15 @@ public class RLController : MonoBehaviour
         maxStepsUp.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/stepsUp"));
         maxEpisodesDown.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/episodesDown"));
         maxEpisodesUp.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/episodesUp"));
+
+
+        // labels
+        _UI.Q<VisualElement>("LearningRate").Q<Label>("SettingsLabel").text = "LearningRate";
+        _UI.Q<VisualElement>("DecayRate").Q<Label>("SettingsLabel").text = "ExplorationRate";
+        _UI.Q<VisualElement>("MaxSteps").Q<Label>("SettingsLabel").text = "StepsPerEpoch";
+        _UI.Q<VisualElement>("MaxEpisodes").Q<Label>("SettingsLabel").text = "MaxEpisodes";
+
+
     }
     #region EnableDisable
     public void EnableRewardAdjusters()

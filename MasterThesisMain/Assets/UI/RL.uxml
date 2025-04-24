@@ -22,7 +22,7 @@
                 <engine:VisualElement class="border-yellow" style="flex-grow: 1; margin-left: 30px; margin-right: 30px; margin-bottom: 150px; width: 30%; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
                     <engine:Label text="LEARNING CONFIGURATION" name="HelpLearningConfiguration" class="text-yellow header" style="-unity-font-definition: url(&quot;project://database/Assets/Oxanium.ttf?fileID=12800000&amp;guid=9b582a05913e6304ebe07deb6d184133&amp;type=3#Oxanium&quot;); -unity-font-style: bold; font-size: 30px; white-space: normal; -unity-text-align: middle-center; cursor: url(&quot;project://database/Assets/Images/pointer.png?fileID=2800000&amp;guid=11b0688d61b6e184cbe785e81e219af7&amp;type=3#pointer&quot;);" />
                     <engine:VisualElement name="Settings" style="flex-grow: 1; display: flex;">
-                        <engine:VisualElement name="SettingsContainer" style="flex-grow: 1; justify-content: flex-start;">
+                        <engine:VisualElement name="SettingsContainer" style="flex-grow: 1; justify-content: space-between;">
                             <engine:Instance template="SettingsAdjuster" name="LearningRate" style="margin-bottom: 20px; background-color: rgba(0, 0, 0, 0);">
                                 <AttributeOverrides element-name="Slider" low-value="0" value="0.1" />
                             </engine:Instance>

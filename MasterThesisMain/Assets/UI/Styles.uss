@@ -84,6 +84,7 @@
     -unity-font-style: bold;
     font-size: 32px;
     -unity-text-align: middle-center;
+    -unity-font-definition: url("project://database/Assets/Oxanium.ttf?fileID=12800000&guid=9b582a05913e6304ebe07deb6d184133&type=3#Oxanium");
 }
 
 .fontawesome-solid {
@@ -257,7 +258,6 @@
     transition-timing-function: ease-in-out;
 }
 
-
 .unity-progress-bar {
     border-radius: 10px;
     height: 40px;
@@ -276,13 +276,13 @@
 
 .unity-progress-bar__background {
     border-radius: 10px;
-    background-color: #3A3A3A;
+    background-color: rgb(58, 58, 58);
     height: 100%;
 }
 
 .unity-progress-bar__progress {
     height: 34px;
-    background-color: #21634F;
+    background-color: rgb(33, 99, 79);
     border-radius: 10px;
     flex-shrink: 0;
 }
