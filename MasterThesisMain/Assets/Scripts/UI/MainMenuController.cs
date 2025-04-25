@@ -10,10 +10,10 @@ public class MainMenuController : MonoBehaviour
     public static MainMenuController Instance { get; private set; }
     public VisualElement ui;
     public Button playButton;
-    public Button optionsButton;
+    public Button paperButton;
     public Button quitButton;
     public Button optionsClosed;
-    public VisualElement optionsPanel;
+    public VisualElement paperPanel;
 
     public VisualElement menu;
     private void Awake()
@@ -31,8 +31,8 @@ public class MainMenuController : MonoBehaviour
     {
         playButton = ui.Q<Button>("PlayButton");
         playButton.clicked += OnPlayButtonClicked;
-        optionsButton = ui.Q<Button>("OptionsButton");
-        optionsButton.clicked += OnOptionsClicked;
+        paperButton = ui.Q<Button>("PaperButton");
+        paperButton.clicked += OnPaperButtonClicked;
         quitButton = ui.Q<Button>("QuitButton");
         quitButton.clicked += OnQuitButtonClicked;
         optionsClosed = ui.Q<Button>("OptionsCloseButton");
@@ -41,21 +41,21 @@ public class MainMenuController : MonoBehaviour
 
         menu = ui.Q<VisualElement>("Menu");
         menu.style.display = DisplayStyle.Flex;
-        optionsPanel = ui.Q<VisualElement>("OptionsPanel");
-        optionsPanel.style.display = DisplayStyle.Flex;
-        optionsPanel.AddToClassList("panel-up");
+        paperPanel = ui.Q<VisualElement>("PaperPanel");
+        paperPanel.style.display = DisplayStyle.Flex;
+        paperPanel.AddToClassList("panel-up");
     }
     private void OnQuitButtonClicked()
     {
         Application.Quit();
     }
-    private void OnOptionsClicked()
+    private void OnPaperButtonClicked()
     {
-        optionsPanel.RemoveFromClassList("panel-up");
+        paperPanel.RemoveFromClassList("panel-up");
     }
     private void OnOptionsClosed()
     {
-        optionsPanel.AddToClassList("panel-up");
+        paperPanel.AddToClassList("panel-up");
     }
     private void OnPlayButtonClicked()
     {

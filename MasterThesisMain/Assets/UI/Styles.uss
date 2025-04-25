@@ -243,7 +243,7 @@
     bottom: -1px;
     left: 0;
     display: flex;
-    max-width: 1200px;
+    max-width: 1100px;
     min-width: 1100px;
     background-color: rgba(90, 176, 114, 0);
     max-height: 500px;
@@ -285,4 +285,19 @@
     background-color: rgb(33, 99, 79);
     border-radius: 10px;
     flex-shrink: 0;
+}
+
+.tutorial-panel2 {
+    min-height: auto;
+    -unity-text-align: upper-left;
+    font-size: 30px;
+    white-space: normal;
+    flex-grow: 1;
+    -unity-font-definition: url("project://database/Assets/Oxanium.ttf?fileID=12800000&guid=9b582a05913e6304ebe07deb6d184133&type=3#Oxanium");
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    flex-wrap: nowrap;
+    text-overflow: clip;
 }
