@@ -60,17 +60,29 @@ public class EvaluationController : MonoBehaviour
     }
     private List<float> DownsampleLossData(List<float> lossData, int maxDataPoints = 1000)
     {
-        if (lossData.Count <= maxDataPoints) return lossData;
+        if (lossData.Count <= maxDataPoints) return new List<float>(lossData);
 
-        int step = Mathf.CeilToInt((float)lossData.Count / maxDataPoints);
-        List<float> downsampledData = new List<float>();
+        List<float> downsampled = new List<float>(maxDataPoints);
+        int sectionSize = lossData.Count / maxDataPoints;
 
-        for (int i = 0; i < lossData.Count; i += step)
+        for (int i = 0; i < maxDataPoints; i++)
         {
-            downsampledData.Add(lossData[i]);
+            int start = i * sectionSize;
+            int end = Mathf.Min(start + sectionSize, lossData.Count);
+
+            float sum = 0f;
+            int count = 0;
+            for (int j = start; j < end; j++)
+            {
+                sum += lossData[j];
+                count++;
+            }
+
+            if (count > 0)
+                downsampled.Add(sum / count);
         }
 
-        return downsampledData;
+        return downsampled;
     }
     public int GetFinishedCycles()
     {

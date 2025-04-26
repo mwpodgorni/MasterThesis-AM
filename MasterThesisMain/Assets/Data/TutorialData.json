@@ -312,14 +312,13 @@
         "At first, the robot explores a lot to gather experience. Over time, the exploration rate decreases, and the robot focuses more on making optimal decisions.",
         "You can adjust the exploration rate in the workshop. A higher rate encourages more discovery, while a lower rate focuses on using learned strategies."
       ]
-    }
+    },
     {
       "title": "",
       "content": ["Try to find the best combination of parameters that will allow the robot to learn efficiently."],
       "event": "RLShowWorkshopButton"
     }
   ],
-
   "RLPuzzle3Solved": [
     {
       "title": "Task completed!",
