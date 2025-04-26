@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 5270d526fc2c03b45bbaeeb28e8a0409, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: fc42a64ee7db5d34aaed504b281c0de1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -2656,6 +2656,12 @@ PrefabInstance:
       propertyPath: _settingSprites.Array.size
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: '_tileSprites.Array.data[4]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 4e42c4320f36f4449a514e9196b94a3f,
+        type: 3}
     - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
         type: 3}
       propertyPath: '_settingSprites.Array.data[0]'
