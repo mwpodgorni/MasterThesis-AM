@@ -12,7 +12,7 @@ public class MainMenuController : MonoBehaviour
     public Button playButton;
     public Button paperButton;
     public Button quitButton;
-    public Button optionsClosed;
+    public Button paperClosed;
     public VisualElement paperPanel;
 
     public VisualElement menu;
@@ -35,8 +35,8 @@ public class MainMenuController : MonoBehaviour
         paperButton.clicked += OnPaperButtonClicked;
         quitButton = ui.Q<Button>("QuitButton");
         quitButton.clicked += OnQuitButtonClicked;
-        optionsClosed = ui.Q<Button>("OptionsCloseButton");
-        optionsClosed.clicked += OnOptionsClosed;
+        paperClosed = ui.Q<Button>("PaperCloseButton");
+        paperClosed.clicked += OnPaperClosed;
 
 
         menu = ui.Q<VisualElement>("Menu");
@@ -47,14 +47,17 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnQuitButtonClicked()
     {
+        ActivityTracker.Instance.SaveTrackingData();
         Application.Quit();
     }
     private void OnPaperButtonClicked()
     {
+        ActivityTracker.Instance.StartTimer("PaperOpen");
         paperPanel.RemoveFromClassList("panel-up");
     }
-    private void OnOptionsClosed()
+    private void OnPaperClosed()
     {
+        ActivityTracker.Instance.StopTimer("PaperOpen");
         paperPanel.AddToClassList("panel-up");
     }
     private void OnPlayButtonClicked()
