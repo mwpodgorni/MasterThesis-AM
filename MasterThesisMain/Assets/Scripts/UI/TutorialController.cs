@@ -214,4 +214,9 @@ public class TutorialController : MonoBehaviour
         Debug.Log("RLShowWorkshopButton called");
         RLController.Instance.ShowWorkshopOpenButton();
     }
+    public void EndGame()
+    {
+        Debug.Log("EndGame called");
+        Application.Quit();
+    }
 }

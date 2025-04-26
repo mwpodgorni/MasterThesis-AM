@@ -1,0 +1,374 @@
+{
+  "introduction": [
+    {
+      "title": "Welcome to our robot factory!",
+      "content": [
+        "As a supervisor, you will assemble and train robots to perform various tasks.",
+        "But before you start, you must complete a short training to understand how our robots work."
+      ]
+    },
+    {
+      "title": "How do robots learn?",
+      "content": [
+        "The robots in this facility learn using machine learning techniques, primarily neural networks and reinforcement learning.",
+        "To understand how they learn, let's first look at neural networks - one of the core systems powering their decision making."
+      ]
+    },
+    {
+      "title": "What is a neural network?",
+      "content": [
+        "A neural network is made of layers of connected nodes that transform input data, adjust internal parameters, and improve with training.",
+        "This allows the robot to recognize patterns, make decisions, and enhance its performance over time."
+      ]
+    },
+    {
+      "title": "Your first task",
+      "content": [
+        "Before you start to create fully functional robots, you need to prove that you know how to create and use neural networks.",
+        "Your first task is to set up a basic neural network and explore its architecture to understand how it processes and learns from data."
+      ]
+    },
+    {
+      "title": "Instructions",
+      "content": ["Start by opening the workshop."],
+      "event": "ShowWorkshopButton"
+    },
+    {
+      "title": "",
+      "content": [
+        "You can use the workshop to configure, validate, and train your neural networks.",
+        "If you are unsure about any part of the workshop, click on the label to view a description of its function.",
+        "Now, try to click on the INPUT section to see what it does."
+      ],
+      "event": "ShowWorkshopButton"
+    },
+    {
+      "title": "",
+      "content": [
+        "Good job! Now you are ready to configure your first network.",
+        "Every neural network needs to have some nodes in INPUT, HIDDEN and OUTPUT layers",
+        "Try by adding nodes in each layer, then press the \"Test\" button to check if the network is valid."
+      ]
+    }
+  ],
+  "firstNetworkNotValid": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The basic neural network has not been set up yet. Return to the workshop and complete the network setup by adding input, hidden, and output layers."
+      ]
+    }
+  ],
+  "firstNetworkValid": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "Congratulations, you have set up your first neural network and learned about its architecture.",
+        "Next, you will build a network for our sorting robot so that it can classify parts into the correct categories."
+      ]
+    },
+    {
+      "title": "Your second task",
+      "content": [
+        "Each incoming part has three properties: weight, durability, and material type.",
+        "Your neural network needs to analyze these properties and correctly determine what kind of robot it belongs to."
+      ]
+    },
+    {
+      "title": "Helpful hints",
+      "content": [
+        "Match input nodes to properties of robot parts and output nodes to prediction of robot types.",
+        "Stacking two hidden layers can help the network learn more complex patterns.",
+        "Use a small number of nodes in each hidden layer and adjust as needed."
+      ]
+    },
+    {
+      "title": "",
+      "content": ["Set up the network and try to validate it, before we proceed to the training."]
+    }
+  ],
+  "secondNetworkNotValid": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The neural network is not yet set up to classify robot parts. Return to the workshop and complete the network setup by adding input, hidden, and output layers."
+      ]
+    }
+  ],
+  "secondNetworkValid": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up a neural network that can classify robot parts.",
+        "Now, you will need to train the network."
+      ]
+    },
+    {
+      "title": "How training works?",
+      "content": [
+        "Training begins by pressing the \"Train\" button.",
+        "Before starting, you can set the number of training cycles and the learning rate using input fields on the right.",
+        "Adjust the training parameters, then switch to the Evaluation panel to review your network’s performance."
+      ]
+    }
+  ],
+  "secondNetworkTrainedBad": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The training of your network did not go well.",
+        "Maybe you should try to increase the number of training cycles.",
+        "Keeping the learning rate low can also help the network learn better."
+      ]
+    }
+  ],
+  "secondNetworkTrainedGood": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up a neural network that can classify robot parts.",
+        "Now, this network can be used as a brain of our sorting robot."
+      ]
+    },
+    {
+      "title": "Your third task",
+      "content": [
+        "Now we will move to a different section of our factory, where you will learn more practical applications of machine learning.",
+        "Open evaluation panel and press the \"Next Level\" button to continue."
+      ]
+    }
+  ],
+  "ReinforcementLearning": [
+    {
+      "title": "Welcome to our RL tile-based game!",
+      "content": [
+        "In this game, you will train a robot to navigate a tile-based environment.",
+        "The type of machine learning used in this game is called reinforcement learning."
+      ]
+    },
+    {
+      "title": "What is reinforcement learning?",
+      "content": [
+        "Reinforcement learning is a type of machine learning where an agent learns to make optimal decisions by interacting with its environment.",
+        "The agent receives feedback in the form of rewards or penalties based on its actions, which helps it learn and improve over time."
+      ]
+    },
+    {
+      "title": "How does it work?",
+      "content": [
+        "In reinforcement learning, the learning is done step by step.",
+        "- The agent is presented a state,",
+        "- It takes an action",
+        "- And receives a reward."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "A \"state\" is a representation of the environment at that moment.",
+        "The agent chooses an action based on its current state and receives a reward based on the action it took."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "When the agent picks an action that we consider good, it receives a positive reward.",
+        "If the action is bad, it receives a negative reward.",
+        "The agent goes through multiple iterations of this process, learning from its experiences and improving its performance over time."
+      ]
+    },
+    {
+      "title": "",
+      "content": ["Try opening up the workshop window to see how the robot is set up."],
+      "event": "RLShowWorkshopButton"
+    }
+  ],
+  "RLWorkshop": [
+    {
+      "title": "Your new task!",
+      "content": [
+        "Here, you will be able to set up the robot's reward parameters and train it to learn how the environment impacts it."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "You can adjusts the reward values for each special tile presented in the level.",
+        "The robot will receive a reward based on the value you set for the tile it steps on."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "When you're ready to train the agent, press the \"Play\" button to begin the training.",
+        "You can also speed up the training by pressing one of the different speed options."
+      ]
+    },
+    {
+      "title": "Level 1",
+      "content": [
+        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to navigate the environment and reach the goal.",
+        "How well your setup performs will be evaluated based on the robot's ability to reach the goal efficiently."
+      ]
+    }
+  ],
+  "RLPuzzleCompleted": [
+    {
+      "title": "Training completed!",
+      "content": ["The training has been completed. Now open the evaluation tab to see the outcome of the training."]
+    }
+  ],
+  "RLPuzzle1Solved": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up the reward values for the tiles, allowing the robot to learn to navigate the environment and reach the goal.",
+        "When you are ready, proceed to the next level."
+      ]
+    }
+  ],
+  "RLPuzzle1NotSolved": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The reward values were not optimized for the robot to learn to navigate the environment and reach the goal.",
+        "Return to the workshop and give it another try."
+      ]
+    }
+  ],
+  "RLPuzzle2": [
+    {
+      "title": "Level 2",
+      "content": [
+        "For this level, you need to set up the reward values for the tiles, such that the robot can learn to defeat its enemies by taking a buff and then attacking them.",
+        "How well your setup performs will be evaluated based on the robot's ability defeat both enemies."
+      ]
+    },
+    {
+      "title": "Training Settings",
+      "content": [
+        "There are some additional parameters next to the reward adjusters that you can adjust inside the workshop window.",
+        "These settings will affect the training process of the robot."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "The \"Learning Rate\" determines how strongly the reward values effect the robot's learning process.",
+        "If it’s too high, the robot might never settle on a good solution. If it’s too low, it learns super slowly and might get stuck with a bad solution."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "The \"Steps\" parameter determines how many steps the robot is allowed to take before a single iteration ends.",
+        "Adjusting this parameter could help the robot explore the environment more thoroughly, but it also makes the training longer."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "The \"Episode\" parameter determines how many iterations the robot will train through, before it is evaluated.",
+        "Adjusting this parameter could make the tranining more efficient, but it also makes the training longer."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "Depending on how you set these parameters, will affect the training time and the robot's performance.",
+        "Try to find the best combination of parameters that will allow the robot to learn efficiently."
+      ]
+    }
+  ],
+  "RLPuzzle3": [
+    {
+      "title": "Level 3",
+      "content": [
+        "For this level, set tile rewards so the robot learns to collect items and reach the goal.",
+        "It should avoid enemies, and your setup will be judged by how efficiently it navigates."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "Since there are more elements in this level, we are going to introduce a new element \"Exploration vs. Exploitation\", and the \"Epsilon-Greedy\" strategy."
+      ]
+    },
+    {
+      "title": "Exploration vs. Exploitation",
+      "content": [
+        "Exploration is when the robot tries out different actions to see what happens. It explores the environment and learns about the consequences of its actions.",
+        "Exploitation is then when the robot uses what it has already learned to make the best decisions."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "Both elements are important for the robot to learn effectively. If the robot only explores, it won't learn anything useful.",
+        "If it only exploits, it might miss out on better actions that could lead to higher rewards."
+      ]
+    },
+    {
+      "title": "Epsilon-Greedy",
+      "content": [
+        "Therefore, we use a strategy called \"Epsilon-Greedy\" to help the robot balance exploration and exploitation.",
+        "In this strategy, we use a probability value called \"epsilon\" to determine if the robot should choose to explore or exploit.",
+        "The epsilon value will slowly decay over time, allowing the robot to mainly explore in the beginning and exploit later."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "In this case, the robot is more likely to make random actions in the beginning to explore different possible states and their effects.",
+        "As the robot learns, it will gradually shift towards exploitation, where it will choose the actions that yield the highest rewards based on its learned experiences."
+      ]
+    },
+    {
+      "title": "",
+      "content": [
+        "The \"Exploration Rate\" parameter controls how much the robot tries new actions instead of relying on what it already knows.",
+        "A higher exploration rate means the robot explores more, while a lower exploration rate means it mostly exploits its current knowledge."
+      ]
+    },
+    {
+      "title": "",
+      "content": ["Try to find the best combination of parameters that will allow the robot to learn efficiently."],
+      "event": "RLShowWorkshopButton"
+    }
+  ],
+
+  "RLPuzzle2Solved": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up the reward values for the tiles, allowing the robot to learn to defeat its enemies by taking a buff and then attacking them."
+      ]
+    }
+  ],
+  "RLPuzzle2NotSolved": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The reward values were not optimized for the robot to learn to defeat its enemies by taking a buff and then attacking them.",
+        "Return to the workshop and give it another try."
+      ]
+    }
+  ],
+  "RLPuzzle3Solved": [
+    {
+      "title": "Task completed!",
+      "content": [
+        "You successfully set up the reward values for the tiles, allowing the robot to learn to grab collectibles and reach the goal."
+      ]
+    }
+  ],
+  "RLPuzzle3NotSolved": [
+    {
+      "title": "Task incomplete",
+      "content": [
+        "The reward values were not optimized for the robot to learn to grab collectibles and reach the goal.",
+        "Return to the workshop and give it another try."
+      ]
+    }
+  ]
+}

@@ -59,14 +59,14 @@
     "title": "Learning Rate",
     "visual": "Images/LearningRate",
     "description": [
-      "The learning rate controls how much the network’s weights adjust on each update.",
-      "A higher rate speeds up learning but can overshoot the optimum; a lower rate is more precise but slower."
+      "The learning rate controls how much the model adjusts during training, whether it is a neural network or a reinforcement learning agent.",
+      "A higher learning rate can speed up learning but risks overshooting good solutions; a lower rate leads to slower but more stable progress."
     ],
     "highlights": [
-      "Too high → training may diverge or oscillate",
-      "Too low → training can stall or take too long",
-      "Common starting values range from 0.001 to 0.1",
-      "Adjust based on loss curve behavior"
+      "Too high → learning may become unstable or inconsistent",
+      "Too low → learning can become very slow or stuck",
+      "Typical starting values range from 0.001 to 0.1",
+      "Adjust based on how training performance changes"
     ]
   },
   "RewardAdjuster": {

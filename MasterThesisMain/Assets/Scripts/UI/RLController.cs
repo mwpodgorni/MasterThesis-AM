@@ -523,10 +523,10 @@ public class RLController : MonoBehaviour
 
 
         // labels
-        _UI.Q<VisualElement>("LearningRate").Q<Label>("SettingsLabel").text = "LearningRate";
-        _UI.Q<VisualElement>("DecayRate").Q<Label>("SettingsLabel").text = "ExplorationRate";
-        _UI.Q<VisualElement>("MaxSteps").Q<Label>("SettingsLabel").text = "StepsPerEpoch";
-        _UI.Q<VisualElement>("MaxEpisodes").Q<Label>("SettingsLabel").text = "MaxEpisodes";
+        _UI.Q<VisualElement>("LearningRate").Q<Label>("SettingsLabel").text = "Learning rate";
+        _UI.Q<VisualElement>("DecayRate").Q<Label>("SettingsLabel").text = "Exploration rate";
+        _UI.Q<VisualElement>("MaxSteps").Q<Label>("SettingsLabel").text = "Steps Per cycle";
+        _UI.Q<VisualElement>("MaxEpisodes").Q<Label>("SettingsLabel").text = "Number of cycles";
 
 
     }
