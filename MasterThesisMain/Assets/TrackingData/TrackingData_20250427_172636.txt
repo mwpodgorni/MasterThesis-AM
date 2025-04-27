@@ -1,0 +1,5 @@
+Total Play Time: 21.34762
+Help_opened_ InputLayer: 2 times
+Help_opened_ HiddenLayers: 2 times
+Help_opened_ OutputLayer: 2 times
+StageOneTime: 21.34762 seconds
