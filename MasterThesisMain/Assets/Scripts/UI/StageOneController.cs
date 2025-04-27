@@ -73,6 +73,7 @@ public class StageOneController : MonoBehaviour
         HideProgressBar();
 
         StartCoroutine(StartTutorial());
+        ActivityTracker.Instance.StartTimer("StageOneTime");
         // TODO: remove this debug code
         //     HideAllPanels();
         //     menu.style.display = DisplayStyle.Flex;
@@ -155,6 +156,7 @@ public class StageOneController : MonoBehaviour
     }
     public void LoadSecondStage()
     {
+        ActivityTracker.Instance.StopTimer("StageOneTime");
         SceneManager.LoadScene(stageTwoScene.name);
     }
     public void ShowWorkshopOpenButton()

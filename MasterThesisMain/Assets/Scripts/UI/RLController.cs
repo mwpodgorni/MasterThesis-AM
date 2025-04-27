@@ -218,14 +218,21 @@ public class RLController : MonoBehaviour
         HideSpeedButtons();
         StartCoroutine(StartTutorial(GetTutorialText));
         if (_rlLevel == RLLevel.level1)
+        {
             StateManager.Instance.SetState(GameStage.RLOneStart);
+        }
         else if (_rlLevel == RLLevel.level2)
+        {
             StateManager.Instance.SetState(GameStage.RLTwoStart);
+        }
         else if (_rlLevel == RLLevel.level3)
+        {
             StateManager.Instance.SetState(GameStage.RLThreeStart);
+        }
 
         SetUpSettingsImages();
         if (_rlLevel != RLLevel.level1) _workShopFirstTime = false;
+        ActivityTracker.Instance.StartTimer("StageTwoTime");
     }
 
     IEnumerator StartTutorial(string name)

@@ -47,7 +47,6 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnQuitButtonClicked()
     {
-        ActivityTracker.Instance.SaveTrackingData();
         Application.Quit();
     }
     private void OnPaperButtonClicked()
@@ -62,6 +61,7 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnPlayButtonClicked()
     {
+        ActivityTracker.Instance.StopTimer("PaperOpen");
         Debug.Log("Play Button Clicked");
         SceneManager.LoadScene(stageOneScene.name);
     }

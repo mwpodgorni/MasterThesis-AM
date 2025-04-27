@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using NUnit.Framework.Constraints;
 
 public class ActivityTracker : MonoBehaviour
 {
@@ -56,5 +57,15 @@ public class ActivityTracker : MonoBehaviour
             foreach (var timer in timers)
                 writer.WriteLine($"{timer.Key}: {timer.Value} seconds");
         }
+    }
+    private void OnApplicationQuit()
+    {
+        var keys = new List<string>(timers.Keys);
+        foreach (var key in keys)
+        {
+            if (timers[key] >= 0) // if timer was started but not stopped
+                timers[key] = Time.time - timers[key];
+        }
+        SaveTrackingData();
     }
 }

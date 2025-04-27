@@ -112,7 +112,6 @@ public class StateManager : MonoBehaviour
                 break;
             case GameStage.RLTwoStarted:
             case GameStage.RLThreeStarted:
-
                 RLController.Instance.DisableRewardAdjusters();
                 RLController.Instance.DisableStartButton();
                 RLController.Instance.EnableStopButton();
@@ -129,6 +128,8 @@ public class StateManager : MonoBehaviour
                 break;
             case GameStage.RLThreeCompletedGood:
                 RLController.Instance.ShowNextLevelButton();
+                ActivityTracker.Instance.StopTimer("StageTwoTime");
+
                 break;
 
 
