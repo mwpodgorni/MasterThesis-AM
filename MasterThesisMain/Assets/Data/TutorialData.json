@@ -189,7 +189,7 @@
     {
       "title": "Your new task",
       "content": [
-        "In this section, you need to adjust rewards for different tiles in the environment, to inflence the learning and behavior of the robot.",
+        "In this section, you need to adjust rewards for different tiles in the environment, to influence the learning and behavior of the robot.",
         "The robot will receive rewards based on the value you set for each tile it steps on.",
         "You can also adjust the learning rate and number of steps the robot can take in each cycle."
       ]
@@ -219,7 +219,7 @@
     {
       "title": "Task completed!",
       "content": [
-        "You have successfully set up the robot to navigate the enviornment and reach the goal.",
+        "You have successfully set up the robot to navigate the environment and reach the goal.",
         "When you are ready, proceed to the next level from the Evaluation panel."
       ]
     }
@@ -296,7 +296,7 @@
       "title": "",
       "content": [
         "Both elements are important for the robot to learn effectively.",
-        "If the robot only explores, it won learn anything useful. If it focuses only on exploitation, it might not discover optimal actions for certain situations."
+        "If the robot only explores, it won't learn anything useful. If it focuses only on exploitation, it might never discover optimal actions for certain situations."
       ]
     },
     {
