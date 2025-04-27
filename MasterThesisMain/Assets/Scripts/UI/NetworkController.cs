@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using UnityEditor;
 using System.Linq;
 using UnityEditor.SceneManagement;
+using Unity.VisualScripting;
 public class NetworkController : MonoBehaviour
 {
     // input layer
@@ -410,10 +411,17 @@ public class NetworkController : MonoBehaviour
             progressBar.highValue = evt.newValue;
 
         });
-
+        trainingCycleSlider.RegisterCallback<ClickEvent>(evt =>
+        {
+            ActivityTracker.Instance.RecordAction("NN_TrainingCycle_Interacted");
+        });
         learningRateSlider.RegisterValueChangedCallback(evt =>
         {
             learningRateLabel.text = evt.newValue.ToString("F3");
+        });
+        learningRateSlider.RegisterCallback<ClickEvent>(evt =>
+        {
+            ActivityTracker.Instance.RecordAction("NN_LearningRate_Interacted");
         });
     }
     public void DisableInputLayerButtons()

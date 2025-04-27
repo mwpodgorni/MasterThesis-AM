@@ -3,6 +3,7 @@ using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -140,8 +141,8 @@ public class RLController : MonoBehaviour
         _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
         _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
 
-        _start.RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Start_Pressed"); });
-        _stop.RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Stop_Pressed"); });
+        _start.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Start_Pressed"); });
+        _stop.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Stop_Pressed"); });
 
         // speed buttons
         #region Speed Buttons
@@ -172,10 +173,11 @@ public class RLController : MonoBehaviour
         maxSteps.style.display = DisplayStyle.None;
         maxEpisodes.style.display = DisplayStyle.None;
 
-        learningRate.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
-        decayRate.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
-        maxSteps.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
-        maxEpisodes.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
+        learningRate.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_LearningRate_Interacted"); });
+        decayRate.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_ExplorationRate_Interacted"); });
+        maxSteps.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_MaxSteps_Interacted"); });
+        maxEpisodes.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_MaxEpisodes_Interacted"); });
+
         #endregion
 
         _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
@@ -305,6 +307,26 @@ public class RLController : MonoBehaviour
         UpdateEvaluation();
         evaluationPanel.RemoveFromClassList("panel-up");
         evaluationOpenButton.AddToClassList("opacity-none");
+
+        RevertState();
+    }
+    public void RevertState()
+    {
+        if (StateManager.Instance.CurrentStage == GameStage.RLOneCompletedBad
+        || StateManager.Instance.CurrentStage == GameStage.RLTwoCompletedGood)
+        {
+            StateManager.Instance.SetState(GameStage.RLOneStart);
+        }
+        else if (StateManager.Instance.CurrentStage == GameStage.RLTwoCompletedBad
+        || StateManager.Instance.CurrentStage == GameStage.RLTwoCompletedGood)
+        {
+            StateManager.Instance.SetState(GameStage.RLTwoStart);
+        }
+        else if (StateManager.Instance.CurrentStage == GameStage.RLThreeCompletedBad
+        || StateManager.Instance.CurrentStage == GameStage.RLThreeCompletedGood)
+        {
+            StateManager.Instance.SetState(GameStage.RLThreeStart);
+        }
     }
     public void OnEvaluationCloseButtonClicked()
     {
@@ -379,9 +401,13 @@ public class RLController : MonoBehaviour
             image.style.backgroundImage = new StyleBackground(_tileSpritesDict[tile]);
 
             slider.RegisterCallback<ChangeEvent<float>>(evt => SetTileRewardHandler(evt, tile, label, slider));
-            slider.RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + tile.ToString()); });
-            Debug.Log("REwards" + rewardAdjuster);
-            Debug.Log("REwards2" + _rewardContainer);
+            slider.RegisterCallback<ClickEvent>(evt =>
+            {
+                Debug.Log("Slider clicked: " + tile.ToString());
+                ActivityTracker.Instance.RecordAction(levelName + tile.ToString());
+            });
+            // Debug.Log("REwards" + rewardAdjuster);
+            // Debug.Log("REwards2" + _rewardContainer);
             _rewardContainer.Add(rewardAdjuster);
         }
     }
