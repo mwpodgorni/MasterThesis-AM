@@ -109,6 +109,7 @@ public class RLController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        string levelName = GetLevelName();
 
         _tileSpritesDict.Add(TileType.Normal, _tileSprites[0]);
         _tileSpritesDict.Add(TileType.Wall, _tileSprites[1]);
@@ -135,6 +136,7 @@ public class RLController : MonoBehaviour
         _stop = rewardAdjustments.Q<Button>("Stop");
 
         // speed buttons
+        #region Speed Buttons
         _speedNormal = rewardAdjustments.Q<Button>("Speed1X");
         _speed2x = rewardAdjustments.Q<Button>("Speed2X");
         _speed4x = rewardAdjustments.Q<Button>("Speed4X");
@@ -146,8 +148,10 @@ public class RLController : MonoBehaviour
 
         _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
         _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
+        #endregion
 
         // Settings Adjustements
+        #region Training Settings
         learningRate = settingsAdjustments.Q<VisualElement>("LearningRate");
         decayRate = settingsAdjustments.Q<VisualElement>("DecayRate");
         maxSteps = settingsAdjustments.Q<VisualElement>("MaxSteps");
@@ -162,6 +166,13 @@ public class RLController : MonoBehaviour
         decayRate.style.display = DisplayStyle.None;
         maxSteps.style.display = DisplayStyle.None;
         maxEpisodes.style.display = DisplayStyle.None;
+
+        learningRate.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
+        decayRate.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
+        maxSteps.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
+        maxEpisodes.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
+        #endregion
+
         _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
         workshopPanel.style.display = DisplayStyle.Flex;
         workshopPanel.AddToClassList("panel-up");
@@ -352,6 +363,7 @@ public class RLController : MonoBehaviour
 
         foreach (var tile in tiles)
         {
+            string levelName = GetLevelName();
             VisualElement rewardAdjuster = _rewardAdjusterTemplate.CloneTree();
 
             var slider = rewardAdjuster.Q<Slider>();
@@ -361,6 +373,7 @@ public class RLController : MonoBehaviour
             image.style.backgroundImage = new StyleBackground(_tileSpritesDict[tile]);
 
             slider.RegisterCallback<ChangeEvent<float>>(evt => SetTileRewardHandler(evt, tile, label, slider));
+            slider.RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + tile.ToString()); });
             Debug.Log("REwards" + rewardAdjuster);
             Debug.Log("REwards2" + _rewardContainer);
             _rewardContainer.Add(rewardAdjuster);
@@ -528,13 +541,11 @@ public class RLController : MonoBehaviour
         maxEpisodesDown.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/episodesDown"));
         maxEpisodesUp.style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Images/Settings/episodesUp"));
 
-
         // labels
         _UI.Q<VisualElement>("LearningRate").Q<Label>("SettingsLabel").text = "Learning rate";
         _UI.Q<VisualElement>("DecayRate").Q<Label>("SettingsLabel").text = "Exploration rate";
         _UI.Q<VisualElement>("MaxSteps").Q<Label>("SettingsLabel").text = "Steps Per cycle";
         _UI.Q<VisualElement>("MaxEpisodes").Q<Label>("SettingsLabel").text = "Number of cycles";
-
 
     }
     #region EnableDisable
@@ -634,4 +645,18 @@ public class RLController : MonoBehaviour
     }
     #endregion
 
+    string GetLevelName()
+    {
+        switch (_rlLevel)
+        {
+            case RLLevel.level1:
+                return "StageOne_";
+            case RLLevel.level2:
+                return "StageTwo_";
+            case RLLevel.level3:
+                return "StageThree_";
+        }
+
+        return "";
+    }
 }
