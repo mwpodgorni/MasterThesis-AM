@@ -123,9 +123,9 @@
             </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>
-    <engine:VisualElement name="HelpPanel" class="help-default" style="transition-duration: 0.7s; display: none; background-color: rgb(0, 20, 35); flex-wrap: wrap; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px; align-items: flex-start; background-image: none; width: 600px;">
+    <engine:VisualElement name="HelpPanel" class="help-default" style="transition-duration: 0.7s; display: flex; background-color: rgb(0, 20, 35); flex-wrap: wrap; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px; align-items: flex-start; background-image: none; width: 600px;">
         <engine:VisualElement style="margin-right: 0; margin-left: 0; flex-direction: row; justify-content: flex-end; margin-top: 0; margin-bottom: 0;">
-            <engine:Button text="x" emoji-fallback-support="false" tooltip="\uf007" enable-rich-text="false" parse-escape-sequences="true" name="HelpCloseButton" class="fontawesome-solid unity-button close-button" style="width: 50px; height: 50px; margin-left: 0; margin-right: 20px;" />
+            <engine:Button text="x" emoji-fallback-support="false" tooltip="\uf007" enable-rich-text="false" parse-escape-sequences="true" name="HelpCloseButton" class="fontawesome-solid unity-button close-button" style="width: 50px; height: 50px; margin-left: 0; margin-right: 20px; cursor: url(&quot;project://database/Assets/Images/pointer.png?fileID=2800000&amp;guid=11b0688d61b6e184cbe785e81e219af7&amp;type=3#pointer&quot;);" />
             <engine:Label text="TITLE" name="HelpTitle" class="text-yellow header" style="width: auto; justify-content: flex-end; -unity-font-definition: url(&quot;project://database/Assets/Oxanium.ttf?fileID=12800000&amp;guid=9b582a05913e6304ebe07deb6d184133&amp;type=3#Oxanium&quot;); flex-grow: 1; align-self: center; font-size: 40px; -unity-text-align: middle-left;" />
         </engine:VisualElement>
         <engine:VisualElement style="flex-grow: 1; width: 100%;">

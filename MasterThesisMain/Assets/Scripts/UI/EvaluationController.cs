@@ -54,8 +54,8 @@ public class EvaluationController : MonoBehaviour
         errorHighValue.text = data.errorHigh.ToString();
         var downsampled = DownsampleLossData(data.lossData, 100);
         chart.datasets = new List<(List<float>, Color, string)> {
-            (downsampled, Color.cyan, "Loss Data"),
-        };
+    (downsampled, new Color32(0x82, 0x3A, 0x30, 0xFF), "Loss Data"),
+};
         chart.Refresh();
     }
     private List<float> DownsampleLossData(List<float> lossData, int maxDataPoints = 1000)

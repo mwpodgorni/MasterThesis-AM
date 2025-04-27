@@ -45,14 +45,14 @@
     "title": "Training Cycles",
     "visual": "Images/TrainingCycles",
     "description": [
-      "A training cycle (or epoch) means running the entire dataset through the network once.",
-      "More cycles can help the network learn better - but too many can lead to overfitting."
+      "A training cycle (or step) means processing one data sample and updating the network once.",
+      "More cycles help the network learn better, but too many can cause overfitting."
     ],
     "highlights": [
-      "One cycle = one full pass over all training samples",
-      "Increasing cycles usually lowers loss but may overfit",
-      "Watch evaluation metrics to find the sweet spot",
-      "Longer training takes more time and compute"
+      "One cycle = one training sample processed and used for weight updates",
+      "Increasing cycles usually improves learning but can lead to overfitting",
+      "Monitor evaluation metrics to find the best balance",
+      "Longer training requires more time and resources"
     ]
   },
   "LearningRate": {
@@ -63,8 +63,8 @@
       "A higher learning rate can speed up learning but risks overshooting good solutions; a lower rate leads to slower but more stable progress."
     ],
     "highlights": [
-      "Too high → learning may become unstable or inconsistent",
-      "Too low → learning can become very slow or stuck",
+      "Too high - learning may become unstable or inconsistent",
+      "Too low - learning can become very slow or stuck",
       "Typical starting values range from 0.001 to 0.1",
       "Adjust based on how training performance changes"
     ]
@@ -81,6 +81,19 @@
       "Negative rewards discourage mistakes",
       "Zero reward gives no feedback",
       "Balancing rewards speeds up learning"
+    ]
+  },
+  "RLConfiguration": {
+    "title": "Learning Configuration",
+    "visual": "Images/LearningConfiguration",
+    "description": [
+      "Use the Learning Configuration to fine-tune how the robot trains and explores the environment. Each slider controls a different aspect of the training process, helping you balance learning speed, decision-making, and exploration."
+    ],
+    "highlights": [
+      "Learning Rate: Controls how strongly the robot updates what it learns after each action.",
+      "Exploration Rate: Determines how often the robot tries new actions instead of relying on what it knows.",
+      "Steps per Cycle: Sets how many moves the robot can make in a single training cycle.",
+      "Cycles: Defines how many training iterations the robot will go through before evaluation."
     ]
   }
 }

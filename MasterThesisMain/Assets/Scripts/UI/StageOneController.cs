@@ -175,6 +175,7 @@ public class StageOneController : MonoBehaviour
     {
         progressBar.style.display = DisplayStyle.None;
     }
+
     public void SetFinishedTraining(bool finished)
     {
 

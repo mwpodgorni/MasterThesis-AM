@@ -138,6 +138,10 @@ public class NetworkController : MonoBehaviour
         RedrawConnections();
         layer.RegisterCallback<GeometryChangedEvent>((evt) => RedrawConnections());
     }
+    public void DisableTrainingButton()
+    {
+        trainNetworkButton.SetEnabled(false);
+    }
     public void RemoveHiddenLayer()
     {
         var hiddenLayersContainer = _hiddenLayerPanel.Q<VisualElement>("HiddenLayers");
