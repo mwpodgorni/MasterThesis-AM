@@ -81,7 +81,7 @@ public class RLManager : MonoBehaviour
     {
         if (_player.FinishedEpoch && _training)
         {
-            if (episodeCount >= maxEpisodes)
+            if (episodeCount > maxEpisodes)
             {
                 // Training finished
                 UpdateEval();
@@ -93,7 +93,6 @@ public class RLManager : MonoBehaviour
             else
             {
                 Debug.Log("Episode Finished");
-                episodeCount++;
 
                 episodeReward[episodeCount - 1] = _player.currentEpochReward;
                 successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / (float)episodeCount;
@@ -102,6 +101,8 @@ public class RLManager : MonoBehaviour
                 ResetTraining(); // Reset for next epoch
                 UpdateEval();
                 RLController.Instance.UpdateEvaluation();
+
+                episodeCount++;
             }
         }
     }
@@ -111,6 +112,13 @@ public class RLManager : MonoBehaviour
         _player.maxSteps = maxStepPerEpoch;
         _player.decayRate = epsilonDecayRate;
         _player.learningRate = learningRate;
+
+        episodeReward = new float[maxEpisodes];
+        successRateRolling = new float[maxEpisodes];
+        stepsToCompletion = new float[maxEpisodes];
+
+        _progressBar.highValue = maxEpisodes;
+        _progressBar.value = episodeCount;
     }
 
     public void StartTraining()
