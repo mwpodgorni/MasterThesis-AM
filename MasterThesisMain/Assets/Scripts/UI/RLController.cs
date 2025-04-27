@@ -135,6 +135,12 @@ public class RLController : MonoBehaviour
         _start = rewardAdjustments.Q<Button>("Start");
         _stop = rewardAdjustments.Q<Button>("Stop");
 
+        _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
+        _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
+
+        _start.RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Start_Pressed"); });
+        _stop.RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Stop_Pressed"); });
+
         // speed buttons
         #region Speed Buttons
         _speedNormal = rewardAdjustments.Q<Button>("Speed1X");
@@ -145,9 +151,6 @@ public class RLController : MonoBehaviour
         _speed2x.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Fast);
         _speed4x.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Faster);
         _speed6x.RegisterCallback<ClickEvent, GameSpeed>(SpeedUpHandler, GameSpeed.Fastest);
-
-        _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
-        _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
         #endregion
 
         // Settings Adjustements
