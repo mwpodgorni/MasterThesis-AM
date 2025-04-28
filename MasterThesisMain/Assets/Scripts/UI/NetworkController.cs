@@ -465,6 +465,10 @@ public class NetworkController : MonoBehaviour
         {
             learningRateLabel.text = evt.newValue.ToString("F3");
         });
+
+        // Tracking
+        learningRateSlider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_LearningRate_Interacted"); });
+        trainingCycleSlider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_TrainingCycle_Interacted"); });
     }
     public void DisableInputLayerButtons()
     {
