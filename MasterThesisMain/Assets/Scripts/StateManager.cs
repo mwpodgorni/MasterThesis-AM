@@ -82,6 +82,7 @@ public class StateManager : MonoBehaviour
                 StageOneController.Instance.NetworkController().EnableTestButton();
                 StageOneController.Instance.NetworkController().EnableLearningRateSlider();
                 StageOneController.Instance.NetworkController().EnableTrainingCycleSlider();
+                StageOneController.Instance.HideOuterProgressBar();
                 break;
             case GameStage.SecondNetworkTrainedBad:
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondNetworkTrainedBad());
@@ -111,12 +112,14 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.DisableTrainingSettings();
                 break;
             case GameStage.RLOneCompletedGood:
+                RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.ShowNextLevelButton();
                 RLController.Instance.DisableStopButton();
                 RLController.Instance.EnableStartButton();
                 RLController.Instance.ShowEvaluationOpenButton();
                 break;
             case GameStage.RLOneCompletedBad:
+                RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.DisableStopButton();
                 RLController.Instance.EnableStartButton();
                 RLController.Instance.ShowEvaluationOpenButton();
@@ -143,13 +146,16 @@ public class StateManager : MonoBehaviour
                 break;
             case GameStage.RLTwoCompletedBad:
             case GameStage.RLThreeCompletedBad:
+                RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.DisableStopButton();
                 RLController.Instance.EnableStartButton();
                 break;
             case GameStage.RLTwoCompletedGood:
+                RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.ShowNextLevelButton();
                 break;
             case GameStage.RLThreeCompletedGood:
+                RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.ShowNextLevelButton();
                 ActivityTracker.Instance.StopTimer("StageTwoTime");
 

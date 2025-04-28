@@ -43,6 +43,8 @@ public class RLManager : MonoBehaviour
 
     public RLEvaluationData currentEval;
     ProgressBar _progressBar;
+    ProgressBar _outerProgressBar;
+
     public bool LevelCompleted
     {
         get
@@ -75,6 +77,10 @@ public class RLManager : MonoBehaviour
         _progressBar.lowValue = 0;
         _progressBar.highValue = maxEpisodes;
         _progressBar.value = episodeCount;
+        _outerProgressBar = ui.Q<ProgressBar>("OuterProgressBar");
+        _outerProgressBar.lowValue = 0;
+        _outerProgressBar.highValue = maxEpisodes;
+        _outerProgressBar.value = episodeCount;
     }
 
     private void Update()
@@ -88,6 +94,7 @@ public class RLManager : MonoBehaviour
 
                 _unsolvedChannel.Invoke(_taskCompletedCount >= requiredCountOfCompletedTask);
                 _progressBar.value = episodeCount;
+                _outerProgressBar.value = episodeCount;
                 StopTraining();
             }
             else
@@ -98,6 +105,7 @@ public class RLManager : MonoBehaviour
                 successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / (float)episodeCount;
                 stepsToCompletion[episodeCount - 1] = (float)_player.currentEpochStepCount / (float)maxStepPerEpoch;
                 _progressBar.value = episodeCount;
+                _outerProgressBar.value = episodeCount;
                 ResetTraining(); // Reset for next epoch
                 UpdateEval();
                 RLController.Instance.UpdateEvaluation();
@@ -119,6 +127,8 @@ public class RLManager : MonoBehaviour
 
         _progressBar.highValue = maxEpisodes;
         _progressBar.value = episodeCount;
+        _outerProgressBar.highValue = maxEpisodes;
+        _outerProgressBar.value = episodeCount;
     }
 
     public void StartTraining()

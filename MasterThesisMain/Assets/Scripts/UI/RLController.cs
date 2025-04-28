@@ -50,6 +50,8 @@ public class RLController : MonoBehaviour
     Dictionary<TileType, Sprite> _tileSpritesDict = new();
     public static RLController Instance { get; private set; }
     ProgressBar _progressBar;
+    ProgressBar _outerProgressBar;
+
 
     bool _workShopFirstTime = true;
     string GetTutorialText
@@ -211,6 +213,8 @@ public class RLController : MonoBehaviour
         nextLevelButton.clicked += LoadLevel;
 
         _progressBar = _UI.Q<ProgressBar>("ProgressBar");
+        _outerProgressBar = _UI.Q<ProgressBar>("OuterProgressBar");
+        HideOuterProgressBar();
 
         foreach (var setting in _manager.GetRLSettings())
         {
@@ -269,6 +273,7 @@ public class RLController : MonoBehaviour
 
     public void OnWorkshopOpenButtonClicked()
     {
+        HideOuterProgressBar();
         if (_workShopFirstTime)
         {
             _workShopFirstTime = false;
@@ -280,8 +285,33 @@ public class RLController : MonoBehaviour
     }
     public void OnWorkshopCloseButtonClicked()
     {
+        if (StateManager.Instance.CurrentStage == GameStage.RLOneStarted ||
+            StateManager.Instance.CurrentStage == GameStage.RLTwoStarted ||
+            StateManager.Instance.CurrentStage == GameStage.RLThreeStarted)
+        {
+            ShowOuterProgressBar();
+        }
         workshopPanel.AddToClassList("panel-up");
         workshopOpenButton.RemoveFromClassList("opacity-none");
+    }
+
+    public void RevertState()
+    {
+        if (StateManager.Instance.CurrentStage == GameStage.RLOneCompletedBad
+        || StateManager.Instance.CurrentStage == GameStage.RLTwoCompletedGood)
+        {
+            StateManager.Instance.SetState(GameStage.RLOneStart);
+        }
+        else if (StateManager.Instance.CurrentStage == GameStage.RLTwoCompletedBad
+        || StateManager.Instance.CurrentStage == GameStage.RLTwoCompletedGood)
+        {
+            StateManager.Instance.SetState(GameStage.RLTwoStart);
+        }
+        else if (StateManager.Instance.CurrentStage == GameStage.RLThreeCompletedBad
+        || StateManager.Instance.CurrentStage == GameStage.RLThreeCompletedGood)
+        {
+            StateManager.Instance.SetState(GameStage.RLThreeStart);
+        }
     }
     public void OnEvaluationOpenButtonClicked()
     {
@@ -313,24 +343,6 @@ public class RLController : MonoBehaviour
 
         RevertState();
     }
-    public void RevertState()
-    {
-        if (StateManager.Instance.CurrentStage == GameStage.RLOneCompletedBad
-        || StateManager.Instance.CurrentStage == GameStage.RLTwoCompletedGood)
-        {
-            StateManager.Instance.SetState(GameStage.RLOneStart);
-        }
-        else if (StateManager.Instance.CurrentStage == GameStage.RLTwoCompletedBad
-        || StateManager.Instance.CurrentStage == GameStage.RLTwoCompletedGood)
-        {
-            StateManager.Instance.SetState(GameStage.RLTwoStart);
-        }
-        else if (StateManager.Instance.CurrentStage == GameStage.RLThreeCompletedBad
-        || StateManager.Instance.CurrentStage == GameStage.RLThreeCompletedGood)
-        {
-            StateManager.Instance.SetState(GameStage.RLThreeStart);
-        }
-    }
     public void OnEvaluationCloseButtonClicked()
     {
         evaluationPanel.AddToClassList("panel-up");
@@ -343,6 +355,14 @@ public class RLController : MonoBehaviour
     public void ShowProgressBar()
     {
         _progressBar.RemoveFromClassList("opacity-none");
+    }
+    public void ShowOuterProgressBar()
+    {
+        _outerProgressBar.style.display = DisplayStyle.Flex;
+    }
+    public void HideOuterProgressBar()
+    {
+        _outerProgressBar.style.display = DisplayStyle.None;
     }
     public void UpdateEvaluation()
     {

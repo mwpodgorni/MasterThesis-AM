@@ -24,6 +24,7 @@ public class StageOneController : MonoBehaviour
     public VisualElement helpPanel;
     public VisualElement topbar;
     ProgressBar progressBar;
+    ProgressBar outerProgressBar;
     public bool finishedTraining = false;
     bool evaluationOpen = false;
     private void Awake()
@@ -71,7 +72,9 @@ public class StageOneController : MonoBehaviour
         evaluationOpenButton.AddToClassList("opacity-none");
 
         progressBar = ui.Q<ProgressBar>("ProgressBar");
+        outerProgressBar = ui.Q<ProgressBar>("OuterProgressBar");
         HideProgressBar();
+        HideOuterProgressBar();
 
         StartCoroutine(StartTutorial());
         ActivityTracker.Instance.StartTimer("StageOneTime");
@@ -101,6 +104,10 @@ public class StageOneController : MonoBehaviour
     }
     public void OnWorkshopCloseButtonClicked()
     {
+        if (StateManager.Instance.CurrentStage == GameStage.SecondNetworkTraining)
+        {
+            ShowOuterProgressBar();
+        }
         NetworkController().ClearLines();
         workshopPanel.AddToClassList("panel-up");
         topbar.RemoveFromClassList("opacity-none");
@@ -179,7 +186,14 @@ public class StageOneController : MonoBehaviour
     {
         progressBar.style.display = DisplayStyle.None;
     }
-
+    public void ShowOuterProgressBar()
+    {
+        outerProgressBar.style.display = DisplayStyle.Flex;
+    }
+    public void HideOuterProgressBar()
+    {
+        outerProgressBar.style.display = DisplayStyle.None;
+    }
     public void SetFinishedTraining(bool finished)
     {
         finishedTraining = finished;

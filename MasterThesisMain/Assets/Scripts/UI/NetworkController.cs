@@ -37,6 +37,7 @@ public class NetworkController : MonoBehaviour
     NeuralNetwork neuralNetwork;
     ConnectionLines _connectionLines;
     ProgressBar progressBar;
+    ProgressBar outerProgressBar;
     NetworkSolution minigame2Solution = new NetworkSolution(3, 3, 2, new int[] { 4, 4 });
 
     // Button classifyButton;
@@ -115,7 +116,9 @@ public class NetworkController : MonoBehaviour
         progressBar = ui.Q<ProgressBar>("ProgressBar");
         progressBar.lowValue = 0;
         progressBar.value = 0;
-
+        outerProgressBar = ui.Q<ProgressBar>("OuterProgressBar");
+        outerProgressBar.lowValue = 0;
+        outerProgressBar.value = 0;
         StartCoroutine(DelayedSetup());
     }
     public void ClassifyNetworkData()
@@ -133,6 +136,7 @@ public class NetworkController : MonoBehaviour
     {
         StageOneController.Instance.EvaluationController().UpdateEvaluationData(data);
         progressBar.value = neuralNetwork.GetCurrentEpoch();
+        outerProgressBar.value = neuralNetwork.GetCurrentEpoch();
     }
     public void UpdateTrainingCompleted()
     {
@@ -140,6 +144,7 @@ public class NetworkController : MonoBehaviour
         StageOneController.Instance.SetFinishedTraining(true);
         StageOneController.Instance.ChangeStateIfEvaluationOpen();
         progressBar.value = 0;
+        outerProgressBar.value = 0;
     }
     public void AddHiddenLayer()
     {
@@ -468,6 +473,7 @@ public class NetworkController : MonoBehaviour
         {
             trainingCycleLabel.text = evt.newValue.ToString();
             progressBar.highValue = evt.newValue;
+            outerProgressBar.highValue = evt.newValue;
 
         });
 
