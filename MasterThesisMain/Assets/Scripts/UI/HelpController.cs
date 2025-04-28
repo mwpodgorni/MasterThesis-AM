@@ -17,7 +17,6 @@ public class HelpController : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("HELP AWAKE");
         ui = GetComponent<UIDocument>().rootVisualElement;
         helpPanel = ui.Q<VisualElement>("HelpPanel");
         helpTitle = ui.Q<Label>("HelpTitle");

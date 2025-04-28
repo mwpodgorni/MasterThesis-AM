@@ -9,6 +9,8 @@ using System.Linq;
 using System.Reflection;
 public class TutorialController : MonoBehaviour
 {
+    public GameObject typingAudioPrefab;
+    AudioSource typingAudio;
     public VisualElement ui;
     public Button nextButton;
     public Label tutorialTitle;
@@ -44,6 +46,10 @@ public class TutorialController : MonoBehaviour
     private void OnEnable()
     {
         nextButton.clicked += OnNextButtonClicked;
+        if (typingAudioPrefab != null)
+        {
+            typingAudio = Instantiate(typingAudioPrefab).GetComponent<AudioSource>();
+        }
     }
 
     private void OnDisable()
@@ -127,19 +133,22 @@ public class TutorialController : MonoBehaviour
     }
     private IEnumerator ShowTitle(string title)
     {
-        yield return StartCoroutine(ShowText(tutorialTitle, title));
+        yield return StartCoroutine(ShowText(tutorialTitle, title, false)); // no sound for title
 
         if (currentStep < messages.Count)
         {
-            StartCoroutine(ShowText(tutorialContent, string.Join("\n", messages[currentStep].Content)));
+            StartCoroutine(ShowText(tutorialContent, string.Join("\n", messages[currentStep].Content), true)); // sound for text
         }
     }
     // "Tip: Hidden layers of the same size often help the network discover complex relationships more effectively."
-    private IEnumerator ShowText(Label label, string text)
+    private IEnumerator ShowText(Label label, string text, bool playSound)
     {
         StringBuilder sb = new StringBuilder(text);
         label.text = "";
         int maxVisibleCharacters = 0;
+
+        if (playSound && typingAudio != null && !typingAudio.isPlaying)
+            typingAudio.Play();
 
         while (maxVisibleCharacters < sb.Length)
         {
@@ -149,14 +158,16 @@ public class TutorialController : MonoBehaviour
             char currentChar = sb[maxVisibleCharacters - 1];
             if (IsPunctuation(currentChar))
             {
-                yield return typeText ? punctuationDelay : 0f; ;
+                yield return typeText ? punctuationDelay : 0f;
             }
             else
             {
-
                 yield return typeText ? simpleDelay : 0f;
             }
         }
+
+        if (playSound && typingAudio != null && typingAudio.isPlaying)
+            typingAudio.Stop();
     }
 
     private bool IsPunctuation(char c)

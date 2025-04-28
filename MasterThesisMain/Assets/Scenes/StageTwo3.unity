@@ -2741,6 +2741,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7857610196580312700, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: typingAudio
+      value: 
+      objectReference: {fileID: 6919573322533808175, guid: 1125668342653bb42a54b746fea1f42e,
+        type: 3}
+    - target: {fileID: 7857610196580312700, guid: 59a8b29d716545a41be872128386c648,
+        type: 3}
+      propertyPath: typingAudioPrefab
+      value: 
+      objectReference: {fileID: 6350995561858178018, guid: 1125668342653bb42a54b746fea1f42e,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3623,6 +3635,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BackgroundMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 3864105083930764866, guid: 5e07298d647968c4e92e6fe298f8af82,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
