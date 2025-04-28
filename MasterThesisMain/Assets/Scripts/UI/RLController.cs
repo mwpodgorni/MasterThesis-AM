@@ -418,16 +418,27 @@ public class RLController : MonoBehaviour
         {
             StateManager.Instance.SetState(GameStage.RLThreeStarted);
         }
+
         _manager.StartTraining();
+        
+        DisableStartButton();
+        EnableSpeedButtons();
+        EnableStopButton();
+
+        DisableRewardAdjusters();
+        DisableTrainingSettings();
     }
 
     void StopTrainingHandler(ClickEvent evt)
     {
-        EnableRewardAdjusters();
+        _manager.StopTraining();
+
         EnableStartButton();
         DisableStopButton();
         DisableSpeedButtons();
-        _manager.StopTraining();
+
+        EnableRewardAdjusters();
+        EnableTrainingSettings();
     }
 
     void SpeedUpHandler(ClickEvent evt, GameSpeed s)
@@ -608,6 +619,22 @@ public class RLController : MonoBehaviour
         _speed2x.SetEnabled(false);
         _speed4x.SetEnabled(false);
         _speed6x.SetEnabled(false);
+    }
+
+    public void EnableTrainingSettings()
+    {
+        EnableLearningRate();
+        EnableDecayRate();
+        EnableMaxSteps();
+        EnableMaxEpisodes();
+    }
+
+    public void DisableTrainingSettings()
+    {
+        DisableLearningRate();
+        DisableDecayRate();
+        DisableMaxSteps();
+        DisableMaxEpisodes();
     }
 
     public void EnableLearningRate()
