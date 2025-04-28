@@ -138,6 +138,9 @@ public class NetworkController : MonoBehaviour
     {
         StageOneController.Instance.SetFinishedTraining(true);
         progressBar.value = 0;
+        EnableNetworkEditing();
+        EnableTrainingButton();
+        EnableTestButton();
     }
     public void AddHiddenLayer()
     {
@@ -161,6 +164,33 @@ public class NetworkController : MonoBehaviour
     {
         trainNetworkButton.SetEnabled(false);
     }
+    public void EnableTrainingButton()
+    {
+        trainNetworkButton.SetEnabled(true);
+    }
+    public void DisableTestButton()
+    {
+        testNetworkButton.SetEnabled(false);
+    }
+    public void EnableTestButton()
+    {
+        testNetworkButton.SetEnabled(true);
+    }
+
+    public void DisableNetworkEditing()
+    {
+        DisableHiddenLayerButtons();
+        DisableInputLayerButtons();
+        DisableOutputLayerButtons();
+    }
+
+    public void EnableNetworkEditing()
+    {
+        EnableHiddenLayerButtons();
+        EnableInputLayerButtons();
+        EnableOutputLayerButtons();
+    }
+
     public void RemoveHiddenLayer()
     {
         var hiddenLayersContainer = _hiddenLayerPanel.Q<VisualElement>("HiddenLayers");
@@ -224,7 +254,6 @@ public class NetworkController : MonoBehaviour
         {
             if (neuralNetwork.IsNetworkValid())
             {
-
                 StateManager.Instance.SetState(GameStage.FirstNetworkValidated);
             }
             else
@@ -262,6 +291,10 @@ public class NetworkController : MonoBehaviour
         {
             neuralNetwork.TrainNetwork(trainingCycleSlider.value, learningRateSlider.value);
             StateManager.Instance.SetState(GameStage.SecondNetworkTrained);
+
+            DisableNetworkEditing();
+            DisableTrainingButton();
+            DisableTestButton();
         }
         else
         {
@@ -447,11 +480,15 @@ public class NetworkController : MonoBehaviour
     {
         hiddenLayerAddBtn.SetEnabled(false);
         hiddenLayerRemoveBtn.SetEnabled(false);
+
+        _hiddenLayerPanel.SetEnabled(false);
     }
     public void EnableHiddenLayerButtons()
     {
         hiddenLayerAddBtn.SetEnabled(true);
         hiddenLayerRemoveBtn.SetEnabled(true);
+
+        _hiddenLayerPanel.SetEnabled(true);
     }
     public void DisableOutputLayerButtons()
     {
