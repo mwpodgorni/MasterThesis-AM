@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using UnityEditor;
 using System.Linq;
 using UnityEditor.SceneManagement;
+using Unity.VisualScripting;
 public class NetworkController : MonoBehaviour
 {
     // input layer
@@ -47,6 +48,8 @@ public class NetworkController : MonoBehaviour
     }
     public void OnEnable()
     {
+        string levelName = "StageOne_";
+
         objectiveText = ui.Q<Label>("ObjectiveText");
         _hiddenLayerPanel = ui.Q<VisualElement>("HiddenLayers");
         _inputLayerPanel = ui.Q<VisualElement>("InputLayerPanel");
@@ -79,6 +82,19 @@ public class NetworkController : MonoBehaviour
         outputNodeAddBtn.clicked += () => AddNode(_outputLayerPanel);
         outputNodeRemoveBtn = ui.Q<Button>("OutputNodeRemoveBtn");
         outputNodeRemoveBtn.clicked += () => RemoveNode(_outputLayerPanel);
+
+        // Tracking
+        testNetworkButton.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Test_Pressed"); });
+        trainNetworkButton.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Train_Pressed"); });
+
+        inputNodeAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Input_AddNode_Pressed"); });
+        inputNodeRemoveBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Input_RemoveNode_Pressed"); });
+
+        hiddenLayerAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Hidden_AddLayer_Pressed"); });
+        hiddenLayerAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Hidden_RemoveLayer_Pressed"); });
+
+        outputNodeAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Output_AddNode_Pressed"); });
+        outputNodeRemoveBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Output_RemoveNode_Pressed"); });
 
         // line renderer
         _connectionLines = new ConnectionLines();
@@ -120,7 +136,6 @@ public class NetworkController : MonoBehaviour
     }
     public void UpdateTrainingCompleted()
     {
-
         StageOneController.Instance.SetFinishedTraining(true);
         progressBar.value = 0;
     }
@@ -132,6 +147,10 @@ public class NetworkController : MonoBehaviour
 
         layer.Q<Button>("LayerAddButton").clicked += () => AddNode(layer);
         layer.Q<Button>("LayerRemoveButton").clicked += () => RemoveNode(layer);
+
+        // Tracking
+        layer.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_" + "Hidden_AddNode_Pressed"); });
+        layer.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_" + "Hidden_RemoveNode_Pressed"); });
 
         _hiddenLayerPanel.Q<VisualElement>("HiddenLayers").Add(layer);
         neuralNetwork.AddHiddenLayer();
@@ -154,10 +173,7 @@ public class NetworkController : MonoBehaviour
     }
     public void AddNode(VisualElement layer)
     {
-        // Debug.Log("ADding node to 1:" + GP.Instance.maxNodes);
-        // Debug.Log("ADding node to 2:" + layer.childCount);
         var childCount = layer.Q<VisualElement>("NodeWrapper").childCount;
-        // Debug.Log("ADding node to 3:" + childCount);
         if (childCount >= GP.Instance.maxNodes) return;
         if (layer.name == "InputLayerPanel")
         {
@@ -384,6 +400,7 @@ public class NetworkController : MonoBehaviour
     void MakeLabelClickable(Label label, string helpKey)
     {
         label.RegisterCallback<ClickEvent>(_ => StageOneController.Instance.HelpController().ShowHelp(helpKey));
+        label.RegisterCallback<ClickEvent>(_ => { ActivityTracker.Instance.RecordAction("StageOne_" + helpKey +"_Help_Pressed"); });
     }
     public void ResetNetwork()
     {

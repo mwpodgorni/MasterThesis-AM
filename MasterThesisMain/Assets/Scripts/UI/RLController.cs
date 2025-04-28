@@ -180,6 +180,10 @@ public class RLController : MonoBehaviour
 
         _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
         _helpLearningConfiguration.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RLConfiguration"));
+
+        _help.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Help_Reward_Pressed"); });
+        _helpLearningConfiguration.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Help_Settings_Pressed"); });
+
         workshopPanel.style.display = DisplayStyle.Flex;
         workshopPanel.AddToClassList("panel-up");
 
