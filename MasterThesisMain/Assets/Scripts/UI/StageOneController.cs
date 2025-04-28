@@ -25,6 +25,7 @@ public class StageOneController : MonoBehaviour
     public VisualElement topbar;
     ProgressBar progressBar;
     public bool finishedTraining = false;
+    bool evaluationOpen = false;
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -96,6 +97,7 @@ public class StageOneController : MonoBehaviour
         }
         workshopPanel.RemoveFromClassList("panel-up");
         topbar.AddToClassList("opacity-none");
+        NetworkController().RedrawConnections();
     }
     public void OnWorkshopCloseButtonClicked()
     {
@@ -105,6 +107,7 @@ public class StageOneController : MonoBehaviour
     }
     public void OnEvaluationOpenButtonClicked()
     {
+        evaluationOpen = true;
         CheckIfCompleted();
         evaluationPanel.RemoveFromClassList("panel-up");
         topbar.AddToClassList("opacity-none");
@@ -129,6 +132,7 @@ public class StageOneController : MonoBehaviour
     }
     public void OnEvaluationCloseButtonClicked()
     {
+        evaluationOpen = false;
         evaluationPanel.AddToClassList("panel-up");
         topbar.RemoveFromClassList("opacity-none");
     }
@@ -178,12 +182,17 @@ public class StageOneController : MonoBehaviour
 
     public void SetFinishedTraining(bool finished)
     {
-
         finishedTraining = finished;
-        CheckIfCompleted();
     }
     public void ShowNextLevelButton()
     {
         nextLevelButton.style.display = DisplayStyle.Flex;
+    }
+    public void ChangeStateIfEvaluationOpen()
+    {
+        if (evaluationOpen)
+        {
+            CheckIfCompleted();
+        }
     }
 }

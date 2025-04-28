@@ -7798,6 +7798,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67baa49bbec48b045945bb6fa78ae461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typingAudioPrefab: {fileID: 6350995561858178018, guid: 1125668342653bb42a54b746fea1f42e,
+    type: 3}
   tutorialCompletedEvent:
     m_PersistentCalls:
       m_Calls: []

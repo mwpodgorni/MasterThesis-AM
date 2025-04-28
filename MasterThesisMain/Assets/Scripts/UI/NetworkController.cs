@@ -136,11 +136,10 @@ public class NetworkController : MonoBehaviour
     }
     public void UpdateTrainingCompleted()
     {
+        StateManager.Instance.SetState(GameStage.SecondNetworkTrained);
         StageOneController.Instance.SetFinishedTraining(true);
+        StageOneController.Instance.ChangeStateIfEvaluationOpen();
         progressBar.value = 0;
-        EnableNetworkEditing();
-        EnableTrainingButton();
-        EnableTestButton();
     }
     public void AddHiddenLayer()
     {
@@ -190,7 +189,22 @@ public class NetworkController : MonoBehaviour
         EnableInputLayerButtons();
         EnableOutputLayerButtons();
     }
-
+    public void DisableLearningRateSlider()
+    {
+        learningRateSlider.SetEnabled(false);
+    }
+    public void EnableLearningRateSlider()
+    {
+        learningRateSlider.SetEnabled(true);
+    }
+    public void DisableTrainingCycleSlider()
+    {
+        trainingCycleSlider.SetEnabled(false);
+    }
+    public void EnableTrainingCycleSlider()
+    {
+        trainingCycleSlider.SetEnabled(true);
+    }
     public void RemoveHiddenLayer()
     {
         var hiddenLayersContainer = _hiddenLayerPanel.Q<VisualElement>("HiddenLayers");
@@ -290,11 +304,7 @@ public class NetworkController : MonoBehaviour
         if (neuralNetwork.IsNetworkValid())
         {
             neuralNetwork.TrainNetwork(trainingCycleSlider.value, learningRateSlider.value);
-            StateManager.Instance.SetState(GameStage.SecondNetworkTrained);
-
-            DisableNetworkEditing();
-            DisableTrainingButton();
-            DisableTestButton();
+            StateManager.Instance.SetState(GameStage.SecondNetworkTraining);
         }
         else
         {

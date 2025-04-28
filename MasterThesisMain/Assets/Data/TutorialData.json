@@ -115,6 +115,12 @@
       ]
     }
   ],
+  "secondNetworkTrained": [
+    {
+      "title": "Training completed",
+      "content": ["The training has been completed. Now open the evaluation tab to see the outcome of the training."]
+    }
+  ],
   "secondNetworkTrainedBad": [
     {
       "title": "Task incomplete",

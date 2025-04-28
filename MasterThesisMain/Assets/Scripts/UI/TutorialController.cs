@@ -109,6 +109,8 @@ public class TutorialController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         // Debug.Log("Hiding tutorial panel");
         ui.Q<VisualElement>("TutorialPanel").style.display = DisplayStyle.None;
+        if (typingAudio != null && typingAudio.isPlaying)
+            typingAudio.Stop();
     }
     public void StartTypingTutorialStep()
     {

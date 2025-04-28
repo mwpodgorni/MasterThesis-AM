@@ -66,8 +66,22 @@ public class StateManager : MonoBehaviour
                 StageOneController.Instance.NetworkController().ShowTrainButton();
                 StageOneController.Instance.ShowProgressBar();
                 break;
+            case GameStage.SecondNetworkTraining:
+                StageOneController.Instance.NetworkController().DisableNetworkEditing();
+                StageOneController.Instance.NetworkController().DisableTrainingButton();
+                StageOneController.Instance.NetworkController().DisableTestButton();
+                StageOneController.Instance.NetworkController().DisableLearningRateSlider();
+                StageOneController.Instance.NetworkController().DisableTrainingCycleSlider();
+                break;
             case GameStage.SecondNetworkTrained:
                 StageOneController.Instance.ShowEvaluationOpenButton();
+                StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondNetworkTrained());
+                StageOneController.Instance.TutorialController().StartTutorial();
+                StageOneController.Instance.NetworkController().EnableNetworkEditing();
+                StageOneController.Instance.NetworkController().EnableTrainingButton();
+                StageOneController.Instance.NetworkController().EnableTestButton();
+                StageOneController.Instance.NetworkController().EnableLearningRateSlider();
+                StageOneController.Instance.NetworkController().EnableTrainingCycleSlider();
                 break;
             case GameStage.SecondNetworkTrainedBad:
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondNetworkTrainedBad());
@@ -83,6 +97,10 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.HideProgressBar();
                 RLController.Instance.HideEvaluationOpenButton();
                 RLController.Instance.HideWorkshopOpenButton();
+                RLController.Instance.EnableStartButton();
+                RLController.Instance.DisableStopButton();
+                RLController.Instance.EnableRewardAdjusters();
+                RLController.Instance.EnableTrainingSettings();
                 break;
             case GameStage.RLOneStarted:
                 RLController.Instance.DisableRewardAdjusters();
@@ -90,6 +108,7 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.EnableStopButton();
                 RLController.Instance.ShowSpeedButtons();
                 RLController.Instance.ShowProgressBar();
+                RLController.Instance.DisableTrainingSettings();
                 break;
             case GameStage.RLOneCompletedGood:
                 RLController.Instance.ShowNextLevelButton();
@@ -108,6 +127,10 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.HideEvaluationOpenButton();
                 RLController.Instance.ShowSpeedButtons();
                 RLController.Instance.DisableSpeedButtons();
+                RLController.Instance.EnableStartButton();
+                RLController.Instance.DisableStopButton();
+                RLController.Instance.EnableRewardAdjusters();
+                RLController.Instance.EnableTrainingSettings();
                 break;
             case GameStage.RLTwoStarted:
             case GameStage.RLThreeStarted:
@@ -116,6 +139,7 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.EnableStopButton();
                 RLController.Instance.ShowProgressBar();
                 RLController.Instance.EnableSpeedButtons();
+                RLController.Instance.DisableTrainingSettings();
                 break;
             case GameStage.RLTwoCompletedBad:
             case GameStage.RLThreeCompletedBad:
@@ -143,6 +167,7 @@ public enum GameStage
     FirstHelpOpen,
     FirstNetworkValidated,
     SecondNetworkValidated,
+    SecondNetworkTraining,
     SecondNetworkTrained,
     SecondNetworkTrainedBad,
     StageOneCompleted,

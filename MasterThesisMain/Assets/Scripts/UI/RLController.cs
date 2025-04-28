@@ -439,25 +439,23 @@ public class RLController : MonoBehaviour
         }
 
         _manager.StartTraining();
-
-        DisableStartButton();
-        EnableSpeedButtons();
-        EnableStopButton();
-
-        DisableRewardAdjusters();
-        DisableTrainingSettings();
     }
 
     void StopTrainingHandler(ClickEvent evt)
     {
         _manager.StopTraining();
-
-        EnableStartButton();
-        DisableStopButton();
-        DisableSpeedButtons();
-
-        EnableRewardAdjusters();
-        EnableTrainingSettings();
+        if (StateManager.Instance.CurrentStage == GameStage.RLOneStarted)
+        {
+            StateManager.Instance.SetState(GameStage.RLOneStart);
+        }
+        else if (StateManager.Instance.CurrentStage == GameStage.RLTwoStarted)
+        {
+            StateManager.Instance.SetState(GameStage.RLTwoStart);
+        }
+        else if (StateManager.Instance.CurrentStage == GameStage.RLThreeStarted)
+        {
+            StateManager.Instance.SetState(GameStage.RLThreeStart);
+        }
     }
 
     void SpeedUpHandler(ClickEvent evt, GameSpeed s)

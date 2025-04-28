@@ -164,7 +164,7 @@ public class NeuralNetwork
     private IEnumerator TrainNetworkCoroutine(int epoch, float learningRate)
     {
         this.learningRate = learningRate;
-
+        finishedCycles = 0;
         // Load dataset
         var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
         if (trainingSet.data == null || trainingSet.data.Length == 0)
@@ -200,7 +200,6 @@ public class NeuralNetwork
 
             // error buckets (optional UI)
             float avgError = expectedOutput.Zip(actualOutput, (e, a) => Mathf.Abs(e - a)).Average();
-            Debug.Log("AvgError: " + avgError);
             if (avgError > 0.5f) errorAbove05++;
             else if (avgError > 0.3f) error03to05++;
             else errorBelow03++;

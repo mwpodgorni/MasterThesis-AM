@@ -70,6 +70,10 @@ public class DataReader : MonoBehaviour
     {
         return tutorialData.TryGetValue("secondNetworkValid", out var steps) ? steps : new List<TutorialStep>();
     }
+    public List<TutorialStep> SecondNetworkTrained()
+    {
+        return tutorialData.TryGetValue("secondNetworkTrained", out var steps) ? steps : new List<TutorialStep>();
+    }
     public List<TutorialStep> SecondNetworkTrainedBad()
     {
         return tutorialData.TryGetValue("secondNetworkTrainedBad", out var steps) ? steps : new List<TutorialStep>();
