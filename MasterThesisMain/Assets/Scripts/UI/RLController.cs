@@ -140,8 +140,8 @@ public class RLController : MonoBehaviour
         _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
         _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
 
-        _start.RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Start_Pressed"); });
-        _stop.RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Stop_Pressed"); });
+        _start.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Start_Pressed"); });
+        _stop.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Stop_Pressed"); });
 
         // speed buttons
         #region Speed Buttons
@@ -172,10 +172,10 @@ public class RLController : MonoBehaviour
         maxSteps.style.display = DisplayStyle.None;
         maxEpisodes.style.display = DisplayStyle.None;
 
-        learningRate.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
-        decayRate.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
-        maxSteps.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
-        maxEpisodes.Q<Slider>().RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
+        learningRate.Q<Slider>().RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "LearningRate_Interacted"); });
+        decayRate.Q<Slider>().RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "ExplorationRate_Interacted"); });
+        maxSteps.Q<Slider>().RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "MaxSteps_Interacted"); });
+        maxEpisodes.Q<Slider>().RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "MaxEpisode_Interacted"); });
         #endregion
 
         _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
@@ -255,7 +255,6 @@ public class RLController : MonoBehaviour
     IEnumerator StartTutorial(string name)
     {
         yield return new WaitForSeconds(1f);
-        // Debug.Log("Starting tutorial");
         tutorialPanel.RemoveFromClassList("opacity-none");
         var steps = DataReader.Instance.GetTutorialSteps(name);
         TutorialController().SetTutorialSteps(steps);
@@ -301,7 +300,7 @@ public class RLController : MonoBehaviour
         {
             StartCoroutine(StartTutorial(GetSolvedText(false)));
         }
-        Debug.Log("Updating evaluation data" + _manager.currentEval);
+
         UpdateEvaluation();
         evaluationPanel.RemoveFromClassList("panel-up");
         evaluationOpenButton.AddToClassList("opacity-none");
@@ -355,12 +354,8 @@ public class RLController : MonoBehaviour
                 StateManager.Instance.SetState(GameStage.RLThreeCompletedBad);
             }
         }
-        // StartT
-        // RLPuzzle1Completed
-        // StartCoroutine(StartTutorial(GetSolvedText(solved)));
+
         StartCoroutine(StartTutorial("RLPuzzleCompleted"));
-
-
     }
 
     void LoadRewardAdjusters()
@@ -379,9 +374,7 @@ public class RLController : MonoBehaviour
             image.style.backgroundImage = new StyleBackground(_tileSpritesDict[tile]);
 
             slider.RegisterCallback<ChangeEvent<float>>(evt => SetTileRewardHandler(evt, tile, label, slider));
-            slider.RegisterCallback<PointerDownEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + tile.ToString()); });
-            Debug.Log("REwards" + rewardAdjuster);
-            Debug.Log("REwards2" + _rewardContainer);
+            slider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + tile.ToString()); });
             _rewardContainer.Add(rewardAdjuster);
         }
     }
@@ -565,6 +558,7 @@ public class RLController : MonoBehaviour
         _UI.Q<VisualElement>("MaxEpisodes").Q<Label>("SettingsLabel").text = "Number of cycles";
 
     }
+
     #region EnableDisable
     public void EnableRewardAdjusters()
     {
