@@ -182,6 +182,10 @@ public class RLController : MonoBehaviour
 
         _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
         _helpLearningConfiguration.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RLConfiguration"));
+
+        _help.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Help_Reward_Pressed"); });
+        _helpLearningConfiguration.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Help_Settings_Pressed"); });
+
         workshopPanel.style.display = DisplayStyle.Flex;
         workshopPanel.AddToClassList("panel-up");
 
@@ -257,7 +261,6 @@ public class RLController : MonoBehaviour
     IEnumerator StartTutorial(string name)
     {
         yield return new WaitForSeconds(1f);
-        // Debug.Log("Starting tutorial");
         tutorialPanel.RemoveFromClassList("opacity-none");
         var steps = DataReader.Instance.GetTutorialSteps(name);
         TutorialController().SetTutorialSteps(steps);
@@ -303,7 +306,7 @@ public class RLController : MonoBehaviour
         {
             StartCoroutine(StartTutorial(GetSolvedText(false)));
         }
-        Debug.Log("Updating evaluation data" + _manager.currentEval);
+
         UpdateEvaluation();
         evaluationPanel.RemoveFromClassList("panel-up");
         evaluationOpenButton.AddToClassList("opacity-none");
@@ -377,12 +380,8 @@ public class RLController : MonoBehaviour
                 StateManager.Instance.SetState(GameStage.RLThreeCompletedBad);
             }
         }
-        // StartT
-        // RLPuzzle1Completed
-        // StartCoroutine(StartTutorial(GetSolvedText(solved)));
+
         StartCoroutine(StartTutorial("RLPuzzleCompleted"));
-
-
     }
 
     void LoadRewardAdjusters()
@@ -401,13 +400,7 @@ public class RLController : MonoBehaviour
             image.style.backgroundImage = new StyleBackground(_tileSpritesDict[tile]);
 
             slider.RegisterCallback<ChangeEvent<float>>(evt => SetTileRewardHandler(evt, tile, label, slider));
-            slider.RegisterCallback<ClickEvent>(evt =>
-            {
-                Debug.Log("Slider clicked: " + tile.ToString());
-                ActivityTracker.Instance.RecordAction(levelName + tile.ToString());
-            });
-            // Debug.Log("REwards" + rewardAdjuster);
-            // Debug.Log("REwards2" + _rewardContainer);
+            slider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + tile.ToString()); });
             _rewardContainer.Add(rewardAdjuster);
         }
     }
@@ -444,16 +437,27 @@ public class RLController : MonoBehaviour
         {
             StateManager.Instance.SetState(GameStage.RLThreeStarted);
         }
+
         _manager.StartTraining();
+
+        DisableStartButton();
+        EnableSpeedButtons();
+        EnableStopButton();
+
+        DisableRewardAdjusters();
+        DisableTrainingSettings();
     }
 
     void StopTrainingHandler(ClickEvent evt)
     {
-        EnableRewardAdjusters();
+        _manager.StopTraining();
+
         EnableStartButton();
         DisableStopButton();
         DisableSpeedButtons();
-        _manager.StopTraining();
+
+        EnableRewardAdjusters();
+        EnableTrainingSettings();
     }
 
     void SpeedUpHandler(ClickEvent evt, GameSpeed s)
@@ -580,6 +584,7 @@ public class RLController : MonoBehaviour
         _UI.Q<VisualElement>("MaxEpisodes").Q<Label>("SettingsLabel").text = "Number of cycles";
 
     }
+
     #region EnableDisable
     public void EnableRewardAdjusters()
     {
@@ -634,6 +639,22 @@ public class RLController : MonoBehaviour
         _speed2x.SetEnabled(false);
         _speed4x.SetEnabled(false);
         _speed6x.SetEnabled(false);
+    }
+
+    public void EnableTrainingSettings()
+    {
+        EnableLearningRate();
+        EnableDecayRate();
+        EnableMaxSteps();
+        EnableMaxEpisodes();
+    }
+
+    public void DisableTrainingSettings()
+    {
+        DisableLearningRate();
+        DisableDecayRate();
+        DisableMaxSteps();
+        DisableMaxEpisodes();
     }
 
     public void EnableLearningRate()
