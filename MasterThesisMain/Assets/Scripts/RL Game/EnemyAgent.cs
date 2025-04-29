@@ -47,7 +47,7 @@ public class EnemyAgent : RLAgent
 
         if (!controller.IsDead && (_player.currentTile == controller.currentTile || _player.currentTile == _prevTile) && !_calculatingMove )
         {
-            Debug.Log("Died");
+            // Debug.Log("Died");
 
             if (!_vulnerable)
             {

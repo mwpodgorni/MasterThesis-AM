@@ -206,7 +206,7 @@ public class TutorialController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"TutorialController: no method named '{methodName}'");
+            // Debug.LogWarning($"TutorialController: no method named '{methodName}'");
         }
     }
 
@@ -224,12 +224,12 @@ public class TutorialController : MonoBehaviour
     }
     public void RLShowWorkshopButton()
     {
-        Debug.Log("RLShowWorkshopButton called");
+        // Debug.Log("RLShowWorkshopButton called");
         RLController.Instance.ShowWorkshopOpenButton();
     }
     public void EndGame()
     {
-        Debug.Log("EndGame called");
+        // Debug.Log("EndGame called");
         Application.Quit();
     }
 }

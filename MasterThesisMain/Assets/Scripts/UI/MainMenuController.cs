@@ -62,7 +62,7 @@ public class MainMenuController : MonoBehaviour
     private void OnPlayButtonClicked()
     {
         ActivityTracker.Instance.StopTimer("PaperOpen");
-        Debug.Log("Play Button Clicked");
+        // Debug.Log("Play Button Clicked");
         SceneManager.LoadScene(stageOneScene.name);
     }
 }

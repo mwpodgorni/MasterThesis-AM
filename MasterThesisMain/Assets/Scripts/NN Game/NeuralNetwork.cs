@@ -169,7 +169,7 @@ public class NeuralNetwork
         var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
         if (trainingSet.data == null || trainingSet.data.Length == 0)
         {
-            Debug.LogError("Training data is empty or null.");
+            // Debug.LogError("Training data is empty or null.");
             yield break;
         }
 
@@ -243,7 +243,7 @@ public class NeuralNetwork
         var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
         if (trainingSet.data == null || trainingSet.data.Length == 0)
         {
-            Debug.LogError("Training data is empty or null.");
+            // Debug.LogError("Training data is empty or null.");
             return;
         }
 
@@ -255,7 +255,7 @@ public class NeuralNetwork
             int predicted = Array.IndexOf(output, output.Max());
             int expected = Array.IndexOf(sample.expected, sample.expected.Max());
 
-            Debug.Log($"Input: [{string.Join(", ", sample.input)}] → Predicted: {predicted}, Expected: {expected}");
+            // Debug.Log($"Input: [{string.Join(", ", sample.input)}] → Predicted: {predicted}, Expected: {expected}");
         }
     }
     public float CalculateLoss(float[] outputs, float[] targets)
@@ -317,7 +317,7 @@ public class NeuralNetwork
     {
         if (hiddenLayers.Count <= 0) return;
 
-        Debug.Log("NN: Removing hidden layer node" + index);
+        // Debug.Log("NN: Removing hidden layer node" + index);
         hiddenLayers[index].RemoveNode();
         InitializeWeights();
     }
@@ -328,7 +328,7 @@ public class NeuralNetwork
     }
     public void RemoveInputLayerNode()
     {
-        Debug.Log("NN: Removing input layer node");
+        // Debug.Log("NN: Removing input layer node");
         inputLayer.RemoveNode();
         InitializeWeights();
     }
@@ -339,7 +339,7 @@ public class NeuralNetwork
     }
     public void RemoveOutputLayerNode()
     {
-        Debug.Log("NN: Removing output layer node");
+        // Debug.Log("NN: Removing output layer node");
         outputLayer.RemoveNode();
         InitializeWeights();
     }
@@ -376,13 +376,13 @@ public class NeuralNetwork
     }
     public bool IsNetworkValid()
     {
-        Debug.Log("Is Network Valid?");
-        Debug.Log("Input Layer Count: " + inputLayer.nodes.Count);
-        Debug.Log("Output Layer Count: " + outputLayer.nodes.Count);
-        Debug.Log("Hidden Layer Count: " + hiddenLayers.Count);
+        // Debug.Log("Is Network Valid?");
+        // Debug.Log("Input Layer Count: " + inputLayer.nodes.Count);
+        // Debug.Log("Output Layer Count: " + outputLayer.nodes.Count);
+        // Debug.Log("Hidden Layer Count: " + hiddenLayers.Count);
         foreach (var layer in hiddenLayers)
         {
-            Debug.Log("Hidden LayerNode Count: " + layer.nodes.Count);
+            // Debug.Log("Hidden LayerNode Count: " + layer.nodes.Count);
         }
         if (inputLayer.nodes.Count == 0) return false;
         if (outputLayer.nodes.Count == 0) return false;

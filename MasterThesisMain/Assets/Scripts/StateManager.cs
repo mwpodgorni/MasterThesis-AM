@@ -22,7 +22,7 @@ public class StateManager : MonoBehaviour
     public void SetState(GameStage newState)
     {
         CurrentStage = newState;
-        Debug.Log($"Game state changed to: {CurrentStage}");
+        // Debug.Log($"Game state changed to: {CurrentStage}");
         UpdateBasedOnCurrentState();
     }
     public void UpdateBasedOnCurrentState()
@@ -95,8 +95,10 @@ public class StateManager : MonoBehaviour
                 StageOneController.Instance.ShowNextLevelButton();
                 StageOneController.Instance.NetworkController().DisableTrainingButton();
                 break;
-            case GameStage.RLOneStart:
+            case GameStage.RLStartingPoint:
                 MusicController.Instance.PlayRLMusic();
+                break;
+            case GameStage.RLOneStart:
                 RLController.Instance.HideProgressBar();
                 RLController.Instance.HideEvaluationOpenButton();
                 RLController.Instance.HideWorkshopOpenButton();
@@ -179,6 +181,7 @@ public enum GameStage
     SecondNetworkTrained,
     SecondNetworkTrainedBad,
     StageOneCompleted,
+    RLStartingPoint,
     RLOneStart,
     RLOneStarted,
     RLOneCompletedGood,

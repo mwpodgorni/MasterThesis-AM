@@ -34,7 +34,7 @@ public class HelpController : MonoBehaviour
 
     public void ShowHelp(string keyword)
     {
-        Debug.Log("HELP SHOW HELP CALLED" + keyword);
+        // Debug.Log("HELP SHOW HELP CALLED" + keyword);
         ActivityTracker.Instance.RecordAction("Help_opened_" + keyword);
         if (StateManager.Instance.CurrentStage == GameStage.FirstWorkshopOpen)
         {
@@ -45,9 +45,9 @@ public class HelpController : MonoBehaviour
         helpPanel.RemoveFromClassList("help-hidden");
         helpPanel.style.display = DisplayStyle.Flex;
 
-        Debug.Log("Showing help for: " + keyword);
+        // Debug.Log("Showing help for: " + keyword);
         var helpText = DataReader.Instance.GetHelpText(keyword);
-        Debug.Log("Help text: " + helpText);
+        // Debug.Log("Help text: " + helpText);
         if (helpText == null)
         {
             helpTitle.text = "Help not found";
@@ -63,23 +63,23 @@ public class HelpController : MonoBehaviour
         // — Visual (image) —
         if (!string.IsNullOrEmpty(helpText.Visual))
         {
-            Debug.Log($"[Help] Loading image at Resources/{helpText.Visual}");
+            // Debug.Log($"[Help] Loading image at Resources/{helpText.Visual}");
             var tex = Resources.Load<Texture2D>(helpText.Visual);
             if (tex != null)
             {
-                Debug.Log($"[Help] Successfully loaded texture: {tex.name}");
+                // Debug.Log($"[Help] Successfully loaded texture: {tex.name}");
                 helpImage.style.backgroundImage = new StyleBackground(tex);
                 helpImage.style.display = DisplayStyle.Flex;
             }
             else
             {
-                Debug.Log($"[Help] Failed to load texture at path: {helpText.Visual}");
+                // Debug.Log($"[Help] Failed to load texture at path: {helpText.Visual}");
                 helpImage.style.display = DisplayStyle.None;
             }
         }
         else
         {
-            Debug.LogWarning("[Help] No visual path provided.");
+            // Debug.LogWarning("[Help] No visual path provided.");
             helpImage.style.display = DisplayStyle.None;
         }
 

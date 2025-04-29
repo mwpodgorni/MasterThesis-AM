@@ -527,7 +527,7 @@ public class RLController : MonoBehaviour
         // Debug.Log("TutorialController called");
         if (GetComponent<TutorialController>() == null)
         {
-            Debug.LogError("TutorialController is null");
+            // Debug.LogError("TutorialController is null");
             return null;
         }
         return GetComponent<TutorialController>();

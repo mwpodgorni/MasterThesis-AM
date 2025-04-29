@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem.LowLevel;
 
 public class StageOneController : MonoBehaviour
 {
@@ -88,7 +89,7 @@ public class StageOneController : MonoBehaviour
     IEnumerator StartTutorial()
     {
         yield return new WaitForSeconds(1f);
-        Debug.Log("Starting tutorial");
+        // Debug.Log("Starting tutorial");
         tutorialPanel.RemoveFromClassList("opacity-none");
         TutorialController().StartTutorial();
     }
@@ -126,7 +127,7 @@ public class StageOneController : MonoBehaviour
         {
             int finishedCycles = StageOneController.Instance.EvaluationController().GetFinishedCycles();
             int correctPredictions = StageOneController.Instance.EvaluationController().GetCorrectPredictions();
-            Debug.Log($"Finished Cycles: {finishedCycles}, Correct Predictions: {correctPredictions}");
+            // Debug.Log($"Finished Cycles: {finishedCycles}, Correct Predictions: {correctPredictions}");
             if (finishedCycles / 2 > correctPredictions)
             {
                 StateManager.Instance.SetState(GameStage.SecondNetworkTrainedBad);
@@ -156,7 +157,7 @@ public class StageOneController : MonoBehaviour
         // Debug.Log("TutorialController called");
         if (GetComponent<TutorialController>() == null)
         {
-            Debug.LogError("TutorialController is null");
+            // Debug.LogError("TutorialController is null");
             return null;
         }
         return GetComponent<TutorialController>();
@@ -168,6 +169,8 @@ public class StageOneController : MonoBehaviour
     public void LoadSecondStage()
     {
         ActivityTracker.Instance.StopTimer("StageOneTime");
+        StateManager.Instance.SetState(GameStage.RLStartingPoint);
+        StateManager.Instance.UpdateBasedOnCurrentState();
         SceneManager.LoadScene(stageTwoScene.name);
     }
     public void ShowWorkshopOpenButton()
