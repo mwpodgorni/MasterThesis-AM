@@ -317,6 +317,16 @@ public class RLController : MonoBehaviour
     public void OnEvaluationOpenButtonClicked()
     {
         evaluationOpen = true;
+        CheckCompletion();
+
+        UpdateEvaluation();
+        evaluationPanel.RemoveFromClassList("panel-up");
+        evaluationOpenButton.AddToClassList("opacity-none");
+
+        RevertState();
+    }
+    public void CheckCompletion()
+    {
         var good = new[]
             {
                 GameStage.RLOneCompletedGood,
@@ -338,12 +348,6 @@ public class RLController : MonoBehaviour
         {
             StartCoroutine(StartTutorial(GetSolvedText(false)));
         }
-
-        UpdateEvaluation();
-        evaluationPanel.RemoveFromClassList("panel-up");
-        evaluationOpenButton.AddToClassList("opacity-none");
-
-        RevertState();
     }
     public void OnEvaluationCloseButtonClicked()
     {
@@ -403,8 +407,17 @@ public class RLController : MonoBehaviour
                 StateManager.Instance.SetState(GameStage.RLThreeCompletedBad);
             }
         }
+        if (evaluationOpen)
+        {
+            CheckCompletion();
 
-        StartCoroutine(StartTutorial("RLPuzzleCompleted"));
+        }
+        else
+        {
+            StartCoroutine(StartTutorial("RLPuzzleCompleted"));
+
+        }
+
     }
 
     void LoadRewardAdjusters()
@@ -623,7 +636,7 @@ public class RLController : MonoBehaviour
 
         foreach (var adjuster in rewardAdjusters)
         {
-            adjuster.SetEnabled(false);
+            adjuster.Q<Slider>().SetEnabled(false);
         }
     }
 
@@ -680,42 +693,42 @@ public class RLController : MonoBehaviour
 
     public void EnableLearningRate()
     {
-        learningRate.SetEnabled(true);
+        learningRate.Q<Slider>().SetEnabled(true);
     }
 
     public void DisableLearningRate()
     {
-        learningRate.SetEnabled(false);
+        learningRate.Q<Slider>().SetEnabled(false);
     }
 
     public void EnableDecayRate()
     {
-        decayRate.SetEnabled(true);
+        decayRate.Q<Slider>().SetEnabled(true);
     }
 
     public void DisableDecayRate()
     {
-        decayRate.SetEnabled(false);
+        decayRate.Q<Slider>().SetEnabled(false);
     }
 
     public void EnableMaxSteps()
     {
-        maxSteps.SetEnabled(true);
+        maxSteps.Q<Slider>().SetEnabled(true);
     }
 
     public void DisableMaxSteps()
     {
-        maxSteps.SetEnabled(false);
+        maxSteps.Q<Slider>().SetEnabled(false);
     }
 
     public void EnableMaxEpisodes()
     {
-        maxEpisodes.SetEnabled(true);
+        maxEpisodes.Q<Slider>().SetEnabled(true);
     }
 
     public void DisableMaxEpisodes()
     {
-        maxEpisodes.SetEnabled(false);
+        maxEpisodes.Q<Slider>().SetEnabled(false);
     }
     #endregion
 

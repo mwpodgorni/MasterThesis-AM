@@ -162,10 +162,7 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.ShowNextLevelButton();
                 ActivityTracker.Instance.StopTimer("StageTwoTime");
-
                 break;
-
-
         }
     }
 }
