@@ -278,7 +278,7 @@ public class NetworkController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Network is not valid. Please add nodes to the network.");
+                // Debug.Log("Network is not valid. Please add nodes to the network.");
                 StageOneController.Instance.TutorialController().HideNextButton();
                 StageOneController.Instance.TutorialController().SetTypeText(false);
                 StageOneController.Instance.TutorialController().SetDisplayTime(5f);
@@ -291,20 +291,18 @@ public class NetworkController : MonoBehaviour
             Debug.Log("TestNetworkButton clicked2");
             if (minigame2Solution.Matches(neuralNetwork) || minigame2Solution2.Matches(neuralNetwork))
             {
-                Debug.Log("TestNetworkButton clicked3");
+                // Debug.Log("TestNetworkButton clicked3");
                 StageOneController.Instance.TutorialController().SetTypeText(true);
                 StageOneController.Instance.TutorialController().ShowNextButton();
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstNetworkValid());
                 StageOneController.Instance.TutorialController().StartTutorial();
-                if (neuralNetwork.IsNetworkValid())
-                {
-                    Debug.Log("TestNetworkButton clicked3");
-                    StateManager.Instance.SetState(GameStage.SecondNetworkValidated);
-                }
+
+                // Debug.Log("TestNetworkButton clicked3");
+                StateManager.Instance.SetState(GameStage.SecondNetworkValidated);
             }
             else
             {
-                Debug.Log("Network is not valid. Please add nodes to the network.");
+                // Debug.Log("Network is not valid. Please add nodes to the network.");
                 StageOneController.Instance.TutorialController().HideNextButton();
                 StageOneController.Instance.TutorialController().SetTypeText(false);
                 StageOneController.Instance.TutorialController().SetDisplayTime(5f);
