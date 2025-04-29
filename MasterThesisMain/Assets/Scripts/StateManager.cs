@@ -30,6 +30,7 @@ public class StateManager : MonoBehaviour
         switch (CurrentStage)
         {
             case GameStage.StartingPoint:
+                MusicController.Instance.PlayNNMusic();
                 break;
             case GameStage.FirstWorkshopOpen:
                 StageOneController.Instance.TutorialController().HideNextButton();
@@ -95,6 +96,7 @@ public class StateManager : MonoBehaviour
                 StageOneController.Instance.NetworkController().DisableTrainingButton();
                 break;
             case GameStage.RLOneStart:
+                MusicController.Instance.PlayRLMusic();
                 RLController.Instance.HideProgressBar();
                 RLController.Instance.HideEvaluationOpenButton();
                 RLController.Instance.HideWorkshopOpenButton();
