@@ -32,6 +32,7 @@ public class RLController : MonoBehaviour
     public Button evaluationOpenButton;
     public Button evaluationCloseButton;
     public Button nextLevelButton;
+    public Button surveyButton;
     public VisualElement helpPanel;
 
     public VisualElement learningRate;
@@ -209,6 +210,8 @@ public class RLController : MonoBehaviour
         evaluationOpenButton.clicked += OnEvaluationOpenButtonClicked;
         evaluationCloseButton = _UI.Q<Button>("EvaluationCloseButton");
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
+        surveyButton = _UI.Q<Button>("SurveyButton");
+        surveyButton.clicked += OnSurveyButtonClicked;
 
         nextLevelButton = _UI.Q<Button>("NextLevelButton");
         nextLevelButton.clicked += LoadLevel;
@@ -745,5 +748,15 @@ public class RLController : MonoBehaviour
         }
 
         return "";
+    }
+    public void ShowEndScreen()
+    {
+        var endScreen = _UI.Q<VisualElement>("EndScreen");
+        endScreen.style.display = DisplayStyle.Flex;
+        endScreen.RemoveFromClassList("panel-up");
+    }
+    public void OnSurveyButtonClicked()
+    {
+        Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLSdSaKeJLAE--Y4-MUKLu35ZbokqKrzBTHx4M4EaZOzH38DI-A/viewform?usp=pp_url&entry.1575728060=" + ActivityTracker.Instance.GetSessionId());
     }
 }

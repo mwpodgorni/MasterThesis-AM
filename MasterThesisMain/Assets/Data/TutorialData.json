@@ -338,7 +338,8 @@
       "content": [
         "The configuration is not optimized for the robot to learn and navigate the environment efficiently. Return to the workshop and give it another try.",
         "The robot should prioritize collecting coins and reaching the tile with the flag. This time, it should be punished for encounters with malfunctioning robots."
-      ]
+      ],
+      "event": "ShowEndScreen"
     }
   ]
 }

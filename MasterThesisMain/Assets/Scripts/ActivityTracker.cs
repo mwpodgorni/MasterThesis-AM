@@ -1,8 +1,7 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using NUnit.Framework.Constraints;
+using System;
 
 public class ActivityTracker : MonoBehaviour
 {
@@ -11,6 +10,7 @@ public class ActivityTracker : MonoBehaviour
     private float gameStartTime;
     private Dictionary<string, int> actionCounts = new();
     private Dictionary<string, float> timers = new();
+    private string sessionId;
 
     private void Awake()
     {
@@ -19,11 +19,22 @@ public class ActivityTracker : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             gameStartTime = Time.time;
+            sessionId = GenerateSessionId();
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private string GenerateSessionId()
+    {
+        return Guid.NewGuid().ToString("N");
+    }
+
+    public string GetSessionId()
+    {
+        return sessionId;
     }
 
     public void RecordAction(string actionName)
@@ -41,16 +52,18 @@ public class ActivityTracker : MonoBehaviour
     public void StopTimer(string timerName)
     {
         if (timers.ContainsKey(timerName))
-        {
             timers[timerName] = Time.time - timers[timerName];
-        }
     }
 
     public void SaveTrackingData()
     {
-        var path = Application.dataPath + "/TrackingData/TrackingData_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt";
+        var dir = Application.dataPath + "/TrackingData";
+        Directory.CreateDirectory(dir);
+        var path = dir + "/TrackingData_" + sessionId + ".txt";
+
         using (StreamWriter writer = new StreamWriter(path))
         {
+            writer.WriteLine("Session ID: " + sessionId);
             writer.WriteLine("Total Play Time: " + (Time.time - gameStartTime));
             foreach (var action in actionCounts)
                 writer.WriteLine($"{action.Key}: {action.Value} times");
@@ -58,12 +71,13 @@ public class ActivityTracker : MonoBehaviour
                 writer.WriteLine($"{timer.Key}: {timer.Value} seconds");
         }
     }
+
     private void OnApplicationQuit()
     {
         var keys = new List<string>(timers.Keys);
         foreach (var key in keys)
         {
-            if (timers[key] >= 0) // if timer was started but not stopped
+            if (timers[key] >= 0)
                 timers[key] = Time.time - timers[key];
         }
         SaveTrackingData();
