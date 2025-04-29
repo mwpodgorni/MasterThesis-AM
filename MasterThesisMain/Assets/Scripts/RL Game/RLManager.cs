@@ -40,6 +40,7 @@ public class RLManager : MonoBehaviour
     public float[] episodeReward; // Shows if the agent is earning more reward.
     public float[] successRateRolling; // Rolling average success rate over the last N episodes
     public float[] stepsToCompletion; // To indicate whether the agent is becoming more efficient
+    public float[] epsilon; // To indicate how much it explores per episode.
 
     public RLEvaluationData currentEval;
     ProgressBar _progressBar;
@@ -63,6 +64,7 @@ public class RLManager : MonoBehaviour
         episodeReward = new float[maxEpisodes];
         successRateRolling = new float[maxEpisodes];
         stepsToCompletion = new float[maxEpisodes];
+        epsilon = new float[maxEpisodes];
 
         SetReward(TileType.Enemy, 0);
         SetReward(TileType.Goal, 0);
@@ -104,6 +106,7 @@ public class RLManager : MonoBehaviour
                 episodeReward[episodeCount - 1] = _player.currentEpochReward;
                 successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / (float)episodeCount;
                 stepsToCompletion[episodeCount - 1] = (float)_player.currentEpochStepCount / (float)maxStepPerEpoch;
+                epsilon[episodeCount - 1] = _player.epsilon;
                 _progressBar.value = episodeCount;
                 _outerProgressBar.value = episodeCount;
                 ResetTraining(); // Reset for next epoch
@@ -124,6 +127,7 @@ public class RLManager : MonoBehaviour
         episodeReward = new float[maxEpisodes];
         successRateRolling = new float[maxEpisodes];
         stepsToCompletion = new float[maxEpisodes];
+        epsilon = new float[maxEpisodes];
 
         _progressBar.highValue = maxEpisodes;
         _progressBar.value = episodeCount;
@@ -280,6 +284,7 @@ public class RLManager : MonoBehaviour
         currentEval.successRate = _player.totalTaskCompleted / maxEpisodes;
         currentEval.completionTime = _player.totalStepCount / (float)(maxEpisodes);
         currentEval.episodeCount = episodeCount;
+        currentEval.epsilon = epsilon;
     }
 
 }
@@ -309,4 +314,5 @@ public struct RLEvaluationData
     public float[] episodeReward; // Shows if the agent is earning more reward.
     public float[] successRateRolling; // Rolling average success rate over the last N episodes
     public float[] stepsToCompletion; // To indicate whether the agent is becoming more efficient
+    public float[] epsilon; 
 }

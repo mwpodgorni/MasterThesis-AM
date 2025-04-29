@@ -72,7 +72,7 @@ public class DeepQAgent : RLAgent
                 return;
             }
 
-            _epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-decayRate * totalStepCount);
+            epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-decayRate * totalStepCount);
             totalStepCount++;
 
             // Calculate the current distance to the goal
@@ -125,7 +125,7 @@ public class DeepQAgent : RLAgent
 
         Random.InitState(DateTime.Now.Millisecond);
 
-        if (Random.value < _epsilon)
+        if (Random.value < epsilon)
         {
             return possibleActions[Random.Range(0, possibleActions.Count)];
         }

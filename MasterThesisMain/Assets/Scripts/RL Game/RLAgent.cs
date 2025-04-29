@@ -13,7 +13,7 @@ public class RLAgent : MonoBehaviour
     [SerializeField] protected float _discountFactor = 0.9f; // Gamma (γ);
     [SerializeField] public float decayRate = 0.01f;
 
-    [SerializeField] protected float _epsilon = 1f;
+    [SerializeField] public float epsilon = 1f;
     [SerializeField] protected float _epsilonMin = 0.01f;
 
     [SerializeField] public int maxSteps = 20;
@@ -82,6 +82,7 @@ public class RLAgent : MonoBehaviour
 
     virtual public void ResetAgent()
     {
+        totalTaskCompleted = 0;
         controller.ResetAgent();
         _finishedEpoch = false;
         currentEpochReward = 0;

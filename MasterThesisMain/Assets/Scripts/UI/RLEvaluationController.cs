@@ -46,7 +46,8 @@ public class RLEvaluationController : MonoBehaviour
         chart.datasets = new List<(List<float>, Color, string)> {
             (DownsampleData(data.episodeReward), new Color32(0x82, 0x3A, 0x30, 0xFF), "Episode Reward"),
             (DownsampleData(data.successRateRolling), new Color32(0xFF, 0xF7, 0x73, 0xFF), "Success Rate"),
-            (DownsampleData(data.stepsToCompletion), new Color32(0x21, 0x63, 0x4F, 0xFF), "Steps to Completion")
+            (DownsampleData(data.stepsToCompletion), new Color32(0x21, 0x63, 0x4F, 0xFF), "Steps to Completion"),
+            (DownsampleData(data.epsilon), new Color32(0xFF, 0xFF, 0xFF, 0xFF), "Exploration Rate %")
         };
         chart.Refresh();
     }

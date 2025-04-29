@@ -47,7 +47,7 @@ public class QAgent : RLAgent
 
             totalStepCount++;
             currentEpochStepCount++;
-            _epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-decayRate * totalStepCount);
+            epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-decayRate * totalStepCount);
         }
 
         if (_calculatingMove && _timer < _waitTime)
@@ -75,7 +75,7 @@ public class QAgent : RLAgent
         Random.InitState(DateTime.Now.Millisecond);
 
         Action chosenAction = possibleActions[Random.Range(0, possibleActions.Count)];
-        if (Random.value < _epsilon || !_qTable.ContainsKey(state)) // Explore
+        if (Random.value < epsilon || !_qTable.ContainsKey(state)) // Explore
         {
             return chosenAction;
         }
