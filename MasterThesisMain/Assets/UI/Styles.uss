@@ -270,7 +270,6 @@
     flex-wrap: nowrap;
     text-overflow: clip;
 }
-
 .unity-progress-bar {
     border-radius: 10px;
     height: 40px;
@@ -300,3 +299,39 @@
     flex-shrink: 0;
 }
 
+
+
+#ScrollView .unity-progress-bar__container {
+    min-height: 40px;
+    max-height: 40px;
+    height: 100%;
+    align-items: stretch;
+}
+
+#ScrollView .unity-progress-bar__background {
+    border-radius: 10px;
+    background-color: rgb(58, 58, 58);
+    height: 100%;
+}
+
+#ScrollView .unity-progress-bar__progress {
+    background-color: rgb(33, 99, 79);
+    height: 34px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+#ScrollView .unity-base-slider__tracker {
+    height: 100%;
+    border-radius: 0px;
+    width: 100%;
+    background-color: rgb(167, 167, 167);
+}
+
+#ScrollView .unity-base-slider__dragger {
+    width: 16px;
+}
+
+#ScrollView .unity-repeat-button {
+    background-color: rgb(167, 167, 167);
+}
