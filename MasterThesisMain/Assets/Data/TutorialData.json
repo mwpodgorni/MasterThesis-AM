@@ -270,10 +270,8 @@
     {
       "title": "Task incomplete",
       "content": [
-        "The configuration is not optimized for the robot to learn and navigate the environment efficiently.",
-        "Return to the workshop and give it another try.",
-        "The robot should prioritize collecting the power-up over defusing the malfunctioning robots.",
-        "You should also give it more time to learn by increasing the number of training cycles."
+        "The configuration is not optimized for the robot to learn and navigate the environment efficiently. Return to the workshop and give it another try.",
+        "The robot should prioritize collecting the power-up over defusing the malfunctioning robots. You should also give it more time to learn by increasing the number of training cycles."
       ]
     }
   ],
@@ -338,10 +336,8 @@
     {
       "title": "Task incomplete",
       "content": [
-        "The configuration is not optimized for the robot to learn and navigate the environment efficiently.",
-        "Return to the workshop and give it another try.",
-        "The robot should prioritize collecting coins and reaching the tile with the flag",
-        "This time, it should be punished for encounters with malfunctioning robots."
+        "The configuration is not optimized for the robot to learn and navigate the environment efficiently. Return to the workshop and give it another try.",
+        "The robot should prioritize collecting coins and reaching the tile with the flag. This time, it should be punished for encounters with malfunctioning robots."
       ]
     }
   ]

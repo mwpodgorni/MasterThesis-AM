@@ -66,8 +66,9 @@ public class LineChart : VisualElement
         float globalMin = seriesList.SelectMany(s => s.Item1).Min();
         float globalMax = seriesList.SelectMany(s => s.Item1).Max();
         float padding = (globalMax - globalMin) * 0.1f;
+        float paddedMin = globalMin - padding;
         float paddedMax = globalMax + padding;
-        float paddedRange = Mathf.Max(paddedMax - globalMin, 0.0001f);
+        float paddedRange = Mathf.Max(paddedMax - paddedMin, 0.0001f);
 
         // --- background, axes & grid (same as before) ---
         painter.fillColor = new Color(0.1f, 0.1f, 0.1f, 1);
@@ -116,7 +117,7 @@ public class LineChart : VisualElement
             for (int i = 0; i < pointCount; i++)
             {
                 float x = rect.xMin + i * step;
-                float y = rect.yMax - ((vals[i] - globalMin) / paddedRange) * h;
+                float y = rect.yMax - ((vals[i] - paddedMin) / paddedRange) * h;
                 pts.Add(new Vector2(x, y));
             }
 
@@ -182,7 +183,10 @@ public class LineChart : VisualElement
         // 2) global min/max
         float globalMin = values.Min();
         float globalMax = values.Max();
-        float range = Mathf.Max(globalMax - globalMin, 0.0001f);
+        float padding = (globalMax - globalMin) * 0.1f;
+        float paddedMin = globalMin - padding;
+        float paddedMax = globalMax + padding;
+        float range = Mathf.Max(paddedMax - paddedMin, 0.0001f);
 
         // 3) Y‑axis labels
         int yTicks = 4;
@@ -191,7 +195,7 @@ public class LineChart : VisualElement
             // Debug.Log($"Adding Y-axis label {i}");
             float t = i / (float)yTicks;
             float y = Mathf.Lerp(rect.yMax, rect.yMin, t);
-            float val = Mathf.Lerp(globalMin, globalMax, t);
+            float val = Mathf.Lerp(paddedMin, paddedMax, t);
 
             var lbl = new Label(val.ToString("0.0"));
             lbl.style.position = Position.Absolute;

@@ -52,6 +52,7 @@ public class RLController : MonoBehaviour
     ProgressBar _progressBar;
     ProgressBar _outerProgressBar;
 
+    bool evaluationOpen = false;
 
     bool _workShopFirstTime = true;
     string GetTutorialText
@@ -315,6 +316,7 @@ public class RLController : MonoBehaviour
     }
     public void OnEvaluationOpenButtonClicked()
     {
+        evaluationOpen = true;
         var good = new[]
             {
                 GameStage.RLOneCompletedGood,
@@ -345,6 +347,7 @@ public class RLController : MonoBehaviour
     }
     public void OnEvaluationCloseButtonClicked()
     {
+        evaluationOpen = false;
         evaluationPanel.AddToClassList("panel-up");
         evaluationOpenButton.RemoveFromClassList("opacity-none");
     }
