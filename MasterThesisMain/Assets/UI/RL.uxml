@@ -30,7 +30,7 @@
                                 <AttributeOverrides element-name="Slider" low-value="0" value="0.1" />
                             </engine:Instance>
                             <engine:Instance template="SettingsAdjuster" name="DecayRate" style="margin-bottom: 20px;">
-                                <AttributeOverrides element-name="Slider" low-value="0" />
+                                <AttributeOverrides element-name="Slider" low-value="0.01" high-value="0.001" value="0.1" />
                             </engine:Instance>
                             <engine:Instance template="SettingsAdjuster" name="MaxSteps" style="margin-bottom: 20px;">
                                 <AttributeOverrides element-name="Slider" low-value="1" high-value="100" value="30" />
