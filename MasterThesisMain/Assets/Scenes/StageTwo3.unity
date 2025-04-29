@@ -781,7 +781,7 @@ PrefabInstance:
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
       propertyPath: _tilesToReset.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
@@ -807,17 +807,17 @@ PrefabInstance:
         type: 3}
       propertyPath: '_tilesToReset.Array.data[0]'
       value: 
-      objectReference: {fileID: 1818137227}
+      objectReference: {fileID: 1734537290}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
       propertyPath: '_tilesToReset.Array.data[1]'
       value: 
-      objectReference: {fileID: 1734537290}
+      objectReference: {fileID: 2031451636}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
       propertyPath: '_tilesToReset.Array.data[2]'
       value: 
-      objectReference: {fileID: 1725571503}
+      objectReference: {fileID: 2031451636}
     - target: {fileID: 25668398549462063, guid: 9f5790e075054fa4f850f3c8b55ccdfd,
         type: 3}
       propertyPath: '_tilesToReset.Array.data[3]'
@@ -3078,18 +3078,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4848078459399530186}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1725571503 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 427281959311475705, guid: 44a9f258314c7944491bfde9ce4eb6ee,
-    type: 3}
-  m_PrefabInstance: {fileID: 201869792}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bb6c37851a74fa4d84d494ddc9a708f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1732476432 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7724116643416377513, guid: 44a9f258314c7944491bfde9ce4eb6ee,
@@ -3256,18 +3244,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1765123942}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1818137227 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 427281959311475705, guid: 44a9f258314c7944491bfde9ce4eb6ee,
-    type: 3}
-  m_PrefabInstance: {fileID: 1171645166}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bb6c37851a74fa4d84d494ddc9a708f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1846132440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3817,23 +3793,23 @@ PrefabInstance:
     - target: {fileID: 1505086038798864255, guid: 80097d15fc2aa7f4abc39fbe972cc787,
         type: 3}
       propertyPath: collectibleTiles.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1505086038798864255, guid: 80097d15fc2aa7f4abc39fbe972cc787,
         type: 3}
       propertyPath: 'collectibleTiles.Array.data[0]'
       value: 
-      objectReference: {fileID: 1818137227}
+      objectReference: {fileID: 1734537290}
     - target: {fileID: 1505086038798864255, guid: 80097d15fc2aa7f4abc39fbe972cc787,
         type: 3}
       propertyPath: 'collectibleTiles.Array.data[1]'
       value: 
-      objectReference: {fileID: 1734537290}
+      objectReference: {fileID: 2031451636}
     - target: {fileID: 1505086038798864255, guid: 80097d15fc2aa7f4abc39fbe972cc787,
         type: 3}
       propertyPath: 'collectibleTiles.Array.data[2]'
       value: 
-      objectReference: {fileID: 1725571503}
+      objectReference: {fileID: 2031451636}
     - target: {fileID: 1505086038798864255, guid: 80097d15fc2aa7f4abc39fbe972cc787,
         type: 3}
       propertyPath: 'collectibleTiles.Array.data[3]'
