@@ -289,19 +289,18 @@ public class NetworkController : MonoBehaviour
         else if (StateManager.Instance.CurrentStage == GameStage.FirstNetworkValidated)
         {
             Debug.Log("TestNetworkButton clicked2");
-            if (minigame2Solution.Matches(neuralNetwork)
-                || minigame2Solution2.Matches(neuralNetwork))
+            if (minigame2Solution.Matches(neuralNetwork) || minigame2Solution2.Matches(neuralNetwork))
             {
                 Debug.Log("TestNetworkButton clicked3");
                 StageOneController.Instance.TutorialController().SetTypeText(true);
                 StageOneController.Instance.TutorialController().ShowNextButton();
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstNetworkValid());
                 StageOneController.Instance.TutorialController().StartTutorial();
-            }
-            else if (neuralNetwork.IsNetworkValid())
-            {
-                Debug.Log("TestNetworkButton clicked3");
-                StateManager.Instance.SetState(GameStage.SecondNetworkValidated);
+                if (neuralNetwork.IsNetworkValid())
+                {
+                    Debug.Log("TestNetworkButton clicked3");
+                    StateManager.Instance.SetState(GameStage.SecondNetworkValidated);
+                }
             }
             else
             {
