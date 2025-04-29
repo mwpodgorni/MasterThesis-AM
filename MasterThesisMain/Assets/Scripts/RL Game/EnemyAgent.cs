@@ -68,6 +68,8 @@ public class EnemyAgent : RLAgent
         }
         else
         {
+            if (_prevTile.isUsed) _prevTile.SoftReset();
+            else _prevTile.ResetTile();
             _calculatingMove = false;
             _timer = 0f;
         }
