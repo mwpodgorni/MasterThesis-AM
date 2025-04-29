@@ -102,6 +102,11 @@ public class Tile : MonoBehaviour
         if (model != null) model.SetActive(true);
     }
 
+    public void SoftReset()
+    {
+        _currentType = TileType.Normal;
+    }
+
     public void SetCurrentType(TileType type)
     {
         _currentType = type;
