@@ -1758,6 +1758,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3f49206aec5564b98b55a4e94eb2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &943096854
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 26704406369863923, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_Name
+      value: Board
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 44.565704
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -15.330004
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 35.337933
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9999803
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.006285937
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -0.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126785386394938932, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_text
+      value: Policy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599886378458211707, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_text
+      value: "A policy is the robot\u2019s decision-making strategy.\n\nIt maps observations
+        to actions\u2014deciding what to do based on what the robot sees.\n\nAs the
+        robot learns, its policy improves, helping it earn more rewards and solve
+        tasks more efficiently."
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6280053034807641960, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8417389998266067433, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+  m_SourcePrefab: {fileID: 100100000, guid: 51e34873f508e10489f48241f811eb07, type: 3}
 --- !u!1001 &1000559884
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4179,3 +4268,4 @@ SceneRoots:
   - {fileID: 1460808503}
   - {fileID: 1875033843}
   - {fileID: 693370813}
+  - {fileID: 943096854}

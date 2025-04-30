@@ -1123,6 +1123,100 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 456890449}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &457381632
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 26704406369863923, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_Name
+      value: Board
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 43.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -15.330002
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 19.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9993909
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.034898248
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 70939436802359067, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660655137311955973, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 9.795
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126785386394938932, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_text
+      value: Action Space
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599886378458211707, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      propertyPath: m_text
+      value: "The action space lists all moves the robot can take at any step\u2014like
+        moving forward, backward, left, or right.\n\nAt each decision point, the
+        robot picks one action from this set.\n\nA simple action space makes learning
+        easier, while a larger one allows more complex behaviors."
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6280053034807641960, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8417389998266067433, guid: 51e34873f508e10489f48241f811eb07,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+  m_SourcePrefab: {fileID: 100100000, guid: 51e34873f508e10489f48241f811eb07, type: 3}
 --- !u!4 &470816702 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7724116643416377513, guid: 44a9f258314c7944491bfde9ce4eb6ee,
@@ -3129,3 +3223,4 @@ SceneRoots:
   - {fileID: 3456497185054281149}
   - {fileID: 501081630}
   - {fileID: 199124962}
+  - {fileID: 457381632}
