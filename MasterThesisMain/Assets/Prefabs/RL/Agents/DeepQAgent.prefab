@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5647005561494378901}
-  - component: {fileID: 2345534408415810546}
   m_Layer: 0
   m_Name: NN
   m_TagString: Untagged
@@ -33,23 +32,6 @@ Transform:
   - {fileID: 5823120570264744870}
   m_Father: {fileID: 3793789558779598110}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2345534408415810546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 47061853064760134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c53472266da5e343b4cbf9123344b0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  expectedOutput: 0
-  actualOutput: 0
-  epoch: 0
-  loss: 0
-  _weightPanel: {fileID: 5823120570264744870}
 --- !u!1 &4141176105364260017
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,23 +163,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5406bee4b4161f54ab17ea22fd10d28c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _network: {fileID: 2345534408415810546}
+  _learningRate: 0.1
+  _discountFactor: 0.9
+  _decayRate: 0.01
+  _epsilon: 1
+  _epsilonMin: 0.01
+  _maxSteps: 20
+  controller: {fileID: 8018066106915840088}
+  task: {fileID: 0}
+  avgRewardPerEpoch: 0
+  totalReward: 0
+  currentEpochReward: 0
+  totalStepCount: 0
+  maxSteps: 20
   _inputSize: 5
   _hiddenSize: 8
   _layerCount: 2
-  learningRate: 0.1
-  discountFactor: 0.9
-  decayRate: 0.01
-  epsilon: 0
-  maxSteps: 20
   _goalTile: {fileID: 0}
-  _player: {fileID: 8018066106915840088}
-  _tilesToReset: []
-  avgRewardPerEpoch: 0
-  totalReward: 0
-  totalStepCount: 0
-  currentEpisodeSteps: 0
-  episodeCount: 1
 --- !u!114 &8018066106915840088 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7488383769800551177, guid: 02c420a7b61cfa7489dbd4638c186bb7,

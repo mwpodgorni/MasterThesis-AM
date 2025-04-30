@@ -1,27 +1,99 @@
 {
   "InputLayer": {
     "title": "Input Layer",
+    "visual": "Images/InputLayer",
     "description": [
-      "The Input Layer is the first part of a neural network. It's where data enters the network. Think of it like a set of sensors that collect information.",
-      "For example, if you're trying to recognize an image, the input layer would take in the pixel values of that image. Each sensor in the input layer represents one piece of data, like a pixel, feature, or measurement, and sends that information into the next layer for processing."
+      "The input layer is the network’s entry point, where raw data enters.",
+      "Each node takes in one feature - such as weight, durability, or material type - and hands it off to the next layer."
+    ],
+    "highlights": [
+      "One node per feature",
+      "No computation - just data intake",
+      "Feeds raw values into the network",
+      "Sets the foundation for all later processing"
     ]
   },
-  "hiddenLayers": {
+  "HiddenLayers": {
     "title": "Hidden Layers",
+    "visual": "Images/HiddenLayers",
     "description": [
-      "Hidden Layers are the layers between the input and output layers in a neural network. These layers are where the network does most of its thinking.",
-      "When data enters the input layer, it gets passed through the hidden layers, which process the information by looking for patterns or relationships in the data.",
-      "Each hidden layer contains multiple nodes or neurons that work together to transform the input data into something meaningful, like predicting a result. The network learns to recognize these patterns through training, which helps it make better predictions in the future.",
-      "You don’t directly see what happens in these layers, which is why they're called hidden. They are essential for enabling the network to solve complex problems."
+      "Hidden layers sit between the input and output and perform the network’s “thinking” by extracting patterns from data.",
+      "Each node applies weights and an activation function, passing its result on until the final output layer makes a decision."
+    ],
+    "highlights": [
+      "Stacked layers let the network learn increasingly abstract features",
+      "More layers can capture complex relationships - but risk overfitting if overused",
+      "Each node transforms its inputs via weighted sums and activations",
+      "Choosing the right layer count is key to balancing accuracy and generalization"
     ]
   },
-  "outputLayer": {
+  "OutputLayer": {
     "title": "Output Layer",
+    "visual": "Images/OutputLayer",
     "description": [
-      "Output Layer is the final layer in a neural network. This layer produces the network's result after processing all the data through the input and hidden layers.",
-      "It takes the transformed information and converts it into the final output, which could be a prediction, classification, or decision depending on the task.",
-      "For example, if the neural network is used to predict whether an image is of a cat or a dog, the output layer will give the network's final decision, such as cat or dog",
-      "The number of nodes in the output layer depends on the problem you're trying to solve, such as one node for a binary decision or multiple nodes for multiple categories."
+      "The output layer turns the final activations into your network’s predictions.",
+      "Each node represents one category, and the highest value indicates the chosen class."
+    ],
+    "highlights": [
+      "Number of nodes = number of classes",
+      "Commonly uses softmax to produce probabilities",
+      "Pick the node with the highest output as the decision",
+      "Outputs can be interpreted as confidence scores"
+    ]
+  },
+  "TrainingCycle": {
+    "title": "Training Cycles",
+    "visual": "Images/TrainingCycles",
+    "description": [
+      "A training cycle (or step) means processing one data sample and updating the network once.",
+      "More cycles help the network learn better, but too many can cause overfitting."
+    ],
+    "highlights": [
+      "One cycle = one training sample processed and used for weight updates",
+      "Increasing cycles usually improves learning but can lead to overfitting",
+      "Monitor evaluation metrics to find the best balance",
+      "Longer training requires more time and resources"
+    ]
+  },
+  "LearningRate": {
+    "title": "Learning Rate",
+    "visual": "Images/LearningRate",
+    "description": [
+      "The learning rate controls how much the model adjusts during training, whether it is a neural network or a reinforcement learning agent.",
+      "A higher learning rate can speed up learning but risks overshooting good solutions; a lower rate leads to slower but more stable progress."
+    ],
+    "highlights": [
+      "Too high - learning may become unstable or inconsistent",
+      "Too low - learning can become very slow or stuck",
+      "Typical starting values range from 0.001 to 0.1",
+      "Adjust based on how training performance changes"
+    ]
+  },
+  "RewardAdjuster": {
+    "title": "Reward Adjuster",
+    "visual": "Images/RewardAdjuster",
+    "description": [
+      "Use the Reward Adjuster to assign positive or negative values to each tile in the environment.",
+      "These rewards guide the agent’s learning: stepping on high‑value tiles is encouraged, while low or negative values deter the agent."
+    ],
+    "highlights": [
+      "Positive rewards reinforce good actions",
+      "Negative rewards discourage mistakes",
+      "Zero reward gives no feedback",
+      "Balancing rewards speeds up learning"
+    ]
+  },
+  "RLConfiguration": {
+    "title": "Learning Configuration",
+    "visual": "Images/LearningConfiguration",
+    "description": [
+      "Use the Learning Configuration to fine-tune how the robot trains and explores the environment. Each slider controls a different aspect of the training process, helping you balance learning speed, decision-making, and exploration."
+    ],
+    "highlights": [
+      "Learning Rate: Controls how strongly the robot updates what it learns after each action.",
+      "Exploration Rate: Determines how often the robot tries new actions instead of relying on what it knows.",
+      "Steps per Cycle: Sets how many moves the robot can make in a single training cycle.",
+      "Cycles: Defines how many training iterations the robot will go through before evaluation."
     ]
   }
 }

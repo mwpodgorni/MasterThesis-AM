@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alexwsu.EventChannels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,30 +9,32 @@ using Random = UnityEngine.Random;
 public class RLAgent : MonoBehaviour
 {
     [Header("Hyper Parameters")]
-    [SerializeField] protected float _learningRate = 0.1f;   // Alpha (α)
+    [SerializeField] public float learningRate = 0.1f;   // Alpha (α)
     [SerializeField] protected float _discountFactor = 0.9f; // Gamma (γ);
-    [SerializeField] protected float _decayRate = 0.01f;
+    [SerializeField] public float decayRate = 0.01f;
 
-    [SerializeField] protected float _epsilon = 1f;
+    [SerializeField] public float epsilon = 1f;
     [SerializeField] protected float _epsilonMin = 0.01f;
 
-    [SerializeField] protected int _maxSteps = 20;
+    [SerializeField] public int maxSteps = 20;
 
     [Header("Properties")]
-    [SerializeField] protected AgentController _controller;
+    public AgentController controller;
+    public List<Task> tasks;
+    public EventChannel taskCompletedChannel;
 
     [Header("Stats")]
     public float avgRewardPerEpoch = 0;
     public float totalReward = 0;
     public float currentEpochReward = 0;
     public int totalStepCount = 0;
+    public float totalTaskCompleted = 0;
+    public int currentEpochStepCount = 0;
 
     protected bool _calculatingMove = false;
     protected float _waitTime = 1f;
     protected float _timer = 0f;
     protected bool _finishedEpoch = false;
-
-    public int maxSteps = 20;
 
     protected Dictionary<TileType, float> _rewards = new Dictionary<TileType, float>();
     protected Action[] _actions = { Action.Up, Action.Down, Action.Left, Action.Right };
@@ -45,7 +48,7 @@ public class RLAgent : MonoBehaviour
 
     virtual public Action GetAction(State state)
     {
-        var possibleActions = _controller.GetPossibleActions();
+        var possibleActions = controller.GetPossibleActions();
         return possibleActions[Random.Range(0, possibleActions.Count)];
     }
 
@@ -79,14 +82,16 @@ public class RLAgent : MonoBehaviour
 
     virtual public void ResetAgent()
     {
-        _controller.ResetAgent();
+        totalTaskCompleted = 0;
+        controller.ResetAgent();
         _finishedEpoch = false;
         currentEpochReward = 0;
+        currentEpochStepCount = 0;
     }
 
     virtual public void ResetModel()
     {
-
+        totalStepCount = 0;
     }
 
     public bool FinishedEpoch 
@@ -113,5 +118,16 @@ public class RLAgent : MonoBehaviour
         {
             return obs.Aggregate(17, (current, element) => current * 31 + element.GetHashCode());
         }
+    }
+
+    public bool CompletedTask()
+    {
+        foreach (var task in tasks)
+        {
+            if (!task.IsComplete()) return false;
+        }
+
+        taskCompletedChannel.Invoke(new Empty());
+        return true;
     }
 }

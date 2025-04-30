@@ -45,7 +45,7 @@ public class DeepQAgent : RLAgent
         _rewards[TileType.Normal] = 0;
         _rewards[TileType.Wall] = -1;
 
-        prevTile = _controller.currentTile;
+        prevTile = controller.currentTile;
     }
 
     // Update is called once per frame
@@ -53,30 +53,30 @@ public class DeepQAgent : RLAgent
     {
         if (!_activated) return;
 
-        if (_controller.IsDead || _finishedEpoch)
+        if (controller.IsDead || _finishedEpoch)
         {
             _finishedEpoch = true;
             return;
         }
 
-        if (!_calculatingMove && !_controller.IsMoving())
+        if (!_calculatingMove && !controller.IsMoving())
         {
             _calculatingMove = true;
 
-            var action = GetAction(GetState(_controller.currentTile));
+            var action = GetAction(GetState(controller.currentTile));
 
-            var nextTile = _controller.GetTile(action);
+            var nextTile = controller.GetTile(action);
 
             if (nextTile == null)
             {
                 return;
             }
 
-            _epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-_decayRate * totalStepCount);
+            epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-decayRate * totalStepCount);
             totalStepCount++;
 
             // Calculate the current distance to the goal
-            float currentDistance = Vector3.Distance(_controller.currentTile.point.position, _goalTile.point.position);
+            float currentDistance = Vector3.Distance(controller.currentTile.point.position, _goalTile.point.position);
 
             // Calculate the previous distance to the goal (stored from the previous step)
             float previousDistance = Vector3.Distance(prevTile.point.position, _goalTile.point.position);
@@ -93,13 +93,13 @@ public class DeepQAgent : RLAgent
             float maxFutureQ = _network.ForwardPass(nextObs.obs).Max();
             float qTarget = reward + _discountFactor * maxFutureQ;
 
-            float[] currentObs = GetState(_controller.currentTile).obs;
-            float[] currentQValues = _network.ForwardPass(GetState(_controller.currentTile).obs);
+            float[] currentObs = GetState(controller.currentTile).obs;
+            float[] currentQValues = _network.ForwardPass(GetState(controller.currentTile).obs);
             currentQValues[(int)action] = qTarget;
 
             _network.BackPropagate(currentObs, currentQValues);
 
-            _controller.MoveToSelectedAction(action);
+            controller.MoveToSelectedAction(action);
             
         }
 
@@ -121,11 +121,11 @@ public class DeepQAgent : RLAgent
 
     override public Action GetAction(State state)
     {
-        var possibleActions = _controller.GetPossibleActions();
+        var possibleActions = controller.GetPossibleActions();
 
         Random.InitState(DateTime.Now.Millisecond);
 
-        if (Random.value < _epsilon)
+        if (Random.value < epsilon)
         {
             return possibleActions[Random.Range(0, possibleActions.Count)];
         }

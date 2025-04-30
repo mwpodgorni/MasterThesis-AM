@@ -10,7 +10,7 @@ public class CameraDragController : MonoBehaviour
 {
     [Header("Camera Properties")]
     public ProjectionMode projectionMode = ProjectionMode.Perspective;
-    
+
     [SerializeField] float _lookSpeed = 2f;
     [SerializeField] float _zoomSpeed = 2f;
 
@@ -36,7 +36,7 @@ public class CameraDragController : MonoBehaviour
     [SerializeField] InputReader _input;
 
     Vector2 _targetRotation = new Vector2(30f, 45f); // pitch (x) and yaw (y)
-    Vector3 _targetPosition = new Vector3(0,0,0);
+    Vector3 _targetPosition = new Vector3(0, 0, 0);
 
     Vector3 _dragOrigin;
     Vector3 _dragDifference;
@@ -47,28 +47,45 @@ public class CameraDragController : MonoBehaviour
     float _currentZoomValue = 0;
     void OnEnable()
     {
-        _input.LeftClickDown += EnableDragMovement;
-        _input.RightClickDown += EnableDragRotation;
-
-        _input.LeftClickUp += DisableDragMovement;
-        _input.RightClickUp += DisableDragRotation;
+        _input.RightClickDown += OnRightClickDown;
+        _input.RightClickUp += OnRightClickUp;
     }
 
     void OnDisable()
     {
-        _input.LeftClickDown -= EnableDragMovement;
-        _input.RightClickDown -= EnableDragRotation;
-
-        _input.LeftClickUp -= DisableDragMovement;
-        _input.RightClickUp -= DisableDragRotation;
+        _input.RightClickDown -= OnRightClickDown;
+        _input.RightClickUp -= OnRightClickUp;
     }
 
+    private void OnRightClickDown()
+    {
+        // if Space is held → begin pan
+        if (Keyboard.current.spaceKey.isPressed)
+        {
+            _dragOrigin = GetMousePosition();
+            _dragMovement = true;
+        }
+        else
+        {
+            // otherwise begin rotate
+            _dragRotation = true;
+        }
+    }
+
+    private void OnRightClickUp()
+    {
+        // stop whichever was active
+        if (_dragMovement)
+            _dragMovement = false;
+        if (_dragRotation)
+            _dragRotation = false;
+    }
     void Start()
     {
         transform.position = _targetPosition;
         transform.rotation = Quaternion.Euler(_targetRotation.x, _targetRotation.y, 0);
 
-        switch(projectionMode)
+        switch (projectionMode)
         {
             case ProjectionMode.Perspective:
                 Camera.main.orthographic = false;
@@ -80,7 +97,7 @@ public class CameraDragController : MonoBehaviour
                 _currentZoomValue = _maxViewSize;
                 _cameraHolder.localPosition = new Vector3(0, 0, -100);
                 break;
-        }   
+        }
     }
 
     void LateUpdate()
@@ -149,7 +166,7 @@ public class CameraDragController : MonoBehaviour
 
     Vector3 GetMousePosition()
     {
-        switch(projectionMode)
+        switch (projectionMode)
         {
             case ProjectionMode.Perspective:
                 Vector3 pos = _input.Position;

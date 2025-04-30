@@ -11,7 +11,7 @@ public class ConnectionLines : VisualElement
         generateVisualContent += ctx =>
         {
             var painter = ctx.painter2D;
-            painter.strokeColor = new Color32(189, 189, 112, 255);
+            painter.strokeColor = new Color32(156, 70, 59, 200);
             painter.lineWidth = 2;
 
             foreach (var (start, end) in connections)
@@ -63,6 +63,7 @@ public class ConnectionLines : VisualElement
     public void ClearLines()
     {
         connections.Clear();
+        MarkDirtyRepaint();
     }
 
     public void AddConnection(Vector2 start, Vector2 end)

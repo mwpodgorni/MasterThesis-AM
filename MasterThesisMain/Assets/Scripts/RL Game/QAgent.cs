@@ -22,19 +22,19 @@ public class QAgent : RLAgent
     {
         if (!_activated) return;
 
-        if (_controller.IsDead || _finishedEpoch)
+        if (controller.IsDead || _finishedEpoch)
         {
             _finishedEpoch = true;
             return;
         }
 
-        if (!_calculatingMove && !_controller.IsMoving())
+        if (!_calculatingMove && !controller.IsMoving())
         {
-            var state = GetState(_controller.currentTile);
+            var state = GetState(controller.currentTile);
 
             var action = GetAction(state);
 
-            var nextTile = _controller.currentTile.GetAdjecentTile(action);
+            var nextTile = controller.currentTile.GetAdjecentTile(action);
             var nextState = GetState(nextTile);
 
             var reward = GetReward(nextTile);
@@ -43,10 +43,11 @@ public class QAgent : RLAgent
 
             UpdateQTable(state, nextState, action, reward);
 
-            _controller.MoveToSelectedAction(action);
+            controller.MoveToSelectedAction(action);
 
             totalStepCount++;
-            _epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-_decayRate * totalStepCount);
+            currentEpochStepCount++;
+            epsilon = _epsilonMin + (1.0f - _epsilonMin) * Mathf.Exp(-decayRate * totalStepCount);
         }
 
         if (_calculatingMove && _timer < _waitTime)
@@ -59,21 +60,22 @@ public class QAgent : RLAgent
             _timer = 0f;
         }
 
-        if (totalStepCount % maxSteps == 0)
+        if (currentEpochStepCount % maxSteps == 0 || CompletedTask())
         {
+            totalTaskCompleted++;
             _finishedEpoch = true;
         }
     }
 
     override public Action GetAction(State state)
     {
-        var possibleActions = _controller.GetPossibleActions();
+        var possibleActions = controller.GetPossibleActions();
 
         // Choose action using ε-greedy strategy
         Random.InitState(DateTime.Now.Millisecond);
 
         Action chosenAction = possibleActions[Random.Range(0, possibleActions.Count)];
-        if (Random.value < _epsilon || !_qTable.ContainsKey(state)) // Explore
+        if (Random.value < epsilon || !_qTable.ContainsKey(state)) // Explore
         {
             return chosenAction;
         }
@@ -92,7 +94,7 @@ public class QAgent : RLAgent
                 chosenAction = act;
             }
         }
-        
+
         return chosenAction;
     }
 
@@ -100,7 +102,7 @@ public class QAgent : RLAgent
     {
         if (!_qTable.ContainsKey(prevState))
         {
-            Debug.Log("New State Discovered");
+            // Debug.Log("New State Discovered");
             _qTable[prevState] = new Dictionary<Action, float>();
         }
         if (!_qTable[prevState].ContainsKey(action))
@@ -117,7 +119,7 @@ public class QAgent : RLAgent
         }
 
         // Q-learning formula
-        float newQ = oldQ + _learningRate * (reward + _discountFactor * maxFutureQ - oldQ);
+        float newQ = oldQ + learningRate * (reward + _discountFactor * maxFutureQ - oldQ);
 
         // Update Q-table
         _qTable[prevState][action] = newQ;
@@ -125,6 +127,7 @@ public class QAgent : RLAgent
 
     public override void ResetModel()
     {
+        base.ResetModel();
         _qTable.Clear();
     }
 

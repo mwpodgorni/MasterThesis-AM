@@ -16,6 +16,12 @@ public class Tile : MonoBehaviour
 
     Dictionary<Action, Tile> adjecentTiles = new Dictionary<Action, Tile>();
     TileType _currentType;
+    bool _used = false;
+
+    public bool isUsed
+    {
+        get { return _used; }
+    }
 
     [SerializeField] BoolEventChannel _channel;
 
@@ -39,6 +45,7 @@ public class Tile : MonoBehaviour
     {
         model.SetActive(false);
         _currentType = TileType.Normal;
+        _used = true;
 
         if (_channel != null)
         {
@@ -91,7 +98,13 @@ public class Tile : MonoBehaviour
     public void ResetTile()
     {
         _currentType = _type;
+        _used = false;
         if (model != null) model.SetActive(true);
+    }
+
+    public void SoftReset()
+    {
+        _currentType = TileType.Normal;
     }
 
     public void SetCurrentType(TileType type)
@@ -102,12 +115,11 @@ public class Tile : MonoBehaviour
 
 public enum TileType
 {
-    Normal = 0,
-    Wall = 1,
-    Dangerous = 2,
+    Normal      = 0,
+    Wall        = 1,
+    Dangerous   = 2,
     Collectible = 3,
-    Goal = 4,
-    Enemy = 5,
-    EnemyVulnerable = 6,
-    Buff = 7,
+    Goal        = 4,
+    Enemy       = 5,
+    Buff        = 6,
 }

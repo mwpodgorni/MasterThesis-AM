@@ -5,22 +5,26 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using System.Text;
-
+using System.Linq;
+using System.Reflection;
 public class TutorialController : MonoBehaviour
 {
+    public GameObject typingAudioPrefab;
+    AudioSource typingAudio;
     public VisualElement ui;
     public Button nextButton;
     public Label tutorialTitle;
     public Label tutorialContent;
     private List<TutorialStep> messages;
     private int currentStep = 0;
-    private float typingSpeed = 0.03f;
+    private float typingSpeed = 0.01f;
     private float interpunctuationDelay = 0.4f;
     private float skipSpeedup = 5f;
 
     private WaitForSeconds simpleDelay;
     private WaitForSeconds punctuationDelay;
     private WaitForSeconds skipDelay;
+    private bool typeText = true;
     private float displayTime = 0f;
 
     [SerializeField]
@@ -28,7 +32,7 @@ public class TutorialController : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("TutorialController Awake called");
+        // Debug.Log("TutorialController Awake called");
         ui = GetComponent<UIDocument>().rootVisualElement;
         nextButton = ui.Q<Button>("NextButton");
         tutorialTitle = ui.Q<Label>("TutorialTitle");
@@ -42,6 +46,10 @@ public class TutorialController : MonoBehaviour
     private void OnEnable()
     {
         nextButton.clicked += OnNextButtonClicked;
+        if (typingAudioPrefab != null)
+        {
+            typingAudio = Instantiate(typingAudioPrefab).GetComponent<AudioSource>();
+        }
     }
 
     private void OnDisable()
@@ -71,7 +79,7 @@ public class TutorialController : MonoBehaviour
         messages = steps;
         currentStep = 0;
     }
-    private void OnNextButtonClicked()
+    public void OnNextButtonClicked()
     {
         currentStep++;
         if (currentStep < messages.Count)
@@ -80,10 +88,16 @@ public class TutorialController : MonoBehaviour
         }
         else
         {
+            typeText = true;
             tutorialCompletedEvent?.Invoke();
-            Debug.Log("Tutorial Complete");
+            // Debug.Log("Tutorial Complete");
             ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
             StartCoroutine(HideTutorialPanel());
+            // if (StateManager.Instance.MiniGame3Solved)
+            // {
+            //     StageOneController.Instance.LoadSecondStage();
+
+            // }
         }
     }
     private IEnumerator HideTutorialPanel(float delay = 0f)
@@ -95,30 +109,48 @@ public class TutorialController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         // Debug.Log("Hiding tutorial panel");
         ui.Q<VisualElement>("TutorialPanel").style.display = DisplayStyle.None;
+        if (typingAudio != null && typingAudio.isPlaying)
+            typingAudio.Stop();
     }
     public void StartTypingTutorialStep()
     {
-        if (currentStep < messages.Count)
-        {
-            StopAllCoroutines();
-            tutorialTitle.text = "";
-            tutorialContent.text = "";
-            StartCoroutine(ShowTitle(messages[currentStep].Title));
-        }
+        if (currentStep >= messages.Count) return;
+
+        var step = messages[currentStep];
+
+        // 1) begin typing…
+        StopAllCoroutines();
+        tutorialTitle.text = "";
+        tutorialContent.text = "";
+        StartCoroutine(ShowTitle(step.Title));
+
+        // 2) if there’s an EventName in JSON, try to call it
+        if (!string.IsNullOrEmpty(step.EventName))
+            InvokeStepEvent(step.EventName);
     }
 
+    public void SetTypeText(bool value)
+    {
+        typeText = value;
+    }
     private IEnumerator ShowTitle(string title)
     {
-        yield return StartCoroutine(ShowText(tutorialTitle, title));
+        yield return StartCoroutine(ShowText(tutorialTitle, title, false)); // no sound for title
 
-        StartCoroutine(ShowText(tutorialContent, string.Join("\n", messages[currentStep].Content)));
+        if (currentStep < messages.Count)
+        {
+            StartCoroutine(ShowText(tutorialContent, string.Join("\n", messages[currentStep].Content), true)); // sound for text
+        }
     }
-
-    private IEnumerator ShowText(Label label, string text)
+    // "Tip: Hidden layers of the same size often help the network discover complex relationships more effectively."
+    private IEnumerator ShowText(Label label, string text, bool playSound)
     {
         StringBuilder sb = new StringBuilder(text);
         label.text = "";
         int maxVisibleCharacters = 0;
+
+        if (playSound && typingAudio != null && !typingAudio.isPlaying)
+            typingAudio.Play();
 
         while (maxVisibleCharacters < sb.Length)
         {
@@ -128,13 +160,16 @@ public class TutorialController : MonoBehaviour
             char currentChar = sb[maxVisibleCharacters - 1];
             if (IsPunctuation(currentChar))
             {
-                yield return punctuationDelay;
+                yield return typeText ? punctuationDelay : 0f;
             }
             else
             {
-                yield return simpleDelay;
+                yield return typeText ? simpleDelay : 0f;
             }
         }
+
+        if (playSound && typingAudio != null && typingAudio.isPlaying)
+            typingAudio.Stop();
     }
 
     private bool IsPunctuation(char c)
@@ -157,5 +192,48 @@ public class TutorialController : MonoBehaviour
     public void SetDisplayTime(float time)
     {
         displayTime = time;
+    }
+    private void InvokeStepEvent(string methodName)
+    {
+        // look for a method on this class with exactly that name, no args
+        var mi = GetType().GetMethod(
+            methodName,
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+        );
+        if (mi != null)
+        {
+            mi.Invoke(this, null);
+        }
+        else
+        {
+            // Debug.LogWarning($"TutorialController: no method named '{methodName}'");
+        }
+    }
+
+    public void AddToEvent(UnityAction action)
+    {
+        tutorialCompletedEvent.AddListener(action);
+    }
+
+
+    // Event firing methods
+    public void ShowWorkshopButton()
+    {
+        StageOneController.Instance.ShowWorkshopOpenButton();
+        nextButton.style.display = DisplayStyle.None;
+    }
+    public void RLShowWorkshopButton()
+    {
+        // Debug.Log("RLShowWorkshopButton called");
+        RLController.Instance.ShowWorkshopOpenButton();
+    }
+    public void ShowEndScreen()
+    {
+        RLController.Instance.ShowEndScreen();
+    }
+    public void EndGame()
+    {
+        // Debug.Log("EndGame called");
+        Application.Quit();
     }
 }

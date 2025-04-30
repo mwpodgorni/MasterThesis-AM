@@ -1,10 +1,21 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using System;
-using Newtonsoft.Json;
 public class NeuralNetwork
 {
+    // tracked variables
+    public int finishedCycles;
+    public float finalAverageLoss;
+    public int correctPredictions;
+    public int errorAbove05;
+    public int error03to05;
+    public int errorBelow03;
+    public List<float> lossPerStep = new();
+    // ---
     public Layer inputLayer;
     public Layer outputLayer;
     public List<Layer> hiddenLayers = new List<Layer>();
@@ -16,8 +27,14 @@ public class NeuralNetwork
     float avgLoss = 0.0f;
 
     float learningRate = 0.001f;
-    public NeuralNetwork()
+    public Action<EvaluationData> OnEvaluationUpdate;
+    public System.Action OnTrainingCompleted;
+    bool hasTrained = false;
+    private MonoBehaviour _runner;
+    private int currentEpoch = 0;
+    public NeuralNetwork(MonoBehaviour coroutineRunner)
     {
+        _runner = coroutineRunner;
         inputLayer = new Layer();
         outputLayer = new Layer();
     }
@@ -100,9 +117,10 @@ public class NeuralNetwork
             {
                 foreach (Weight w in node.weightsIn)
                 {
+                    // Debug.Log("Updating weight: " + w.weight);
                     w.weight += learningRate * node.gradient * w.from.value;
                 }
-                node.bias += GP.Instance.learningRate * node.gradient;
+                node.bias += learningRate * node.gradient;
             }
         }
 
@@ -141,63 +159,115 @@ public class NeuralNetwork
 
     public void TrainNetwork(int epoch, float learningRate)
     {
+        _runner.StartCoroutine(TrainNetworkCoroutine(epoch, learningRate));
+    }
+    private IEnumerator TrainNetworkCoroutine(int epoch, float learningRate)
+    {
         this.learningRate = learningRate;
-
+        finishedCycles = 0;
+        // Load dataset
         var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
-        if (trainingSet.data != null && trainingSet.data.Length > 0)
+        if (trainingSet.data == null || trainingSet.data.Length == 0)
         {
-            Debug.Log("Training data loaded");
-        }
-        else
-        {
-            Debug.LogError("Training data is empty or null.");
+            // Debug.LogError("Training data is empty or null.");
+            yield break;
         }
 
-        float totalLoss = 0f; // To track loss across all epochs
+        // Reset tracking
+        correctPredictions = errorAbove05 = error03to05 = errorBelow03 = 0;
+        lossPerStep.Clear();
+        float totalLoss = 0f;
 
+        // Main training loop, yielding every 10 steps
         for (int i = 0; i < epoch; i++)
         {
+            currentEpoch = i + 1;
             var set = trainingSet.data[Random.Range(0, trainingSet.data.Length)];
-
-            var inputs = set.input;
+            var actualOutput = ForwardPass(set.input);
             var expectedOutput = set.expected;
 
-            var actualOutput = ForwardPass(inputs);
-            Debug.Log($"Actual output length: {actualOutput.Length}, Expected output length: {expectedOutput.Length}");
-            if (expectedOutput.Length != actualOutput.Length)
-            {
-                Debug.LogError($"Length mismatch: expectedOutput.Length = {expectedOutput.Length}, actualOutput.Length = {actualOutput.Length}");
-                return;
-            }
+            float loss = CalculateLoss(actualOutput, expectedOutput);
+            totalLoss += loss;
+            lossPerStep.Add(loss);
 
-            // Compute Mean Squared Error (MSE)
-            float loss = 0;
-            for (int k = 0; k < expectedOutput.Length; k++)
-            {
-                loss += Mathf.Pow(expectedOutput[k] - actualOutput[k], 2);
-            }
-            loss /= expectedOutput.Length;
-            avgLoss += loss;
-
-            if ((i + 1) % 10 == 0)
-            {
-                Debug.Log($"Epoch {i + 1}/{epoch} - Loss: {avgLoss / (i + 1)}");
-            }
-
-            // Backpropagate
+            // backprop
             BackPropagate(actualOutput, expectedOutput);
 
-            // Update the total loss for tracking
-            totalLoss += loss;
+            // classification accuracy via argmax
+            int pred = Array.IndexOf(actualOutput, actualOutput.Max());
+            int targ = Array.IndexOf(expectedOutput, expectedOutput.Max());
+            if (pred == targ) correctPredictions++;
+
+            // error buckets (optional UI)
+            float avgError = expectedOutput.Zip(actualOutput, (e, a) => Mathf.Abs(e - a)).Average();
+            if (avgError > 0.5f) errorAbove05++;
+            else if (avgError > 0.3f) error03to05++;
+            else errorBelow03++;
+
+            // periodic callback + yield
+            if ((i + 1) % 10 == 0)
+            {
+                OnEvaluationUpdate?.Invoke(new EvaluationData
+                {
+                    finishedCycles = finishedCycles + i + 1,
+                    learningRate = learningRate,
+                    finalAverageLoss = totalLoss / (i + 1),
+                    correctPredictions = correctPredictions,
+                    errorLow = errorBelow03,
+                    errorMid = error03to05,
+                    errorHigh = errorAbove05,
+                    lossData = new List<float>(lossPerStep)
+                });
+                yield return null;
+            }
         }
 
-        avgLoss /= epoch;
-        loss = avgLoss;
-        avgLoss = 0f;
-
-        Debug.Log($"Training completed after {epoch} epochs. Final average loss: {loss}");
+        // final wrap‑up
+        finishedCycles += epoch;
+        finalAverageLoss = totalLoss / epoch;
+        OnEvaluationUpdate?.Invoke(new EvaluationData
+        {
+            finishedCycles = finishedCycles,
+            learningRate = learningRate,
+            finalAverageLoss = finalAverageLoss,
+            correctPredictions = correctPredictions,
+            errorLow = errorBelow03,
+            errorMid = error03to05,
+            errorHigh = errorAbove05,
+            lossData = new List<float>(lossPerStep)
+        });
+        OnTrainingCompleted?.Invoke();
     }
+    public void ClassifyExamplesFromTrainingSet()
+    {
+        var trainingSet = JsonConvert.DeserializeObject<TrainingSet>(GP.GetFirstMiniGameDataset().text);
+        if (trainingSet.data == null || trainingSet.data.Length == 0)
+        {
+            // Debug.LogError("Training data is empty or null.");
+            return;
+        }
 
+        var examples = trainingSet.data.OrderBy(x => Random.value).Take(10).ToList();
+
+        foreach (var sample in examples)
+        {
+            var output = ForwardPass(sample.input);
+            int predicted = Array.IndexOf(output, output.Max());
+            int expected = Array.IndexOf(sample.expected, sample.expected.Max());
+
+            // Debug.Log($"Input: [{string.Join(", ", sample.input)}] → Predicted: {predicted}, Expected: {expected}");
+        }
+    }
+    public float CalculateLoss(float[] outputs, float[] targets)
+    {
+        float loss = 0f;
+        for (int i = 0; i < outputs.Length; i++)
+        {
+            float error = outputs[i] - targets[i];
+            loss += error * error;
+        }
+        return loss / outputs.Length;
+    }
     public void InitializeWeights()
     {
         RemoveWeights();
@@ -247,7 +317,7 @@ public class NeuralNetwork
     {
         if (hiddenLayers.Count <= 0) return;
 
-        Debug.Log("NN: Removing hidden layer node" + index);
+        // Debug.Log("NN: Removing hidden layer node" + index);
         hiddenLayers[index].RemoveNode();
         InitializeWeights();
     }
@@ -258,7 +328,7 @@ public class NeuralNetwork
     }
     public void RemoveInputLayerNode()
     {
-        Debug.Log("NN: Removing input layer node");
+        // Debug.Log("NN: Removing input layer node");
         inputLayer.RemoveNode();
         InitializeWeights();
     }
@@ -269,11 +339,14 @@ public class NeuralNetwork
     }
     public void RemoveOutputLayerNode()
     {
-        Debug.Log("NN: Removing output layer node");
+        // Debug.Log("NN: Removing output layer node");
         outputLayer.RemoveNode();
         InitializeWeights();
     }
-
+    public int GetCurrentEpoch()
+    {
+        return currentEpoch;
+    }
     public struct TrainingSet
     {
         public TrainingData[] data;
@@ -292,15 +365,24 @@ public class NeuralNetwork
     {
         return outputLayer.nodes.Count;
     }
+    public int[] GetHiddenLayerCounts()
+    {
+        int[] counts = new int[hiddenLayers.Count];
+        for (int i = 0; i < hiddenLayers.Count; i++)
+        {
+            counts[i] = hiddenLayers[i].nodes.Count;
+        }
+        return counts;
+    }
     public bool IsNetworkValid()
     {
-        Debug.Log("Is Network Valid?");
-        Debug.Log("Input Layer Count: " + inputLayer.nodes.Count);
-        Debug.Log("Output Layer Count: " + outputLayer.nodes.Count);
-        Debug.Log("Hidden Layer Count: " + hiddenLayers.Count);
+        // Debug.Log("Is Network Valid?");
+        // Debug.Log("Input Layer Count: " + inputLayer.nodes.Count);
+        // Debug.Log("Output Layer Count: " + outputLayer.nodes.Count);
+        // Debug.Log("Hidden Layer Count: " + hiddenLayers.Count);
         foreach (var layer in hiddenLayers)
         {
-            Debug.Log("Hidden LayerNode Count: " + layer.nodes.Count);
+            // Debug.Log("Hidden LayerNode Count: " + layer.nodes.Count);
         }
         if (inputLayer.nodes.Count == 0) return false;
         if (outputLayer.nodes.Count == 0) return false;
@@ -320,5 +402,19 @@ public class NeuralNetwork
         hiddenLayers.Clear();
         loss = 0.0f;
         avgLoss = 0.0f;
+        currentEpoch = 0;
+        hasTrained = false;
     }
+
+}
+public struct EvaluationData
+{
+    public int finishedCycles;
+    public float learningRate;
+    public float finalAverageLoss;
+    public int correctPredictions;
+    public int errorLow;
+    public int errorMid;
+    public int errorHigh;
+    public List<float> lossData;
 }

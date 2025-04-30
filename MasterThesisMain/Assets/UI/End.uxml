@@ -1,0 +1,10 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles.uss?fileID=7433441132597879392&amp;guid=251821e7bfa74fc488ed360ccd38cff4&amp;type=3#Styles" />
+    <engine:VisualElement style="flex-grow: 1; background-color: rgb(0, 0, 0); justify-content: center;">
+        <engine:Label text="Thank you for playing!" name="Title" class="text-yellow header" />
+        <engine:Label text="You finished playing the game. As part of our research, you will now be presented a session code as well as a link to our Survey. The survey will only take a few minutes to answer. There will be some questions about the content you were presented about.&#10;&#10;Session Code: " name="Text" class="text-yellow" style="white-space: normal;" />
+        <engine:Label text="CODE" name="Code" class="text-yellow" />
+        <engine:Label text="LINK" name="Link" class="text-yellow" />
+        <engine:Button text="Return" name="Button" />
+    </engine:VisualElement>
+</engine:UXML>

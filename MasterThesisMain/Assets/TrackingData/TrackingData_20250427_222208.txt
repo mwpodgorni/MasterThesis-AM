@@ -1,0 +1,3 @@
+Total Play Time: 31.79626
+Help_opened_RLConfiguration: 1 times
+StageTwoTime: 31.79626 seconds

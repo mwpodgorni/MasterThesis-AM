@@ -32,7 +32,7 @@ public class Layer
 
     public void RemoveNode()
     {
-        Debug.Log("LAYER: RemoveNode");
+        // Debug.Log("LAYER: RemoveNode");
         if (nodes.Count <= 0) return;
 
         GP.ChannelInstance.Invoke(0);

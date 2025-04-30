@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using Alexwsu.EventChannels;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System;
 public class GP : MonoBehaviour
 {
 
     public static Parameters Instance { get; private set; }
     public static IntEventChannel ChannelInstance { get; private set; }
 
-
+    public Func<float, float> ActivationFunction = (x) =>
+    {
+        return 1f / (1f + Mathf.Exp(-x)); // Sigmoid
+    };
     [SerializeField]
     private Parameters _parameters;
 

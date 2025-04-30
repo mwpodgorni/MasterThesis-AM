@@ -1,0 +1,14 @@
+Total Play Time: 197.8176
+Help_opened_InputLayer: 2 times
+StageOne_InputLayer_Help_Pressed: 2 times
+StageOne_Input_AddNode_Pressed: 14 times
+StageOne_Hidden_AddLayer_Pressed: 11 times
+StageOne_Hidden_RemoveLayer_Pressed: 11 times
+StageOne_Hidden_AddNode_Pressed: 14 times
+StageOne_Hidden_RemoveNode_Pressed: 14 times
+StageOne_Output_AddNode_Pressed: 5 times
+StageOne_Test_Pressed: 1 times
+StageOne_Output_RemoveNode_Pressed: 1 times
+StageOne_Input_RemoveNode_Pressed: 5 times
+StageOne_TrainingCycle_Interacted: 1 times
+StageOneTime: 163.4971 seconds
