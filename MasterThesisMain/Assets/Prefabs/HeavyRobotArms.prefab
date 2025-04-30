@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2350173486381631394
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.7170844
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.232
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.783
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7072302
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7069834
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -89.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035045572014180987, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4602551249065898999, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5606907481605947301, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dfce1934862cb684ea5dc7e369d7ed9b, type: 2}
+    - target: {fileID: 5721138929831221545, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dfce1934862cb684ea5dc7e369d7ed9b, type: 2}
+    - target: {fileID: 7613860270963395741, guid: 702cec250a1fe9644ad06e119a514076,
+        type: 3}
+      propertyPath: m_Name
+      value: HeavyRobotArms
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 702cec250a1fe9644ad06e119a514076, type: 3}
