@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 499512937326293806, guid: 752a7604f5596344ba51a1d4a7956547,
         type: 3}
       propertyPath: m_Name
-      value: RobotPrefab Variant
+      value: LightRobotPrefab Variant
       objectReference: {fileID: 0}
     - target: {fileID: 2757895381026118613, guid: 752a7604f5596344ba51a1d4a7956547,
         type: 3}

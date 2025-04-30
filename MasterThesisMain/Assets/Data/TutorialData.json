@@ -93,7 +93,7 @@
       "title": "Task incomplete",
       "content": [
         "Your network is not valid.",
-        "You should use 3 input nodes for and 3 output nodes, one for each property and one for each robot type.",
+        "You should use 3 input nodes and 3 output nodes, one for each property and one for each robot type.",
         "You should also have 2 hidden layers with 4 nodes in each layer"
       ]
     }
@@ -110,7 +110,7 @@
       "title": "How training works?",
       "content": [
         "Press the Train button to start.",
-        "Before training behins, you can adjust the number of training cycles and learning rate using input fields on the right.",
+        "Before training begins, you can adjust the number of training cycles and learning rate using input fields on the right.",
         "Adjust training parameters, press Train button and then, switch to the Evaluation panel to review your network's performance."
       ]
     }
