@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class RobotSorter : MonoBehaviour
 {
@@ -25,6 +28,8 @@ public class RobotSorter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Random.InitState(DateTime.Now.Millisecond);
+
         positions = new(){ _type1Point.position, _type2Point.position, _type3Point.position };
     }
 
@@ -55,7 +60,6 @@ public class RobotSorter : MonoBehaviour
 
     void SpawnPart()
     {
-        Debug.Log("spawnig");
         var part = GetRandomPart();
 
         Instantiate(part, _startPoint.position, Quaternion.identity);
