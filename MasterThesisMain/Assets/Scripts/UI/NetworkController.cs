@@ -8,6 +8,8 @@ using UnityEditor.SceneManagement;
 using Unity.VisualScripting;
 public class NetworkController : MonoBehaviour
 {
+    [SerializeField] List<RobotSorter> robotSorters = new();
+
     // input layer
     public Button inputNodeAddBtn;
     public Button inputNodeRemoveBtn;
@@ -121,6 +123,12 @@ public class NetworkController : MonoBehaviour
         outerProgressBar.lowValue = 0;
         outerProgressBar.value = 0;
         StartCoroutine(DelayedSetup());
+
+        if (robotSorters.Count > 0)
+        {
+            foreach (var sorter in robotSorters)
+            neuralNetwork.OnEvaluationUpdate += sorter.UpdateAccuracy;
+        }
     }
     public void ClassifyNetworkData()
     {

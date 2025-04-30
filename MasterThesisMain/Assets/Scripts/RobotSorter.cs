@@ -89,6 +89,12 @@ public class RobotSorter : MonoBehaviour
         }
     }
 
+    public void UpdateAccuracy(EvaluationData data)
+    {
+        spawning = true;
+        accuracy = (float) data.correctPredictions / (float) data.finishedCycles;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other != null && other.TryGetComponent(out RobotType robot))
