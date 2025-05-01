@@ -25,6 +25,8 @@ public class AgentController : MonoBehaviour
     bool _dead = false;
     int _tileIndex = 0;
 
+    Tile _prevTile;
+
     // Start is called before the first frame update
     void Start()
     {
