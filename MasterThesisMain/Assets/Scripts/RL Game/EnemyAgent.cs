@@ -11,7 +11,6 @@ public class EnemyAgent : RLAgent
     [SerializeField] bool _randomMovement = true;
 
     bool _vulnerable = false;
-    Tile _prevTile;
 
     // Start is called before the first frame update
     void Start()
@@ -34,13 +33,15 @@ public class EnemyAgent : RLAgent
         if (!_calculatingMove && !_player.IsMoving())
         {
             _calculatingMove = true;
-            _prevTile = controller.currentTile;
+            _currentTile = controller.currentTile;
 
             var state = GetState(controller.currentTile);
 
             var action = GetAction(state);
 
+            _prevTile = controller.currentTile;
             controller.MoveToSelectedAction(action);
+
 
             controller.currentTile.SetCurrentType(TileType.Enemy);
         }
@@ -57,8 +58,12 @@ public class EnemyAgent : RLAgent
             {
                 controller.IsDead = true;
                 HideBody();
-                controller.currentTile.ResetTile();
-                _prevTile.ResetTile();
+
+                if (_prevTile.isUsed) _currentTile.SoftReset();
+                else _currentTile.ResetTile();
+              
+                if (_prevTile.isUsed) _prevTile.SoftReset();
+                else _prevTile.ResetTile();
             }
         }
 
@@ -91,11 +96,10 @@ public class EnemyAgent : RLAgent
 
     override public void ResetAgent()
     {
-        base.ResetAgent();
         _vulnerable = false;
         controller.HideModel(false);
-        _prevTile = controller.startingTile;
 
+        base.ResetAgent();
     }
 
     void HideBody()

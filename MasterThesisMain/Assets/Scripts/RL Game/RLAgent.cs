@@ -40,6 +40,8 @@ public class RLAgent : MonoBehaviour
     protected Action[] _actions = { Action.Up, Action.Down, Action.Left, Action.Right };
 
     protected bool _activated = false;
+    protected Tile _currentTile;
+    protected Tile _prevTile;
 
     public bool Activated { 
         get { return _activated; } 
@@ -87,6 +89,9 @@ public class RLAgent : MonoBehaviour
         _finishedEpoch = false;
         currentEpochReward = 0;
         currentEpochStepCount = 0;
+
+        _currentTile = controller.startingTile;
+        _prevTile = controller.startingTile;
     }
 
     virtual public void ResetModel()

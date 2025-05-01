@@ -11,6 +11,8 @@ public class QAgent : RLAgent
     // Start is called before the first frame update
     void Start()
     {
+        _currentTile = controller.startingTile;
+        _prevTile = _currentTile;
         _qTable = new();
 
         _rewards[TileType.Normal] = 0;
@@ -30,11 +32,13 @@ public class QAgent : RLAgent
 
         if (!_calculatingMove && !controller.IsMoving())
         {
-            var state = GetState(controller.currentTile);
+            _currentTile = controller.currentTile;
+
+            var state = GetState(_currentTile);
 
             var action = GetAction(state);
 
-            var nextTile = controller.currentTile.GetAdjecentTile(action);
+            var nextTile = _currentTile.GetAdjecentTile(action);
             var nextState = GetState(nextTile);
 
             var reward = GetReward(nextTile);
@@ -43,6 +47,7 @@ public class QAgent : RLAgent
 
             UpdateQTable(state, nextState, action, reward);
 
+            _prevTile = _currentTile;
             controller.MoveToSelectedAction(action);
 
             totalStepCount++;
@@ -71,6 +76,19 @@ public class QAgent : RLAgent
     {
         var possibleActions = controller.GetPossibleActions();
 
+        if (possibleActions.Count() > 1)
+        {
+            foreach (var act in possibleActions)
+            {
+                if (_currentTile.GetAdjecentTile(act) == _prevTile)
+                {
+                    Debug.LogWarning("Removed action");
+                    possibleActions.Remove(act);
+                    break;
+                }
+            }
+        }
+
         // Choose action using ε-greedy strategy
         Random.InitState(DateTime.Now.Millisecond);
 
@@ -82,8 +100,9 @@ public class QAgent : RLAgent
 
         var actionValues = _qTable[state];
         var qValue = 0f;
-        foreach (var act in _actions)
+        foreach (var act in possibleActions)
         {
+                
             float currentQValue;
 
             if (!actionValues.TryGetValue(act, out currentQValue)) continue;
