@@ -329,17 +329,17 @@
       "content": [
         "You have successfully set up the rewards, allowing the robot to collect valuable items and reach the goal.",
         "You have completed the full training and finished the game. Congratulations!"
-      ]
+      ],
+      "event": "ShowEndScreen"
     }
   ],
   "RLPuzzle3NotSolved": [
     {
       "title": "Task incomplete",
       "content": [
-        "The configuration is not optimized for the robot to learn and navigate the environment efficiently. Return to the workshop and give it another try.",
-        "The robot should prioritize collecting coins and reaching the tile with the flag. This time, it should be punished for encounters with malfunctioning robots."
-      ],
-      "event": "ShowEndScreen"
+        "The configuration is not optimized for this environment. Return to the workshop and give it another try.",
+        "You should set high reward for the flag, and low reward for the malfunctioning robots. The reward for items should be lower than the flag. You also need high number of steps per cycle and number of cycles."
+      ]
     }
   ]
 }

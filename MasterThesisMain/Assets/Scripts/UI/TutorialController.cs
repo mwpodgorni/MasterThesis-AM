@@ -229,6 +229,11 @@ public class TutorialController : MonoBehaviour
     }
     public void ShowEndScreen()
     {
+        StartCoroutine(ShowEndScreenCoroutine());
+    }
+    IEnumerator ShowEndScreenCoroutine()
+    {
+        yield return new WaitForSeconds(5f);
         RLController.Instance.ShowEndScreen();
     }
     public void EndGame()
