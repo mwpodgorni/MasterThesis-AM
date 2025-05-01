@@ -14,7 +14,9 @@ public class MainMenuController : MonoBehaviour
     public Button quitButton;
     public Button paperClosed;
     public VisualElement paperPanel;
-
+    public VisualElement controlsPanel;
+    public Button controlsButton;
+    public Button controlsClosed;
     public VisualElement menu;
     private void Awake()
     {
@@ -37,6 +39,10 @@ public class MainMenuController : MonoBehaviour
         quitButton.clicked += OnQuitButtonClicked;
         paperClosed = ui.Q<Button>("PaperCloseButton");
         paperClosed.clicked += OnPaperClosed;
+        controlsClosed = ui.Q<Button>("ControlsCloseButton");
+        controlsClosed.clicked += OnControlsClosed;
+        controlsButton = ui.Q<Button>("ControlsButton");
+        controlsButton.clicked += OnControlsButtonClicked;
 
 
         menu = ui.Q<VisualElement>("Menu");
@@ -44,6 +50,9 @@ public class MainMenuController : MonoBehaviour
         paperPanel = ui.Q<VisualElement>("PaperPanel");
         paperPanel.style.display = DisplayStyle.Flex;
         paperPanel.AddToClassList("panel-up");
+        controlsPanel = ui.Q<VisualElement>("ControlsPanel");
+        controlsPanel.style.display = DisplayStyle.Flex;
+        controlsPanel.AddToClassList("panel-up");
     }
     private void OnQuitButtonClicked()
     {
@@ -64,5 +73,13 @@ public class MainMenuController : MonoBehaviour
         ActivityTracker.Instance.StopTimer("PaperOpen");
         // Debug.Log("Play Button Clicked");
         SceneManager.LoadScene(stageOneScene.name);
+    }
+    private void OnControlsButtonClicked()
+    {
+        controlsPanel.RemoveFromClassList("panel-up");
+    }
+    private void OnControlsClosed()
+    {
+        controlsPanel.AddToClassList("panel-up");
     }
 }
