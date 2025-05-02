@@ -165,7 +165,8 @@ public class AgentController : MonoBehaviour
 
         foreach (var act in actions)
         {
-            if (currentTile.HasTile(act)) possibleActions.Add(act);
+            if (currentTile.HasTile(act) && currentTile.GetAdjecentTile(act).GetTileType() != TileType.Wall) 
+                possibleActions.Add(act);
         }
 
         return possibleActions;

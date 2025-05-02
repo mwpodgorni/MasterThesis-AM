@@ -83,15 +83,9 @@ public class QAgent : RLAgent
 
         if (possibleActions.Count() > 1)
         {
-            foreach (var act in possibleActions)
-            {
-                if (_currentTile.GetAdjecentTile(act) == _prevTile)
-                {
-                    Debug.LogWarning("Removed action");
-                    possibleActions.Remove(act);
-                    break;
-                }
-            }
+            possibleActions = possibleActions
+                .Where(act => _currentTile.GetAdjecentTile(act).point.position != _prevTile.point.position)
+                .ToList();
         }
 
         // Choose action using ε-greedy strategy
