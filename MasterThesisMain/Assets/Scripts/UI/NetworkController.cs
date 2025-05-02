@@ -466,9 +466,8 @@ public class NetworkController : MonoBehaviour
     }
     void MakeLabelClickable(Label label, string helpKey)
     {
-        if (ActivityTracker.Instance != null)
+        label.RegisterCallback<ClickEvent>(_ => StageOneController.Instance.HelpController().ShowHelp(helpKey));
         {
-            label.RegisterCallback<ClickEvent>(_ => StageOneController.Instance.HelpController().ShowHelp(helpKey));
             label.RegisterCallback<ClickEvent>(_ => { ActivityTracker.Instance.RecordAction("StageOne_" + helpKey + "_Help_Pressed"); });
         }
     }

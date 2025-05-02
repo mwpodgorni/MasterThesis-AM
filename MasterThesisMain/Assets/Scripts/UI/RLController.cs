@@ -514,17 +514,17 @@ public class RLController : MonoBehaviour
 
     public void ShowSpeedButtons()
     {
-        _speedNormal.RemoveFromClassList("opacity-none");
-        _speed2x.RemoveFromClassList("opacity-none");
-        _speed4x.RemoveFromClassList("opacity-none");
-        _speed6x.RemoveFromClassList("opacity-none");
+        _speedNormal.style.display = DisplayStyle.Flex;
+        _speed2x.style.display = DisplayStyle.Flex;
+        _speed4x.style.display = DisplayStyle.Flex;
+        _speed6x.style.display = DisplayStyle.Flex;
     }
     public void HideSpeedButtons()
     {
-        _speedNormal.AddToClassList("opacity-none");
-        _speed2x.AddToClassList("opacity-none");
-        _speed4x.AddToClassList("opacity-none");
-        _speed6x.AddToClassList("opacity-none");
+        _speedNormal.style.display = DisplayStyle.None;
+        _speed2x.style.display = DisplayStyle.None;
+        _speed4x.style.display = DisplayStyle.None;
+        _speed6x.style.display = DisplayStyle.None;
     }
 
     void SetDecayRateHandler(ChangeEvent<float> evt)
