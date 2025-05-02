@@ -94,7 +94,7 @@
       "content": [
         "Your network is not valid.",
         "You should use 3 input nodes and 3 output nodes, one for each property and one for each robot type.",
-        "You should also have 2 hidden layers with 4 nodes in each layer"
+        "You should also have 2 hidden layers with 3 - 4 nodes in each layer"
       ]
     }
   ],
@@ -143,7 +143,7 @@
       "title": "Your third task",
       "content": [
         "We will move to a different section of the factory, where you will learn more practical applications of machine learning.",
-        "Open the Evaluation panel and click Next Level button to continue."
+        "Click Next Level button to continue."
       ]
     }
   ],
@@ -152,13 +152,13 @@
       "title": "Training Robots with Reinforcement Learning",
       "content": [
         "In this section of the factory, you will train robots to navigate controlled space.",
-        "The type of machine learning used here is called reinforcement learning."
+        "The type of machine learning used here is called reinforcement learning (RL in short)."
       ]
     },
     {
       "title": "What is reinforcement learning?",
       "content": [
-        "Reinforcement learning (RL in short) teaches an agent how to make the best decisions by exploring its surroundings and learning from the outcomes.",
+        "RL teaches an agent how to make the best decisions by exploring its surroundings and learning from the outcomes.",
         "Based on its actions, the robot receives rewards or penalties that shape its learning and behavior over time."
       ]
     },
@@ -196,8 +196,7 @@
       "title": "Your new task",
       "content": [
         "In this section, you need to adjust rewards for different tiles in the environment, to influence the learning and behavior of the robot.",
-        "The robot will receive rewards based on the value you set for each tile it steps on.",
-        "You can also adjust the learning rate and number of steps the robot can take in each cycle."
+        "The robot will receive rewards based on the value you set for each tile it steps on. You can also adjust the learning rate and number of steps the robot can take in each cycle."
       ]
     },
     {
