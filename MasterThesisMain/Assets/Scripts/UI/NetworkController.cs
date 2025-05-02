@@ -88,18 +88,20 @@ public class NetworkController : MonoBehaviour
         outputNodeRemoveBtn.clicked += () => RemoveNode(_outputLayerPanel);
 
         // Tracking
-        testNetworkButton.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Test_Pressed"); });
-        trainNetworkButton.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Train_Pressed"); });
+        if (ActivityTracker.Instance != null)
+        {
+            testNetworkButton.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Test_Pressed"); });
+            trainNetworkButton.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Train_Pressed"); });
 
-        inputNodeAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Input_AddNode_Pressed"); });
-        inputNodeRemoveBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Input_RemoveNode_Pressed"); });
+            inputNodeAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Input_AddNode_Pressed"); });
+            inputNodeRemoveBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Input_RemoveNode_Pressed"); });
 
-        hiddenLayerAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Hidden_AddLayer_Pressed"); });
-        hiddenLayerAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Hidden_RemoveLayer_Pressed"); });
+            hiddenLayerAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Hidden_AddLayer_Pressed"); });
+            hiddenLayerAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Hidden_RemoveLayer_Pressed"); });
 
-        outputNodeAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Output_AddNode_Pressed"); });
-        outputNodeRemoveBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Output_RemoveNode_Pressed"); });
-
+            outputNodeAddBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Output_AddNode_Pressed"); });
+            outputNodeRemoveBtn.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Output_RemoveNode_Pressed"); });
+        }
         // line renderer
         _connectionLines = new ConnectionLines();
         var miniGamePanel = ui.Q<VisualElement>("WorkshopPanel");
@@ -127,7 +129,7 @@ public class NetworkController : MonoBehaviour
         if (robotSorters.Count > 0)
         {
             foreach (var sorter in robotSorters)
-            neuralNetwork.OnEvaluationUpdate += sorter.UpdateAccuracy;
+                neuralNetwork.OnEvaluationUpdate += sorter.UpdateAccuracy;
         }
     }
     public void ClassifyNetworkData()
@@ -165,9 +167,11 @@ public class NetworkController : MonoBehaviour
         layer.Q<Button>("LayerRemoveButton").clicked += () => RemoveNode(layer);
 
         // Tracking
-        layer.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_" + "Hidden_AddNode_Pressed"); });
-        layer.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_" + "Hidden_RemoveNode_Pressed"); });
-
+        if (ActivityTracker.Instance != null)
+        {
+            layer.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_" + "Hidden_AddNode_Pressed"); });
+            layer.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_" + "Hidden_RemoveNode_Pressed"); });
+        }
         _hiddenLayerPanel.Q<VisualElement>("HiddenLayers").Add(layer);
         neuralNetwork.AddHiddenLayer();
         RedrawConnections();
@@ -462,8 +466,11 @@ public class NetworkController : MonoBehaviour
     }
     void MakeLabelClickable(Label label, string helpKey)
     {
-        label.RegisterCallback<ClickEvent>(_ => StageOneController.Instance.HelpController().ShowHelp(helpKey));
-        label.RegisterCallback<ClickEvent>(_ => { ActivityTracker.Instance.RecordAction("StageOne_" + helpKey + "_Help_Pressed"); });
+        if (ActivityTracker.Instance != null)
+        {
+            label.RegisterCallback<ClickEvent>(_ => StageOneController.Instance.HelpController().ShowHelp(helpKey));
+            label.RegisterCallback<ClickEvent>(_ => { ActivityTracker.Instance.RecordAction("StageOne_" + helpKey + "_Help_Pressed"); });
+        }
     }
     public void ResetNetwork()
     {
@@ -498,8 +505,11 @@ public class NetworkController : MonoBehaviour
         });
 
         // Tracking
-        learningRateSlider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_LearningRate_Interacted"); });
-        trainingCycleSlider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_TrainingCycle_Interacted"); });
+        if (ActivityTracker.Instance != null)
+        {
+            learningRateSlider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_LearningRate_Interacted"); });
+            trainingCycleSlider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_TrainingCycle_Interacted"); });
+        }
     }
     public void DisableInputLayerButtons()
     {

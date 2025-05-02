@@ -69,16 +69,18 @@ public class StageOneController : MonoBehaviour
         evaluationCloseButton.clicked += OnEvaluationCloseButtonClicked;
         nextLevelButton = ui.Q<Button>("NextLevelButton");
         nextLevelButton.clicked += LoadSecondStage;
-        workshopOpenButton.AddToClassList("opacity-none");
-        evaluationOpenButton.AddToClassList("opacity-none");
+        HideWorkshopOpenButton();
+        HideEvaluationOpenButton();
 
         progressBar = ui.Q<ProgressBar>("ProgressBar");
         outerProgressBar = ui.Q<ProgressBar>("OuterProgressBar");
         HideProgressBar();
         HideOuterProgressBar();
-
         StartCoroutine(StartTutorial());
-        ActivityTracker.Instance.StartTimer("StageOneTime");
+        if (ActivityTracker.Instance != null)
+        {
+            ActivityTracker.Instance.StartTimer("StageOneTime");
+        }
         // TODO: remove this debug code
         //     HideAllPanels();
         //     menu.style.display = DisplayStyle.Flex;
@@ -119,6 +121,13 @@ public class StageOneController : MonoBehaviour
         CheckIfCompleted();
         evaluationPanel.RemoveFromClassList("panel-up");
         topbar.AddToClassList("opacity-none");
+
+    }
+    public void OnEvaluationCloseButtonClicked()
+    {
+        evaluationOpen = false;
+        evaluationPanel.AddToClassList("panel-up");
+        topbar.RemoveFromClassList("opacity-none");
     }
     public void CheckIfCompleted()
     {
@@ -138,12 +147,7 @@ public class StageOneController : MonoBehaviour
             }
         }
     }
-    public void OnEvaluationCloseButtonClicked()
-    {
-        evaluationOpen = false;
-        evaluationPanel.AddToClassList("panel-up");
-        topbar.RemoveFromClassList("opacity-none");
-    }
+
     public NetworkController NetworkController()
     {
         return GetComponent<NetworkController>();
@@ -168,18 +172,33 @@ public class StageOneController : MonoBehaviour
     }
     public void LoadSecondStage()
     {
-        ActivityTracker.Instance.StopTimer("StageOneTime");
+        if (ActivityTracker.Instance != null)
+        {
+            ActivityTracker.Instance.StopTimer("StageOneTime");
+        }
         StateManager.Instance.SetState(GameStage.RLStartingPoint);
         StateManager.Instance.UpdateBasedOnCurrentState();
         SceneManager.LoadScene(stageTwoScene.name);
     }
+    public void HideWorkshopOpenButton()
+    {
+        workshopOpenButton.AddToClassList("opacity-none");
+        workshopOpenButton.style.display = DisplayStyle.None;
+    }
     public void ShowWorkshopOpenButton()
     {
         workshopOpenButton.RemoveFromClassList("opacity-none");
+        workshopOpenButton.style.display = DisplayStyle.Flex;
     }
     public void ShowEvaluationOpenButton()
     {
         evaluationOpenButton.RemoveFromClassList("opacity-none");
+        evaluationOpenButton.style.display = DisplayStyle.Flex;
+    }
+    public void HideEvaluationOpenButton()
+    {
+        evaluationOpenButton.AddToClassList("opacity-none");
+        evaluationOpenButton.style.display = DisplayStyle.None;
     }
     public void ShowProgressBar()
     {

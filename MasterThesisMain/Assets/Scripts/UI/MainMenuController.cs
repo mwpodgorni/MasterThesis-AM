@@ -60,17 +60,27 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnPaperButtonClicked()
     {
-        ActivityTracker.Instance.StartTimer("PaperOpen");
+        if (ActivityTracker.Instance != null)
+        {
+            ActivityTracker.Instance.StartTimer("PaperOpen");
+        }
         paperPanel.RemoveFromClassList("panel-up");
     }
     private void OnPaperClosed()
     {
-        ActivityTracker.Instance.StopTimer("PaperOpen");
-        paperPanel.AddToClassList("panel-up");
+        if (ActivityTracker.Instance != null)
+        {
+            ActivityTracker.Instance.StopTimer("PaperOpen");
+            { }
+            paperPanel.AddToClassList("panel-up");
+        }
     }
     private void OnPlayButtonClicked()
     {
-        ActivityTracker.Instance.StopTimer("PaperOpen");
+        if (ActivityTracker.Instance != null)
+        {
+            ActivityTracker.Instance.StopTimer("PaperOpen");
+        }
         // Debug.Log("Play Button Clicked");
         SceneManager.LoadScene(stageOneScene.name);
     }

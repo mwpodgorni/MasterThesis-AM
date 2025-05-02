@@ -1,3 +1,0 @@
-Total Play Time: 106.2627
-Help_opened_InputLayer: 1 times
-StageOneTime: 105.0455 seconds

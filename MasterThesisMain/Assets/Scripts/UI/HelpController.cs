@@ -35,7 +35,10 @@ public class HelpController : MonoBehaviour
     public void ShowHelp(string keyword)
     {
         // Debug.Log("HELP SHOW HELP CALLED" + keyword);
-        ActivityTracker.Instance.RecordAction("Help_opened_" + keyword);
+        if (ActivityTracker.Instance != null)
+        {
+            ActivityTracker.Instance.RecordAction("Help_opened_" + keyword);
+        }
         if (StateManager.Instance.CurrentStage == GameStage.FirstWorkshopOpen)
         {
             StateManager.Instance.SetState(GameStage.FirstHelpOpen);

@@ -1,2 +1,0 @@
-Total Play Time: 10.88908
-PaperOpen: 1.169633 seconds

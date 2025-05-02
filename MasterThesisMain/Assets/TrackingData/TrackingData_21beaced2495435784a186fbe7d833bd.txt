@@ -1,7 +1,0 @@
-Session ID: 21beaced2495435784a186fbe7d833bd
-Total Play Time: 1622.009
-StageTwo_3_Enemy: 1 times
-StageTwo_3_RL_MaxSteps_Interacted: 3 times
-StageTwo_3_RL_MaxEpisodes_Interacted: 1 times
-StageTwo_3_Start_Pressed: 1 times
-StageTwoTime: 1622.009 seconds

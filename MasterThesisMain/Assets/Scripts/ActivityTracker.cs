@@ -1,7 +1,9 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Networking;
 
 public class ActivityTracker : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class ActivityTracker : MonoBehaviour
     private float gameStartTime;
     private Dictionary<string, int> actionCounts = new();
     private Dictionary<string, float> timers = new();
+    private HashSet<string> stoppedTimers = new();
     private string sessionId;
 
     private void Awake()
@@ -18,18 +21,13 @@ public class ActivityTracker : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            gameStartTime = Time.time;
-            sessionId = GenerateSessionId();
+            gameStartTime = Time.realtimeSinceStartup;
+            sessionId = Guid.NewGuid().ToString("N");
         }
         else
         {
             Destroy(gameObject);
         }
-    }
-
-    private string GenerateSessionId()
-    {
-        return Guid.NewGuid().ToString("N");
     }
 
     public string GetSessionId()
@@ -46,40 +44,96 @@ public class ActivityTracker : MonoBehaviour
 
     public void StartTimer(string timerName)
     {
-        timers[timerName] = Time.time;
+        Debug.Log($"Starting timer: {timerName} at {Time.realtimeSinceStartup} seconds");
+        timers[timerName] = Time.realtimeSinceStartup;
+        // log all timers
+        foreach (var timer in timers)
+        {
+            Debug.Log($"Timer: {timer.Key} started at: {timer.Value} seconds");
+        }
     }
 
     public void StopTimer(string timerName)
     {
+        Debug.Log($"Stopping timer: {timerName}");
         if (timers.ContainsKey(timerName))
-            timers[timerName] = Time.time - timers[timerName];
-    }
-
-    public void SaveTrackingData()
-    {
-        var dir = Application.dataPath + "/TrackingData";
-        Directory.CreateDirectory(dir);
-        var path = dir + "/TrackingData_" + sessionId + ".txt";
-
-        using (StreamWriter writer = new StreamWriter(path))
         {
-            writer.WriteLine("Session ID: " + sessionId);
-            writer.WriteLine("Total Play Time: " + (Time.time - gameStartTime));
-            foreach (var action in actionCounts)
-                writer.WriteLine($"{action.Key}: {action.Value} times");
-            foreach (var timer in timers)
-                writer.WriteLine($"{timer.Key}: {timer.Value} seconds");
+            Debug.Log($"Timer1: now: {Time.realtimeSinceStartup} seconds");
+            Debug.Log($"Timer2: started at: {timers[timerName]} seconds");
+            timers[timerName] = Time.realtimeSinceStartup - timers[timerName];
+            stoppedTimers.Add(timerName);
         }
     }
-
     private void OnApplicationQuit()
     {
         var keys = new List<string>(timers.Keys);
         foreach (var key in keys)
         {
-            if (timers[key] >= 0)
-                timers[key] = Time.time - timers[key];
+            if (stoppedTimers.Contains(key)) continue;
+
+            float storedValue = timers[key];
+            float now = Time.realtimeSinceStartup;
+            float duration = now - storedValue;
+
+            Debug.Log($"[Timer '{key}'] Stored value: {storedValue}, Now: {now}, Duration: {duration}");
+            timers[key] = duration;
         }
-        SaveTrackingData();
+
+        UploadTrackingData();
+    }
+
+    public void UploadTrackingData()
+    {
+        var data = new TrackingData
+        {
+            sessionId = sessionId,
+            totalTime = Time.realtimeSinceStartup - gameStartTime,
+            actions = actionCounts.Select(a => new ActionEntry { name = a.Key, count = a.Value }).ToList(),
+            timers = timers.Select(t => new TimerEntry { name = t.Key, duration = t.Value }).ToList()
+        };
+
+        string json = JsonUtility.ToJson(data);
+        StartCoroutine(SendToGoogleSheets(json));
+    }
+
+    private IEnumerator SendToGoogleSheets(string json)
+    {
+        string url = "https://script.google.com/macros/s/AKfycbx5vN_JlWGl5m87mMndjGH3ZZkPaJnSYV3RYKRXKHgck1kYFJPVyCVP1eTnLiO2wCSw/exec";
+
+        using UnityWebRequest request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+            Debug.Log("Tracking data uploaded successfully.");
+        else
+            Debug.LogError("Upload failed: " + request.error);
+    }
+
+    [Serializable]
+    public class TrackingData
+    {
+        public string sessionId;
+        public float totalTime;
+        public List<ActionEntry> actions;
+        public List<TimerEntry> timers;
+    }
+
+    [Serializable]
+    public class ActionEntry
+    {
+        public string name;
+        public int count;
+    }
+
+    [Serializable]
+    public class TimerEntry
+    {
+        public string name;
+        public float duration;
     }
 }

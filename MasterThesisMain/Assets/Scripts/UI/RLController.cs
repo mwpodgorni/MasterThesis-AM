@@ -144,10 +144,11 @@ public class RLController : MonoBehaviour
 
         _start.RegisterCallback<ClickEvent>(StartTrainingHandler);
         _stop.RegisterCallback<ClickEvent>(StopTrainingHandler);
-
-        _start.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Start_Pressed"); });
-        _stop.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Stop_Pressed"); });
-
+        if (ActivityTracker.Instance != null)
+        {
+            _start.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Start_Pressed"); });
+            _stop.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Stop_Pressed"); });
+        }
         // speed buttons
         #region Speed Buttons
         _speedNormal = rewardAdjustments.Q<Button>("Speed1X");
@@ -176,20 +177,22 @@ public class RLController : MonoBehaviour
         decayRate.style.display = DisplayStyle.None;
         maxSteps.style.display = DisplayStyle.None;
         maxEpisodes.style.display = DisplayStyle.None;
-
-        learningRate.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_LearningRate_Interacted"); });
-        decayRate.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_ExplorationRate_Interacted"); });
-        maxSteps.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_MaxSteps_Interacted"); });
-        maxEpisodes.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_MaxEpisodes_Interacted"); });
-
+        if (ActivityTracker.Instance != null)
+        {
+            learningRate.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_LearningRate_Interacted"); });
+            decayRate.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_ExplorationRate_Interacted"); });
+            maxSteps.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_MaxSteps_Interacted"); });
+            maxEpisodes.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "RL_MaxEpisodes_Interacted"); });
+        }
         #endregion
 
         _help.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RewardAdjuster"));
         _helpLearningConfiguration.RegisterCallback<ClickEvent>(evt => HelpController().ShowHelp("RLConfiguration"));
-
-        _help.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Help_Reward_Pressed"); });
-        _helpLearningConfiguration.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Help_Settings_Pressed"); });
-
+        if (ActivityTracker.Instance != null)
+        {
+            _help.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Help_Reward_Pressed"); });
+            _helpLearningConfiguration.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + "Help_Settings_Pressed"); });
+        }
         workshopPanel.style.display = DisplayStyle.Flex;
         workshopPanel.AddToClassList("panel-up");
 
@@ -250,6 +253,10 @@ public class RLController : MonoBehaviour
         StartCoroutine(StartTutorial(GetTutorialText));
         if (_rlLevel == RLLevel.level1)
         {
+            if (ActivityTracker.Instance != null)
+            {
+                ActivityTracker.Instance.StartTimer("StageTwoTime");
+            }
             StateManager.Instance.SetState(GameStage.RLOneStart);
         }
         else if (_rlLevel == RLLevel.level2)
@@ -263,7 +270,7 @@ public class RLController : MonoBehaviour
 
         SetUpSettingsImages();
         if (_rlLevel != RLLevel.level1) _workShopFirstTime = false;
-        ActivityTracker.Instance.StartTimer("StageTwoTime");
+
     }
 
     IEnumerator StartTutorial(string name)
@@ -439,7 +446,10 @@ public class RLController : MonoBehaviour
             image.style.backgroundImage = new StyleBackground(_tileSpritesDict[tile]);
 
             slider.RegisterCallback<ChangeEvent<float>>(evt => SetTileRewardHandler(evt, tile, label, slider));
-            slider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + tile.ToString()); });
+            if (ActivityTracker.Instance != null)
+            {
+                slider.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction(levelName + tile.ToString()); });
+            }
             _rewardContainer.Add(rewardAdjuster);
         }
     }
@@ -558,18 +568,22 @@ public class RLController : MonoBehaviour
     public void ShowWorkshopOpenButton()
     {
         workshopOpenButton.RemoveFromClassList("opacity-none");
+        workshopOpenButton.style.display = DisplayStyle.Flex;
     }
     public void ShowEvaluationOpenButton()
     {
         evaluationOpenButton.RemoveFromClassList("opacity-none");
+        evaluationOpenButton.style.display = DisplayStyle.Flex;
     }
     public void HideWorkshopOpenButton()
     {
         workshopOpenButton.AddToClassList("opacity-none");
+        workshopOpenButton.style.display = DisplayStyle.None;
     }
     public void HideEvaluationOpenButton()
     {
         evaluationOpenButton.AddToClassList("opacity-none");
+        evaluationOpenButton.style.display = DisplayStyle.None;
     }
     public void LoadLevel()
     {
@@ -757,6 +771,10 @@ public class RLController : MonoBehaviour
     }
     public void OnSurveyButtonClicked()
     {
-        Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLSdSaKeJLAE--Y4-MUKLu35ZbokqKrzBTHx4M4EaZOzH38DI-A/viewform?usp=pp_url&entry.1575728060=" + ActivityTracker.Instance.GetSessionId());
+        if (ActivityTracker.Instance != null)
+        {
+            Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLSdSaKeJLAE--Y4-MUKLu35ZbokqKrzBTHx4M4EaZOzH38DI-A/viewform?usp=pp_url&entry.1575728060=" + ActivityTracker.Instance.GetSessionId());
+
+        }
     }
 }

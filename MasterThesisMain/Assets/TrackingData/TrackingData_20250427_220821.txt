@@ -1,2 +1,0 @@
-Total Play Time: 101.3988
-StageTwoTime: 101.3988 seconds
