@@ -65,20 +65,20 @@ public class Tile : MonoBehaviour
 
     void SetAdjecentTiles()
     {
-        if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit right, 4))
-            if (right.collider.gameObject.TryGetComponent<Tile>(out Tile tile)) 
+        if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit right, 2))
+            if (right.collider.gameObject.TryGetComponent(out Tile tile)) 
                 adjecentTiles[Action.Right] = tile;
 
-        if (Physics.Raycast(transform.position, Vector3.left, out RaycastHit left, 4))
-            if (left.collider.gameObject.TryGetComponent<Tile>(out Tile tile))
+        if (Physics.Raycast(transform.position, Vector3.left, out RaycastHit left, 2))
+            if (left.collider.gameObject.TryGetComponent(out Tile tile))
                 adjecentTiles[Action.Left] = tile;
 
-        if (Physics.Raycast(transform.position, Vector3.back, out RaycastHit up, 4))
-            if (up.collider.gameObject.TryGetComponent<Tile>(out Tile tile))
+        if (Physics.Raycast(transform.position, Vector3.back, out RaycastHit up, 2))
+            if (up.collider.gameObject.TryGetComponent(out Tile tile))
                 adjecentTiles[Action.Up] = tile;
 
-        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit down, 4))
-            if (down.collider.gameObject.TryGetComponent<Tile>(out Tile tile))
+        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit down, 2))
+            if (down.collider.gameObject.TryGetComponent(out Tile tile))
                 adjecentTiles[Action.Down] = tile;
     }
 

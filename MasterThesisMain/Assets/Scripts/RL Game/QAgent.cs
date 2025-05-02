@@ -17,6 +17,11 @@ public class QAgent : RLAgent
 
         _rewards[TileType.Normal] = 0;
         _rewards[TileType.Wall] = -1;
+        _rewards[TileType.Dangerous] = 0;
+        _rewards[TileType.Enemy] = 0;
+        _rewards[TileType.Goal] = 0;
+        _rewards[TileType.Collectible] = 0;
+        _rewards[TileType.Buff] = 0;
     }
 
     // Update is called once per frame
