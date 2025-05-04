@@ -102,11 +102,13 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.DisableStopButton();
                 RLController.Instance.EnableRewardAdjusters();
                 RLController.Instance.EnableTrainingSettings();
+                RLController.Instance.DisableSpeedButtons();
                 break;
             case GameStage.RLOneStarted:
                 RLController.Instance.DisableRewardAdjusters();
                 RLController.Instance.DisableStartButton();
                 RLController.Instance.EnableStopButton();
+                RLController.Instance.EnableSpeedButtons();
                 RLController.Instance.ShowSpeedButtons();
                 RLController.Instance.ShowProgressBar();
                 RLController.Instance.DisableTrainingSettings();
