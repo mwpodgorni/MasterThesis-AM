@@ -93,7 +93,7 @@ public class ActivityTracker : MonoBehaviour
         };
 
         string json = JsonUtility.ToJson(data);
-        StartCoroutine(SendToGoogleSheets(json));
+        UploadNow(json);
     }
 
     private IEnumerator SendToGoogleSheets(string json)
@@ -113,7 +113,24 @@ public class ActivityTracker : MonoBehaviour
         else
             Debug.LogError("Upload failed: " + request.error);
     }
+    private void UploadNow(string json)
+    {
+        string url = "https://script.google.com/macros/s/AKfycbx5vN_JlWGl5m87mMndjGH3ZZkPaJnSYV3RYKRXKHgck1kYFJPVyCVP1eTnLiO2wCSw/exec";
 
+        using UnityWebRequest request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        request.SendWebRequest();
+        while (!request.isDone) { } // block until done
+
+        if (request.result == UnityWebRequest.Result.Success)
+            Debug.Log("Tracking data uploaded successfully.");
+        else
+            Debug.LogError("Upload failed: " + request.error);
+    }
     [Serializable]
     public class TrackingData
     {
