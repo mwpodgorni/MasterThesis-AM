@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,14 +11,23 @@ public class EnemyAgent : RLAgent
     // Start is called before the first frame update
     void Start()
     {
+        _player = FindObjectOfType<QAgent>()?.controller;
         _prevTile = controller.currentTile;
+        _currentTile = controller.currentTile;
         controller.isEnemy = true;
+
+        if (_player == null)
+        {
+            Debug.LogWarning("EnemyAgent: _player is null.");
+            return;
+        }
+
+        Debug.Log("Controller is: " + controller);
     }
 
     // Update is called once per frame
     void Update()
     {
-
         if (!_activated) return;
 
         if (controller.IsDead)
@@ -28,7 +35,7 @@ public class EnemyAgent : RLAgent
             return;
         }
 
-        if (!_calculatingMove && !_player.IsMoving())
+        if (!_calculatingMove && !controller.IsMoving())
         {
             _calculatingMove = true;
             _currentTile = controller.currentTile;
@@ -39,7 +46,6 @@ public class EnemyAgent : RLAgent
 
             _prevTile = controller.currentTile;
             controller.MoveToSelectedAction(action);
-
 
             controller.currentTile.SetCurrentType(TileType.Enemy);
         }

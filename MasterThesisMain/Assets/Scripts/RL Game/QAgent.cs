@@ -37,6 +37,7 @@ public class QAgent : RLAgent
 
         if (!_calculatingMove && !controller.IsMoving())
         {
+            _calculatingMove = true;
             _currentTile = controller.currentTile;
 
             var state = GetState(_currentTile);
@@ -70,7 +71,7 @@ public class QAgent : RLAgent
             _timer = 0f;
         }
 
-        if (currentEpochStepCount % maxSteps == 0 || CompletedTask())
+        if (!_calculatingMove && (currentEpochStepCount % maxSteps == 0 || CompletedTask()))
         {
             totalTaskCompleted++;
             _finishedEpoch = true;
