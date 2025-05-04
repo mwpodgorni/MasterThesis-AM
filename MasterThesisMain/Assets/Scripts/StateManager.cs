@@ -99,7 +99,6 @@ public class StateManager : MonoBehaviour
             case GameStage.RLOneStart:
                 RLController.Instance.HideProgressBar();
                 RLController.Instance.HideEvaluationOpenButton();
-                RLController.Instance.HideWorkshopOpenButton();
                 RLController.Instance.EnableStartButton();
                 RLController.Instance.DisableStopButton();
                 RLController.Instance.EnableRewardAdjusters();
