@@ -8,8 +8,6 @@ public class EnemyAgent : RLAgent
 {
     [SerializeField] AgentController _player;
 
-    [SerializeField] bool _randomMovement = true;
-
     bool _vulnerable = false;
 
     // Start is called before the first frame update

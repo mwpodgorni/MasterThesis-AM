@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6497872793563327903}
   - component: {fileID: 7857610196580312700}
   - component: {fileID: 2194581380793564409}
+  - component: {fileID: 6422407266740978750}
   m_Layer: 5
   m_Name: RL UI
   m_TagString: Untagged
@@ -69,7 +70,7 @@ MonoBehaviour:
   _rewardAdjusterTemplate: {fileID: 9197481963319205126, guid: 2b7dcc9a013ca1e4fadf9d6c565b4d22,
     type: 3}
   _manager: {fileID: 0}
-  _nextScene: {fileID: 102900000, guid: 0fe3cae14e7a44d4da168fc4e7203ba1, type: 3}
+  _nextScene: 
   _tileSprites:
   - {fileID: 21300000, guid: dad1b2195c2418c4598f2b59dfc5e9c8, type: 3}
   - {fileID: 21300000, guid: 735f9b01cb32cb44180506f6892da04c, type: 3}
@@ -115,8 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67baa49bbec48b045945bb6fa78ae461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typingAudio: {fileID: 6919573322533808175, guid: 1125668342653bb42a54b746fea1f42e,
-    type: 3}
+  typingAudioPrefab: {fileID: 0}
   tutorialCompletedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -172,3 +172,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6422407266740978750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2572256214517772843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00f5a1d527defe845a54b1b3ce73041f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
