@@ -439,7 +439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ff01d258c94fc4ebef31dcbdcdf198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageOneScene: {fileID: 102900000, guid: a76c21ca1ec17ab4ba40f43c50c58838, type: 3}
 --- !u!1001 &5378311262698695823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -498,10 +497,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2406903281768607363, guid: 5e07298d647968c4e92e6fe298f8af82,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 3864105083930764866, guid: 5e07298d647968c4e92e6fe298f8af82,
         type: 3}
       propertyPath: m_Name
       value: BackgroundMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531060450564486545, guid: 5e07298d647968c4e92e6fe298f8af82,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
