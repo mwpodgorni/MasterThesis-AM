@@ -162,7 +162,11 @@ public class StateManager : MonoBehaviour
             case GameStage.RLThreeCompletedGood:
                 RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.ShowNextLevelButton();
-                ActivityTracker.Instance.StopTimer("StageTwoTime");
+                if (ActivityTracker.Instance != null)
+                {
+                    ActivityTracker.Instance.StopTimer("StageTwoTime");
+
+                }
                 break;
         }
     }
