@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -43,7 +42,7 @@ public class RLController : MonoBehaviour
     [SerializeField] VisualTreeAsset _rewardAdjusterTemplate;
     [SerializeField] RLManager _manager;
 
-    [SerializeField] SceneAsset _nextScene;
+    [SerializeField] string _nextScene;
     [SerializeField] List<Sprite> _tileSprites;
 
     [SerializeField] RLLevel _rlLevel = RLLevel.level1;
@@ -587,7 +586,7 @@ public class RLController : MonoBehaviour
     }
     public void LoadLevel()
     {
-        SceneManager.LoadScene(_nextScene.name);
+        SceneManager.LoadScene(_nextScene);
     }
     public void ShowNextLevelButton()
     {

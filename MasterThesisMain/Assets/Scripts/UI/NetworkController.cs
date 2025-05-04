@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor;
 using System.Linq;
-using UnityEditor.SceneManagement;
-using Unity.VisualScripting;
 public class NetworkController : MonoBehaviour
 {
+    [SerializeField] VisualTreeAsset networkLayerTemplate;
+    [SerializeField] VisualTreeAsset networkNodeTemplate;
+
     [SerializeField] List<RobotSorter> robotSorters = new();
 
     // input layer
@@ -160,23 +160,23 @@ public class NetworkController : MonoBehaviour
     public void AddHiddenLayer()
     {
         if (_hiddenLayerPanel.childCount >= GP.Instance.maxLayers) return;
-        VisualTreeAsset uiAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/NetworkLayer.uxml");
-        VisualElement layer = uiAsset.Instantiate();
+        VisualElement layer = networkLayerTemplate.Instantiate();
 
         layer.Q<Button>("LayerAddButton").clicked += () => AddNode(layer);
         layer.Q<Button>("LayerRemoveButton").clicked += () => RemoveNode(layer);
 
-        // Tracking
         if (ActivityTracker.Instance != null)
         {
             layer.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_" + "Hidden_AddNode_Pressed"); });
             layer.RegisterCallback<ClickEvent>(evt => { ActivityTracker.Instance.RecordAction("StageOne_" + "Hidden_RemoveNode_Pressed"); });
         }
+
         _hiddenLayerPanel.Q<VisualElement>("HiddenLayers").Add(layer);
         neuralNetwork.AddHiddenLayer();
         RedrawConnections();
         layer.RegisterCallback<GeometryChangedEvent>((evt) => RedrawConnections());
     }
+
     public void DisableTrainingButton()
     {
         trainNetworkButton.SetEnabled(false);
@@ -250,13 +250,11 @@ public class NetworkController : MonoBehaviour
             neuralNetwork.AddHiddenLayerNode(_hiddenLayerPanel.IndexOf(layer));
         }
 
-        VisualTreeAsset uiAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/NetworkNode.uxml");
-        VisualElement node = uiAsset.Instantiate();
+        VisualElement node = networkNodeTemplate.Instantiate();
         node.style.width = 90;
         node.style.height = 90;
         layer.Q<VisualElement>("NodeWrapper").Add(node);
         node.RegisterCallback<GeometryChangedEvent>((evt) => RedrawConnections());
-
     }
     public void RemoveNode(VisualElement layer)
     {

@@ -3822,6 +3822,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2f66ba36684fd04dae970bb2f91f91e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkLayerTemplate: {fileID: 9197481963319205126, guid: dc52cb5bda638de41bd7985f3a6c81a1,
+    type: 3}
+  networkNodeTemplate: {fileID: 9197481963319205126, guid: 9146af35184d0024baac0a928e3c5c3e,
+    type: 3}
   robotSorters:
   - {fileID: 508373509}
   - {fileID: 1982890658}
@@ -4044,7 +4048,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3740d840b6141f14488b2d058a9a1e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageTwoScene: {fileID: 102900000, guid: d79293076e810d84a97bf0fcdc960e41, type: 3}
   finishedTraining: 0
 --- !u!114 &5424659736712591275
 MonoBehaviour:

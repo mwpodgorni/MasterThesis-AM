@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEditor;
-using UnityEngine.UIElements;
 public class StateManager : MonoBehaviour
 {
     public static StateManager Instance { get; private set; }

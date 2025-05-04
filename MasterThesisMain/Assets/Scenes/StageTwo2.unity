@@ -507,9 +507,8 @@ PrefabInstance:
     - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
         type: 3}
       propertyPath: _nextScene
-      value: 
-      objectReference: {fileID: 102900000, guid: 62627abc5a2382046b692caa3b71e4d5,
-        type: 3}
+      value: StageTwo3
+      objectReference: {fileID: 0}
     - target: {fileID: 2485696466133725976, guid: 59a8b29d716545a41be872128386c648,
         type: 3}
       propertyPath: '_tileSprites.Array.data[4]'

@@ -1,16 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
-using UnityEditor;
-using Unity.VisualScripting;
-using UnityEngine.InputSystem.LowLevel;
 
 public class StageOneController : MonoBehaviour
 {
-    [SerializeField] private SceneAsset stageTwoScene;
+    private string stageTwoSceneName = "StageTwo1";
     public static StageOneController Instance { get; private set; }
     public VisualElement ui;
 
@@ -178,7 +173,7 @@ public class StageOneController : MonoBehaviour
         }
         StateManager.Instance.SetState(GameStage.RLStartingPoint);
         StateManager.Instance.UpdateBasedOnCurrentState();
-        SceneManager.LoadScene(stageTwoScene.name);
+        SceneManager.LoadScene(stageTwoSceneName);
     }
     public void HideWorkshopOpenButton()
     {

@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour
 {
-    [SerializeField] private SceneAsset stageOneScene;
     public static MainMenuController Instance { get; private set; }
     public VisualElement ui;
     public Button playButton;
@@ -82,7 +78,7 @@ public class MainMenuController : MonoBehaviour
             ActivityTracker.Instance.StopTimer("PaperOpen");
         }
         // Debug.Log("Play Button Clicked");
-        SceneManager.LoadScene(stageOneScene.name);
+        SceneManager.LoadScene("StageOne");
     }
     private void OnControlsButtonClicked()
     {
