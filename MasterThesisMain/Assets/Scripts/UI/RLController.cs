@@ -642,7 +642,7 @@ public class RLController : MonoBehaviour
 
         foreach (var adjuster in rewardAdjusters)
         {
-            adjuster.SetEnabled(true);
+            adjuster.Q<Slider>().SetEnabled(true);
         }
     }
 

@@ -115,6 +115,7 @@ public class StateManager : MonoBehaviour
                 break;
             case GameStage.RLOneCompletedGood:
                 RLController.Instance.HideOuterProgressBar();
+                RLController.Instance.ShowWorkshopOpenButton();
                 RLController.Instance.ShowNextLevelButton();
                 RLController.Instance.DisableStopButton();
                 RLController.Instance.EnableStartButton();
@@ -123,6 +124,7 @@ public class StateManager : MonoBehaviour
             case GameStage.RLOneCompletedBad:
                 RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.DisableStopButton();
+                RLController.Instance.ShowWorkshopOpenButton();
                 RLController.Instance.EnableStartButton();
                 RLController.Instance.ShowEvaluationOpenButton();
                 break;
@@ -149,10 +151,12 @@ public class StateManager : MonoBehaviour
             case GameStage.RLTwoCompletedBad:
             case GameStage.RLThreeCompletedBad:
                 RLController.Instance.HideOuterProgressBar();
+                RLController.Instance.ShowWorkshopOpenButton();
                 RLController.Instance.DisableStopButton();
                 RLController.Instance.EnableStartButton();
                 break;
             case GameStage.RLTwoCompletedGood:
+                RLController.Instance.ShowWorkshopOpenButton();
                 RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.ShowNextLevelButton();
                 break;
