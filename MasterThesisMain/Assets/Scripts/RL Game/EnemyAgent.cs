@@ -15,14 +15,6 @@ public class EnemyAgent : RLAgent
         _prevTile = controller.currentTile;
         _currentTile = controller.currentTile;
         controller.isEnemy = true;
-
-        if (_player == null)
-        {
-            Debug.LogWarning("EnemyAgent: _player is null.");
-            return;
-        }
-
-        Debug.Log("Controller is: " + controller);
     }
 
     // Update is called once per frame
