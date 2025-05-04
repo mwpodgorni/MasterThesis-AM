@@ -33,7 +33,7 @@ public class GP : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
         }
     }
 
