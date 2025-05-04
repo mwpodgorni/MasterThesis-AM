@@ -221,7 +221,7 @@ public class RLController : MonoBehaviour
         _progressBar = _UI.Q<ProgressBar>("ProgressBar");
         _outerProgressBar = _UI.Q<ProgressBar>("OuterProgressBar");
         HideOuterProgressBar();
-
+        HideEvaluationOpenButton();
         foreach (var setting in _manager.GetRLSettings())
         {
             if (setting == RLSettings.LearningRate)
@@ -363,6 +363,7 @@ public class RLController : MonoBehaviour
         evaluationOpen = false;
         evaluationPanel.AddToClassList("panel-up");
         evaluationOpenButton.RemoveFromClassList("opacity-none");
+        ShowEvaluationOpenButton();
     }
     public void HideProgressBar()
     {
