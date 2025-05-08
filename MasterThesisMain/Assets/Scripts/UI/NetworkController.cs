@@ -466,7 +466,10 @@ public class NetworkController : MonoBehaviour
     {
         label.RegisterCallback<ClickEvent>(_ => StageOneController.Instance.HelpController().ShowHelp(helpKey));
         {
-            label.RegisterCallback<ClickEvent>(_ => { ActivityTracker.Instance.RecordAction("StageOne_" + helpKey + "_Help_Pressed"); });
+            if (ActivityTracker.Instance != null)
+            {
+                label.RegisterCallback<ClickEvent>(_ => { ActivityTracker.Instance.RecordAction("StageOne_" + helpKey + "_Help_Pressed"); });
+            }
         }
     }
     public void ResetNetwork()
