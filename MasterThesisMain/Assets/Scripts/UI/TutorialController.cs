@@ -10,6 +10,7 @@ using System.Reflection;
 public class TutorialController : MonoBehaviour
 {
     public GameObject typingAudioPrefab;
+    public ObjectiveController objectiveController;
     AudioSource typingAudio;
     public VisualElement ui;
     public Button nextButton;
@@ -41,6 +42,7 @@ public class TutorialController : MonoBehaviour
         simpleDelay = new WaitForSeconds(typingSpeed);
         punctuationDelay = new WaitForSeconds(interpunctuationDelay);
         skipDelay = new WaitForSeconds(1 / (typingSpeed * skipSpeedup));
+        objectiveController = FindObjectOfType<ObjectiveController>();
     }
 
     private void OnEnable()
@@ -240,5 +242,37 @@ public class TutorialController : MonoBehaviour
     {
         // Debug.Log("EndGame called");
         Application.Quit();
+    }
+    public void SetObjective()
+    {
+        if (StateManager.Instance.CurrentStage == GameStage.FirstHelpOpen)
+        {
+            objectiveController.SetObjective("Add nodes to all layers and press Test to validate the network.");
+            objectiveController.ShowObjective();
+        }
+        if (StateManager.Instance.CurrentStage == GameStage.FirstNetworkValidated)
+        {
+            objectiveController.SetObjective("Build a network to analyze robot parts and predict their type. Configure the layers, then test and train it.");
+            objectiveController.ShowObjective();
+        }
+        if (StateManager.Instance.CurrentStage == GameStage.RLOneStart)
+        {
+            objectiveController.SetObjective("Adjust rewards and training configuration to guide the robot to the goal tile. Then start and observe the training.");
+            objectiveController.ShowObjective();
+        }
+        if (StateManager.Instance.CurrentStage == GameStage.RLTwoStart)
+        {
+            objectiveController.SetObjective("Configure rewards and training settings to teach the robot to collect power-ups and defuse threats efficiently.");
+            objectiveController.ShowObjective();
+        }
+        if (StateManager.Instance.CurrentStage == GameStage.RLThreeStart)
+        {
+            objectiveController.SetObjective("Balance rewards and configuration to train the robot to collect items, avoid threats, and reach the goal efficiently.");
+            objectiveController.ShowObjective();
+        }
+    }
+    public void HideObjective()
+    {
+        objectiveController.HideObjective();
     }
 }

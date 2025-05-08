@@ -39,8 +39,7 @@
         "You can use the workshop to configure, validate, and train your neural networks.",
         "If you are unsure about any part of the workshop, click on a label to view a description of its function.",
         "Now, try to click on the INPUT section to see what it does."
-      ],
-      "event": "ShowWorkshopButton"
+      ]
     },
     {
       "title": "",
@@ -48,7 +47,8 @@
         "Good job! Now you are ready to configure your first network.",
         "Every neural network needs to have some nodes in INPUT, HIDDEN and OUTPUT layers",
         "Try adding nodes in each layer, then press the \"Test\" button to check if the network is valid."
-      ]
+      ],
+      "event": "SetObjective"
     }
   ],
   "firstNetworkNotValid": [
@@ -85,7 +85,8 @@
     },
     {
       "title": "",
-      "content": ["Set up the network and try to test it, before we proceed to training."]
+      "content": ["Set up the network and try to test it, before we proceed to training."],
+      "event": "SetObjective"
     }
   ],
   "secondNetworkNotValid": [
@@ -211,7 +212,8 @@
       "content": [
         "The robot needs to learn to navigate the environment and reach the tile with a flag.",
         "Your setup will be evaluated based on how quickly and effectively the robot reaches the target."
-      ]
+      ],
+      "event": "SetObjective"
     }
   ],
   "RLPuzzleCompleted": [
@@ -253,7 +255,8 @@
         "Since this task is more complex, the robot may need more time and training to learn the objective.",
         "The way you set the training parameters will influence both the robot's learning speed and its final performance.",
         "Experiment with different settings to find the combination that helps the robot learn efficiently."
-      ]
+      ],
+      "event": "SetObjective"
     }
   ],
   "RLPuzzle2Solved": [
@@ -319,7 +322,7 @@
     {
       "title": "",
       "content": ["Try to find the best combination of parameters that will allow the robot to learn efficiently."],
-      "event": "RLShowWorkshopButton"
+      "event": "SetObjective"
     }
   ],
   "RLPuzzle3Solved": [

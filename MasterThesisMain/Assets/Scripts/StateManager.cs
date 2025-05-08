@@ -1,6 +1,7 @@
 using UnityEngine;
 public class StateManager : MonoBehaviour
 {
+    public ObjectiveController objectiveController;
     public static StateManager Instance { get; private set; }
 
     public GameStage CurrentStage { get; private set; }
@@ -54,6 +55,7 @@ public class StateManager : MonoBehaviour
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstNetworkValid());
                 StageOneController.Instance.TutorialController().StartTutorial();
                 StageOneController.Instance.NetworkController().ResetNetwork();
+                StageOneController.Instance.TutorialController().HideObjective();
                 break;
             case GameStage.SecondNetworkValidated:
                 StageOneController.Instance.TutorialController().SetTypeText(true);
