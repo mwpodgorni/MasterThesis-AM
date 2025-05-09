@@ -35,7 +35,7 @@
                 <engine:Label text="[From Level 2] " class="text-yellow" style="margin-top: 60px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; font-size: 40px;" />
                 <engine:Label text="Right-click and drag to rotate the map." class="text-yellow" style="margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; font-size: 40px;" />
                 <engine:Label text="Scroll to zoom in and out." class="text-yellow" style="font-size: 40px; margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px;" />
-                <engine:Label text="Hold Space + Right-click  to move around the map." class="text-yellow" style="margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; font-size: 40px;" />
+                <engine:Label text="Left-click and drag to move around the map." class="text-yellow" style="margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; font-size: 40px;" />
             </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>

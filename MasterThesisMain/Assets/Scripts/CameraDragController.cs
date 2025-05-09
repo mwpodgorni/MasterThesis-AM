@@ -44,39 +44,20 @@ public class CameraDragController : MonoBehaviour
     float _currentZoomValue = 0;
     void OnEnable()
     {
-        _input.RightClickDown += OnRightClickDown;
-        _input.RightClickUp += OnRightClickUp;
+        _input.DragStart += EnableDragMovement;
+        _input.DragEnd += DisableDragMovement;
+        _input.RotateStart += EnableDragRotation;
+        _input.RotateEnd += DisableDragRotation;
     }
 
     void OnDisable()
     {
-        _input.RightClickDown -= OnRightClickDown;
-        _input.RightClickUp -= OnRightClickUp;
+        _input.DragStart -= EnableDragMovement;
+        _input.DragEnd -= DisableDragMovement;
+        _input.RotateStart -= EnableDragRotation;
+        _input.RotateEnd -= DisableDragRotation;
     }
 
-    private void OnRightClickDown()
-    {
-        // if Space is held → begin pan
-        if (Keyboard.current.spaceKey.isPressed)
-        {
-            _dragOrigin = GetMousePosition();
-            _dragMovement = true;
-        }
-        else
-        {
-            // otherwise begin rotate
-            _dragRotation = true;
-        }
-    }
-
-    private void OnRightClickUp()
-    {
-        // stop whichever was active
-        if (_dragMovement)
-            _dragMovement = false;
-        if (_dragRotation)
-            _dragRotation = false;
-    }
     void Start()
     {
         transform.position = _targetPosition;
@@ -100,7 +81,6 @@ public class CameraDragController : MonoBehaviour
     void LateUpdate()
     {
         Zoom();
-
         if (_dragMovement) DragMovement();
         if (_dragRotation) DragRotation();
     }

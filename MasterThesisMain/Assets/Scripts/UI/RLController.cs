@@ -41,6 +41,7 @@ public class RLController : MonoBehaviour
 
     [SerializeField] VisualTreeAsset _rewardAdjusterTemplate;
     [SerializeField] RLManager _manager;
+    [SerializeField] InputReader _input;
 
     [SerializeField] string _nextScene;
     [SerializeField] List<Sprite> _tileSprites;
@@ -292,6 +293,8 @@ public class RLController : MonoBehaviour
 
         workshopPanel.RemoveFromClassList("panel-up");
         workshopOpenButton.AddToClassList("opacity-none");
+
+        _input.DisableCameraActions();
     }
     public void OnWorkshopCloseButtonClicked()
     {
@@ -301,8 +304,11 @@ public class RLController : MonoBehaviour
         {
             ShowOuterProgressBar();
         }
+
         workshopPanel.AddToClassList("panel-up");
         workshopOpenButton.RemoveFromClassList("opacity-none");
+
+        _input.EnableCameraActions();
     }
 
     public void RevertState()
@@ -333,6 +339,7 @@ public class RLController : MonoBehaviour
         evaluationOpenButton.AddToClassList("opacity-none");
 
         RevertState();
+        _input.DisableCameraActions();
     }
     public void CheckCompletion()
     {
@@ -364,6 +371,8 @@ public class RLController : MonoBehaviour
         evaluationPanel.AddToClassList("panel-up");
         evaluationOpenButton.RemoveFromClassList("opacity-none");
         ShowEvaluationOpenButton();
+
+        _input.EnableCameraActions();
     }
     public void HideProgressBar()
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [CreateAssetMenu(menuName = "InputSystem/Input Reader")]
-public class InputReader : ScriptableObject, Inputs.IGameplayActions, Inputs.IUIActions
+public class InputReader : ScriptableObject, Inputs.IGameplayActions, Inputs.IUIActions, Inputs.ICameraActions
 {
     Inputs _input;
     public InputAccess Access { get; private set; }
@@ -23,6 +23,12 @@ public class InputReader : ScriptableObject, Inputs.IGameplayActions, Inputs.IUI
     public event UnityAction RightClickDown = delegate { };
     public event UnityAction RightClickUp = delegate { };
 
+    public event UnityAction DragStart = delegate { };
+    public event UnityAction DragEnd = delegate { };
+
+    public event UnityAction RotateStart = delegate { };
+    public event UnityAction RotateEnd = delegate { };
+
     public event UnityAction Escape = delegate { };
 
     void OnEnable()
@@ -30,6 +36,7 @@ public class InputReader : ScriptableObject, Inputs.IGameplayActions, Inputs.IUI
         _input ??= new Inputs();
         _input.Gameplay.SetCallbacks(this);
         _input.UI.SetCallbacks(this);
+        _input.Camera.SetCallbacks(this);
         _input.Enable();
 
         Access = new(this);
@@ -38,8 +45,10 @@ public class InputReader : ScriptableObject, Inputs.IGameplayActions, Inputs.IUI
     #region Input Actions
     public void EnableGameplayActions() => _input.Gameplay.Enable();
     public void EnableUIActions() => _input.UI.Enable();
+    public void EnableCameraActions() => _input.Camera.Enable();
     public void DisableGameplayActions() => _input.Gameplay.Disable();
     public void DisableUIActions() => _input.UI.Disable();
+    public void DisableCameraActions() => _input.Camera.Disable();
 
     public void OnMovement(InputAction.CallbackContext context)
     {
@@ -97,6 +106,30 @@ public class InputReader : ScriptableObject, Inputs.IGameplayActions, Inputs.IUI
     public void OnPositionDelta(InputAction.CallbackContext context)
     {
         
+    }
+
+    public void OnDrag(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            DragStart.Invoke();
+        }
+        else if (context.canceled)
+        {
+            DragEnd.Invoke();
+        }
+    }
+
+    public void OnRotate(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            RotateStart.Invoke();
+        }
+        else if (context.canceled)
+        {
+            RotateEnd.Invoke();
+        }
     }
     #endregion
 }
