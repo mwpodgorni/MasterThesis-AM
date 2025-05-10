@@ -223,6 +223,7 @@ public class RLController : MonoBehaviour
         surveyButton.clicked += OnSurveyButtonClicked;
 
         nextLevelButton = _UI.Q<Button>("NextLevelButton");
+        nextLevelButton.clicked += _input.EnableCameraActions;
         nextLevelButton.clicked += LoadLevel;
 
         _progressBar = _UI.Q<ProgressBar>("ProgressBar");
