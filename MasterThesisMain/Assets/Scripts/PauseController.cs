@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -48,6 +49,7 @@ public class PauseController : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        StateManager.Instance.SetState(GameStage.StartingPoint);
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 

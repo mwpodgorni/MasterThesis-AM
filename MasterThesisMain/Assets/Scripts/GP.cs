@@ -14,27 +14,16 @@ public class GP : MonoBehaviour
     {
         return 1f / (1f + Mathf.Exp(-x)); // Sigmoid
     };
-    [SerializeField]
-    private Parameters _parameters;
+    [SerializeField] private Parameters _parameters;
 
-    [SerializeField]
-    private IntEventChannel _channel;
-    [SerializeField]
-    TextAsset firstMiniGameDataset;
+    [SerializeField] private IntEventChannel _channel;
+    [SerializeField] TextAsset firstMiniGameDataset;
 
 
     private void Awake()
     {
-        if (Instance == null || ChannelInstance == null)
-        {
-            Instance = _parameters;
-            ChannelInstance = _channel;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            DestroyImmediate(gameObject);
-        }
+        Instance = _parameters;
+        ChannelInstance = _channel;
     }
 
     public static Parameters GetParameters()

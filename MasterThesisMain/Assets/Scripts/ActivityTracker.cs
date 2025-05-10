@@ -44,22 +44,22 @@ public class ActivityTracker : MonoBehaviour
 
     public void StartTimer(string timerName)
     {
-        Debug.Log($"Starting timer: {timerName} at {Time.realtimeSinceStartup} seconds");
+        // Debug.Log($"Starting timer: {timerName} at {Time.realtimeSinceStartup} seconds");
         timers[timerName] = Time.realtimeSinceStartup;
         // log all timers
-        foreach (var timer in timers)
-        {
-            Debug.Log($"Timer: {timer.Key} started at: {timer.Value} seconds");
-        }
+        // foreach (var timer in timers)
+        // {
+        //     Debug.Log($"Timer: {timer.Key} started at: {timer.Value} seconds");
+        // }
     }
 
     public void StopTimer(string timerName)
     {
-        Debug.Log($"Stopping timer: {timerName}");
+        // Debug.Log($"Stopping timer: {timerName}");
         if (timers.ContainsKey(timerName))
         {
-            Debug.Log($"Timer1: now: {Time.realtimeSinceStartup} seconds");
-            Debug.Log($"Timer2: started at: {timers[timerName]} seconds");
+            // Debug.Log($"Timer1: now: {Time.realtimeSinceStartup} seconds");
+            // Debug.Log($"Timer2: started at: {timers[timerName]} seconds");
             timers[timerName] = Time.realtimeSinceStartup - timers[timerName];
             stoppedTimers.Add(timerName);
         }
@@ -75,7 +75,7 @@ public class ActivityTracker : MonoBehaviour
             float now = Time.realtimeSinceStartup;
             float duration = now - storedValue;
 
-            Debug.Log($"[Timer '{key}'] Stored value: {storedValue}, Now: {now}, Duration: {duration}");
+            // Debug.Log($"[Timer '{key}'] Stored value: {storedValue}, Now: {now}, Duration: {duration}");
             timers[key] = duration;
         }
 
