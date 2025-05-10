@@ -83,7 +83,6 @@ public class RLAgent : MonoBehaviour
 
     virtual public void ResetAgent()
     {
-        totalTaskCompleted = 0;
         controller.ResetAgent();
         _finishedEpoch = false;
         currentEpochReward = 0;
@@ -96,6 +95,7 @@ public class RLAgent : MonoBehaviour
     virtual public void ResetModel()
     {
         totalStepCount = 0;
+        totalTaskCompleted = 0;
     }
 
     public bool FinishedEpoch 
