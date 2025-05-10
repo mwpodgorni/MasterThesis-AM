@@ -31,9 +31,9 @@ public class EvaluationController : MonoBehaviour
         errorLowValue = ui.Q<Label>("ErrorLowValue");
         errorMidValue = ui.Q<Label>("ErrorMidValue");
         errorHighValue = ui.Q<Label>("ErrorHighValue");
-        var seriesA = new List<float> { 1f, 2f, 3f, 2f, 1f };
-        var seriesB = new List<float> { 2f, 1f, 4f, 1f, 2f };
-        var seriesC = new List<float> { 3f, 3f, 1f, 3f, 3f };
+        // var seriesA = new List<float> { 1f, 2f, 3f, 2f, 1f };
+        // var seriesB = new List<float> { 2f, 1f, 4f, 1f, 2f };
+        // var seriesC = new List<float> { 3f, 3f, 1f, 3f, 3f };
 
         // dummy data
         // chart.datasets = new List<(List<float>, Color, string)> {
@@ -91,5 +91,24 @@ public class EvaluationController : MonoBehaviour
     public int GetCorrectPredictions()
     {
         return int.Parse(correctPredictionsValue.text);
+    }
+    public float GetFinalAverageLoss()
+    {
+        return float.Parse(finalAverageLossValue.text);
+    }
+
+    public int GetErrorLow()
+    {
+        return int.Parse(errorLowValue.text);
+    }
+
+    public int GetErrorMid()
+    {
+        return int.Parse(errorMidValue.text);
+    }
+
+    public int GetErrorHigh()
+    {
+        return int.Parse(errorHighValue.text);
     }
 }

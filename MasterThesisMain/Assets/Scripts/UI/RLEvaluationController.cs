@@ -66,4 +66,12 @@ public class RLEvaluationController : MonoBehaviour
 
         return downsampledData;
     }
+    public float GetSuccessRate()
+    {
+        return float.Parse(successRate.text);
+    }
+    public float GetAverageReward()
+    {
+        return float.Parse(avgEpisodeReturn.text);
+    }
 }

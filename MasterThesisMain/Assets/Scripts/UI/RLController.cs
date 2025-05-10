@@ -26,6 +26,8 @@ public class RLController : MonoBehaviour
     public VisualElement rewardAdjustments;
     public VisualElement settingsAdjustments;
     public VisualElement evaluationPanel;
+    public VisualElement evaluationStatus;
+
     public Button workshopOpenButton;
     public Button workshopCloseButton;
     public Button evaluationOpenButton;
@@ -202,6 +204,8 @@ public class RLController : MonoBehaviour
         evaluationPanel = _UI.Q<VisualElement>("EvaluationPanel");
         evaluationPanel.style.display = DisplayStyle.Flex;
         evaluationPanel.AddToClassList("panel-up");
+        evaluationStatus = _UI.Q<VisualElement>("EvaluationStatus");
+        HideEvaluationStatus();
 
         tutorialPanel.AddToClassList("opacity-none");
 
@@ -787,5 +791,50 @@ public class RLController : MonoBehaviour
         }
 
         Application.Quit();
+    }
+    public void HideEvaluationStatus()
+    {
+        evaluationStatus.style.display = DisplayStyle.None;
+    }
+    public void ShowEvaluationStatus()
+    {
+        Label statusValue = evaluationStatus.Q<Label>("StatusValue");
+        var evaluatingStages = new HashSet<GameStage> {
+            GameStage.RLOneStarted,
+            GameStage.RLTwoStarted,
+            GameStage.RLThreeStarted
+        };
+        var evaluatingStagesGood = new HashSet<GameStage> {
+            GameStage.RLOneCompletedGood,
+            GameStage.RLTwoCompletedGood,
+            GameStage.RLThreeCompletedGood
+        };
+        var successRate = EvaluationController().GetSuccessRate();
+        if (evaluatingStages.Contains(StateManager.Instance.CurrentStage))
+        {
+            statusValue.text = "Evaluation in progress...";
+            evaluationStatus.style.display = DisplayStyle.Flex;
+        }
+        if (evaluatingStagesGood.Contains(StateManager.Instance.CurrentStage))
+        {
+            if (successRate >= 0.5f)
+            {
+                statusValue.text = "Excellent! Your robot is performing optimally.";
+                statusValue.style.color = new StyleColor(Color.green);
+            }
+            else
+            {
+                statusValue.text = "Reasonable performance. Your robot is doing okay.";
+                statusValue.style.color = new StyleColor(Color.yellow);
+            }
+
+
+        }
+        else
+        {
+            statusValue.text = "Poor performance. Your robot is not learning effectively.";
+            statusValue.style.color = new StyleColor(Color.red);
+        }
+        evaluationStatus.style.display = DisplayStyle.Flex;
     }
 }

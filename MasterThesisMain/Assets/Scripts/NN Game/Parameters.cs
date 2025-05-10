@@ -14,8 +14,8 @@ public class Parameters : ScriptableObject
     public float maxBias = 1f;
     public float minBias = -0f;
 
-    public int maxNodes = 6;
-    public int maxLayers = 6;
+    public int maxNodes = 5;
+    public int maxLayers = 4;
 
     [Header("Hyper Parameters")]
     public float learningRate = 0.1f;

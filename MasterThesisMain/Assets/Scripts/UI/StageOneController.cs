@@ -12,6 +12,7 @@ public class StageOneController : MonoBehaviour
     public VisualElement tutorialPanel;
     public VisualElement workshopPanel;
     public VisualElement evaluationPanel;
+    public VisualElement evaluationStatus;
     public Button workshopOpenButton;
     public Button workshopCloseButton;
     public Button evaluationOpenButton;
@@ -49,6 +50,8 @@ public class StageOneController : MonoBehaviour
         evaluationPanel = ui.Q<VisualElement>("EvaluationPanel");
         evaluationPanel.style.display = DisplayStyle.Flex;
         evaluationPanel.AddToClassList("panel-up");
+        evaluationStatus = ui.Q<VisualElement>("EvaluationStatus");
+        HideEvaluationStatus();
 
         tutorialPanel.AddToClassList("opacity-none");
         topbar = ui.Q<VisualElement>("Topbar");
@@ -97,7 +100,7 @@ public class StageOneController : MonoBehaviour
             StateManager.Instance.SetState(GameStage.FirstWorkshopOpen);
         }
         workshopPanel.RemoveFromClassList("panel-up");
-        topbar.AddToClassList("opacity-none");
+        topbar.style.display = DisplayStyle.None;
         NetworkController().RedrawConnections();
     }
     public void OnWorkshopCloseButtonClicked()
@@ -108,7 +111,7 @@ public class StageOneController : MonoBehaviour
         }
         NetworkController().ClearLines();
         workshopPanel.AddToClassList("panel-up");
-        topbar.RemoveFromClassList("opacity-none");
+        topbar.style.display = DisplayStyle.Flex;
     }
     public void OnEvaluationOpenButtonClicked()
     {
@@ -224,6 +227,50 @@ public class StageOneController : MonoBehaviour
         if (evaluationOpen)
         {
             CheckIfCompleted();
+        }
+    }
+    public void HideEvaluationStatus()
+    {
+        evaluationStatus.style.display = DisplayStyle.None;
+    }
+    public void ShowEvaluationStatus()
+    {
+        Label statusValue = evaluationStatus.Q<Label>("StatusValue");
+
+        if (StateManager.Instance.CurrentStage == GameStage.SecondNetworkTraining)
+        {
+            statusValue.text = "Evaluation in progress...";
+            evaluationStatus.style.display = DisplayStyle.Flex;
+        }
+        if (EvaluationController() != null)
+        {
+            float loss = EvaluationController().GetFinalAverageLoss();
+            float highErrorRatio = EvaluationController().GetErrorHigh() /
+                                   (float)(EvaluationController().GetErrorLow() +
+                                           EvaluationController().GetErrorMid() +
+                                           EvaluationController().GetErrorHigh());
+            int finishedCycles = EvaluationController().GetFinishedCycles();
+            int correctPredictions = EvaluationController().GetCorrectPredictions();
+            if (finishedCycles / 2 > correctPredictions)
+            {
+                statusValue.text = "Poor performance. Your network is not performing well.";
+                statusValue.style.color = new StyleColor(Color.red);
+
+            }
+            else
+            {
+                if (loss < 0.35f && highErrorRatio < 0.1f)
+                {
+                    statusValue.text = "Excellent! Your network is performing very well.";
+                    statusValue.style.color = new StyleColor(Color.green);
+                }
+                else
+                {
+                    statusValue.text = "Reasonable performance. Your network is performing okay.";
+                    statusValue.style.color = new StyleColor(Color.yellow);
+                }
+            }
+            evaluationStatus.style.display = DisplayStyle.Flex;
         }
     }
 }

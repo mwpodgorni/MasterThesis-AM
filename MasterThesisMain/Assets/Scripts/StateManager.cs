@@ -1,7 +1,6 @@
 using UnityEngine;
 public class StateManager : MonoBehaviour
 {
-    public ObjectiveController objectiveController;
     public static StateManager Instance { get; private set; }
 
     public GameStage CurrentStage { get; private set; }
@@ -84,10 +83,12 @@ public class StateManager : MonoBehaviour
                 StageOneController.Instance.NetworkController().EnableLearningRateSlider();
                 StageOneController.Instance.NetworkController().EnableTrainingCycleSlider();
                 StageOneController.Instance.HideOuterProgressBar();
+                StageOneController.Instance.ShowEvaluationStatus();
                 break;
             case GameStage.SecondNetworkTrainedBad:
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondNetworkTrainedBad());
                 StageOneController.Instance.TutorialController().StartTutorial();
+                StageOneController.Instance.ShowEvaluationStatus();
                 break;
             case GameStage.StageOneCompleted:
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.SecondNetworkTrainedGood());
@@ -122,6 +123,7 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.DisableStopButton();
                 RLController.Instance.EnableStartButton();
                 RLController.Instance.ShowEvaluationOpenButton();
+                RLController.Instance.ShowEvaluationStatus();
                 break;
             case GameStage.RLOneCompletedBad:
                 RLController.Instance.HideOuterProgressBar();
@@ -129,6 +131,7 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.ShowWorkshopOpenButton();
                 RLController.Instance.EnableStartButton();
                 RLController.Instance.ShowEvaluationOpenButton();
+                RLController.Instance.ShowEvaluationStatus();
                 break;
             case GameStage.RLTwoStart:
             case GameStage.RLThreeStart:
@@ -155,14 +158,17 @@ public class StateManager : MonoBehaviour
                 RLController.Instance.ShowWorkshopOpenButton();
                 RLController.Instance.DisableStopButton();
                 RLController.Instance.EnableStartButton();
+                RLController.Instance.ShowEvaluationStatus();
                 break;
             case GameStage.RLTwoCompletedGood:
                 RLController.Instance.ShowWorkshopOpenButton();
                 RLController.Instance.HideOuterProgressBar();
                 RLController.Instance.ShowNextLevelButton();
+                RLController.Instance.ShowEvaluationStatus();
                 break;
             case GameStage.RLThreeCompletedGood:
                 RLController.Instance.HideOuterProgressBar();
+                RLController.Instance.ShowEvaluationStatus();
                 if (ActivityTracker.Instance != null)
                 {
                     ActivityTracker.Instance.StopTimer("StageTwoTime");
