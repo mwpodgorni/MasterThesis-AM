@@ -254,7 +254,7 @@ public class StageOneController : MonoBehaviour
             if (finishedCycles / 2 > correctPredictions)
             {
                 statusValue.text = "Poor performance. Your network is not performing well.";
-                statusValue.style.color = new StyleColor(Color.red);
+                statusValue.style.color = new StyleColor(new Color32(0x82, 0x3A, 0x30, 0xFF));
 
             }
             else
@@ -262,11 +262,11 @@ public class StageOneController : MonoBehaviour
                 if (loss < 0.35f && highErrorRatio < 0.1f)
                 {
                     statusValue.text = "Excellent! Your network is performing very well.";
-                    statusValue.style.color = new StyleColor(Color.green);
+                    statusValue.style.color = new StyleColor(new Color32(0x21, 0x63, 0x4F, 0xFF));
                 }
                 else
                 {
-                    statusValue.text = "Reasonable performance. Your network is performing okay.";
+                    statusValue.text = "Reasonable performance. Your network is functioning accurately.";
                     statusValue.style.color = new StyleColor(Color.yellow);
                 }
             }

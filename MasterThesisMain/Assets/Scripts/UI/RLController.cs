@@ -817,14 +817,14 @@ public class RLController : MonoBehaviour
         }
         if (evaluatingStagesGood.Contains(StateManager.Instance.CurrentStage))
         {
-            if (successRate >= 0.5f)
+            if (successRate >= 0.6f)
             {
                 statusValue.text = "Excellent! Your robot is performing optimally.";
-                statusValue.style.color = new StyleColor(Color.green);
+                statusValue.style.color = new StyleColor(new Color32(0x21, 0x63, 0x4F, 0xFF));
             }
             else
             {
-                statusValue.text = "Reasonable performance. Your robot is doing okay.";
+                statusValue.text = "Reasonable performance. Your robot is showing stable results.";
                 statusValue.style.color = new StyleColor(Color.yellow);
             }
 
@@ -833,7 +833,7 @@ public class RLController : MonoBehaviour
         else
         {
             statusValue.text = "Poor performance. Your robot is not learning effectively.";
-            statusValue.style.color = new StyleColor(Color.red);
+            statusValue.style.color = new StyleColor(new Color32(0x82, 0x3A, 0x30, 0xFF));
         }
         evaluationStatus.style.display = DisplayStyle.Flex;
     }
