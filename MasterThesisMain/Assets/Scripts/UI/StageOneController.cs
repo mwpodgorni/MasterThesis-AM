@@ -118,14 +118,14 @@ public class StageOneController : MonoBehaviour
         evaluationOpen = true;
         CheckIfCompleted();
         evaluationPanel.RemoveFromClassList("panel-up");
-        topbar.AddToClassList("opacity-none");
+        topbar.style.display = DisplayStyle.None;
 
     }
     public void OnEvaluationCloseButtonClicked()
     {
         evaluationOpen = false;
         evaluationPanel.AddToClassList("panel-up");
-        topbar.RemoveFromClassList("opacity-none");
+        topbar.style.display = DisplayStyle.Flex;
     }
     public void CheckIfCompleted()
     {

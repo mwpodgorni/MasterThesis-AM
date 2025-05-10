@@ -20,6 +20,7 @@ public class RLController : MonoBehaviour
     Label _helpLearningConfiguration;
     VisualElement _UI;
     VisualElement _rewardContainer;
+    public VisualElement topbar;
 
     public VisualElement tutorialPanel;
     public VisualElement workshopPanel;
@@ -131,6 +132,7 @@ public class RLController : MonoBehaviour
 
         tutorialPanel = _UI.Q<VisualElement>("TutorialPanel");
         tutorialPanel.style.display = DisplayStyle.Flex;
+        topbar = _UI.Q<VisualElement>("Topbar");
 
         // Workshop Panel
         workshopPanel = _UI.Q<VisualElement>("WorkshopPanel");
@@ -296,7 +298,8 @@ public class RLController : MonoBehaviour
         }
 
         workshopPanel.RemoveFromClassList("panel-up");
-        workshopOpenButton.AddToClassList("opacity-none");
+        topbar.style.display = DisplayStyle.None;
+
 
         _input.DisableCameraActions();
     }
@@ -310,7 +313,7 @@ public class RLController : MonoBehaviour
         }
 
         workshopPanel.AddToClassList("panel-up");
-        workshopOpenButton.RemoveFromClassList("opacity-none");
+        topbar.style.display = DisplayStyle.Flex;
 
         _input.EnableCameraActions();
     }
@@ -340,10 +343,19 @@ public class RLController : MonoBehaviour
 
         UpdateEvaluation();
         evaluationPanel.RemoveFromClassList("panel-up");
-        evaluationOpenButton.AddToClassList("opacity-none");
+        topbar.style.display = DisplayStyle.None;
 
         RevertState();
         _input.DisableCameraActions();
+    }
+    public void OnEvaluationCloseButtonClicked()
+    {
+        evaluationOpen = false;
+        evaluationPanel.AddToClassList("panel-up");
+        topbar.style.display = DisplayStyle.Flex;
+        ShowEvaluationOpenButton();
+
+        _input.EnableCameraActions();
     }
     public void CheckCompletion()
     {
@@ -369,15 +381,7 @@ public class RLController : MonoBehaviour
             StartCoroutine(StartTutorial(GetSolvedText(false)));
         }
     }
-    public void OnEvaluationCloseButtonClicked()
-    {
-        evaluationOpen = false;
-        evaluationPanel.AddToClassList("panel-up");
-        evaluationOpenButton.RemoveFromClassList("opacity-none");
-        ShowEvaluationOpenButton();
 
-        _input.EnableCameraActions();
-    }
     public void HideProgressBar()
     {
         _progressBar.AddToClassList("opacity-none");

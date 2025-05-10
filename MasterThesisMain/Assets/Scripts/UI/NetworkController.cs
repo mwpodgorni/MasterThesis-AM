@@ -176,7 +176,17 @@ public class NetworkController : MonoBehaviour
         RedrawConnections();
         layer.RegisterCallback<GeometryChangedEvent>((evt) => RedrawConnections());
     }
+    public void RemoveHiddenLayer()
+    {
+        var hiddenLayersContainer = _hiddenLayerPanel.Q<VisualElement>("HiddenLayers");
 
+        if (hiddenLayersContainer.childCount <= 0) return;
+
+        hiddenLayersContainer.RemoveAt(hiddenLayersContainer.childCount - 1);
+        neuralNetwork.RemoveHiddenLayer();
+        RedrawConnections();
+        hiddenLayersContainer.RegisterCallback<GeometryChangedEvent>((evt) => RedrawConnections());
+    }
     public void DisableTrainingButton()
     {
         trainNetworkButton.SetEnabled(false);
@@ -223,16 +233,7 @@ public class NetworkController : MonoBehaviour
     {
         trainingCycleSlider.SetEnabled(true);
     }
-    public void RemoveHiddenLayer()
-    {
-        var hiddenLayersContainer = _hiddenLayerPanel.Q<VisualElement>("HiddenLayers");
 
-        if (hiddenLayersContainer.childCount <= 0) return;
-
-        hiddenLayersContainer.RemoveAt(hiddenLayersContainer.childCount - 1);
-        neuralNetwork.RemoveHiddenLayer();
-        hiddenLayersContainer.RegisterCallback<GeometryChangedEvent>((evt) => RedrawConnections());
-    }
     public void AddNode(VisualElement layer)
     {
         var childCount = layer.Q<VisualElement>("NodeWrapper").childCount;

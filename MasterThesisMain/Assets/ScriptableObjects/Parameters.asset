@@ -16,8 +16,8 @@ MonoBehaviour:
   minWeight: 0
   maxBias: 1
   minBias: -0
-  maxNodes: 8
-  maxLayers: 6
+  maxNodes: 6
+  maxLayers: 4
   learningRate: 0.2
   gradient: 0.1
   activationFunc: 1
