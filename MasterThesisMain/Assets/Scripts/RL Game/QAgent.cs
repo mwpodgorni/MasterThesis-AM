@@ -71,15 +71,15 @@ public class QAgent : RLAgent
             _timer = 0f;
         }
 
-        if (CompletedTask())
+        if (!_calculatingMove)
         {
-            totalTaskCompleted++;
-            _finishedEpoch = true;
-        }
+            if (CompletedTask())
+            {
+                totalTaskCompleted++;
+                _finishedEpoch = true;
+            }
 
-        if (!_calculatingMove && (currentEpochStepCount >= maxSteps) && !_finishedEpoch)
-        {
-            _finishedEpoch = true;
+            if ((currentEpochStepCount >= maxSteps) && !_finishedEpoch) _finishedEpoch = true;
         }
     }
 
