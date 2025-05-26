@@ -122,6 +122,7 @@ public class CameraDragController : MonoBehaviour
 
     void EnableDragMovement()
     {
+        if (_dragRotation) return;
         _dragOrigin = GetMousePosition();
         _dragMovement = true;
     }
@@ -133,6 +134,7 @@ public class CameraDragController : MonoBehaviour
 
     void EnableDragRotation()
     {
+        if (_dragMovement) return;
         _dragRotation = true;
     }
 
