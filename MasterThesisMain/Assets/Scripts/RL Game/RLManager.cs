@@ -8,7 +8,7 @@ public class RLManager : MonoBehaviour
 {
     [Header("Level Elements")]
     [SerializeField] RLAgent _player;
-    [SerializeField] List<EnemyAgent> _enemies;
+    [SerializeField] List<RLAgent> _enemies;
     [SerializeField] List<Tile> _tilesToReset;
     [SerializeField] List<TileType> _observedTiles;
 
