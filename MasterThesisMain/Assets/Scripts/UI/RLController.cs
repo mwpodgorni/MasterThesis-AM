@@ -792,9 +792,7 @@ public class RLController : MonoBehaviour
         if (ActivityTracker.Instance != null)
         {
             Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLSffHAoJXE4RetOsmDZG0FycdND9QlhSbru142JqOCFz9zDUAQ/viewform?usp=pp_url&entry.978412280=" + ActivityTracker.Instance.GetSessionId());
-
         }
-
         Application.Quit();
     }
     public void HideEvaluationStatus()
