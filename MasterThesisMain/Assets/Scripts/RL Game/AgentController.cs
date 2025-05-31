@@ -1,8 +1,6 @@
-// using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
 
 public class AgentController : MonoBehaviour
 {
@@ -24,8 +22,6 @@ public class AgentController : MonoBehaviour
     float _waitingTime = 0.0f;
     bool _dead = false;
     int _tileIndex = 0;
-
-    Tile _prevTile;
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +49,6 @@ public class AgentController : MonoBehaviour
             _line.SetPosition(0, startingTile.point.position);
         }
 
-        // _model.DOMoveY(1f, 0.75f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
     }
 
     // Update is called once per frame
@@ -109,9 +104,7 @@ public class AgentController : MonoBehaviour
             {
                 tile.Use();
             }
-
         }
-
     }
 
     public Tile GetTile(Action action)
