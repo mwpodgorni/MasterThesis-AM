@@ -44,22 +44,13 @@ public class ActivityTracker : MonoBehaviour
 
     public void StartTimer(string timerName)
     {
-        // Debug.Log($"Starting timer: {timerName} at {Time.realtimeSinceStartup} seconds");
         timers[timerName] = Time.realtimeSinceStartup;
-        // log all timers
-        // foreach (var timer in timers)
-        // {
-        //     Debug.Log($"Timer: {timer.Key} started at: {timer.Value} seconds");
-        // }
     }
 
     public void StopTimer(string timerName)
     {
-        // Debug.Log($"Stopping timer: {timerName}");
         if (timers.ContainsKey(timerName))
         {
-            // Debug.Log($"Timer1: now: {Time.realtimeSinceStartup} seconds");
-            // Debug.Log($"Timer2: started at: {timers[timerName]} seconds");
             timers[timerName] = Time.realtimeSinceStartup - timers[timerName];
             stoppedTimers.Add(timerName);
         }
@@ -75,7 +66,6 @@ public class ActivityTracker : MonoBehaviour
             float now = Time.realtimeSinceStartup;
             float duration = now - storedValue;
 
-            // Debug.Log($"[Timer '{key}'] Stored value: {storedValue}, Now: {now}, Duration: {duration}");
             timers[key] = duration;
         }
 
@@ -124,7 +114,7 @@ public class ActivityTracker : MonoBehaviour
         request.SetRequestHeader("Content-Type", "application/json");
 
         request.SendWebRequest();
-        while (!request.isDone) { } // block until done
+        while (!request.isDone) { }
 
         if (request.result == UnityWebRequest.Result.Success)
             Debug.Log("Tracking data uploaded successfully.");

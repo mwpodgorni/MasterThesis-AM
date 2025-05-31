@@ -33,7 +33,6 @@ public class TutorialController : MonoBehaviour
 
     private void Awake()
     {
-        // Debug.Log("TutorialController Awake called");
         ui = GetComponent<UIDocument>().rootVisualElement;
         nextButton = ui.Q<Button>("NextButton");
         tutorialTitle = ui.Q<Label>("TutorialTitle");
@@ -92,24 +91,16 @@ public class TutorialController : MonoBehaviour
         {
             typeText = true;
             tutorialCompletedEvent?.Invoke();
-            // Debug.Log("Tutorial Complete");
             ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
             StartCoroutine(HideTutorialPanel());
-            // if (StateManager.Instance.MiniGame3Solved)
-            // {
-            //     StageOneController.Instance.LoadSecondStage();
-
-            // }
         }
     }
     private IEnumerator HideTutorialPanel(float delay = 0f)
     {
-        // Debug.Log("Hiding tutorial panel after delay: " + delay);
         yield return new WaitForSeconds(delay);
         ui.Q<VisualElement>("TutorialPanel").AddToClassList("opacity-none");
         displayTime = 0f;
         yield return new WaitForSeconds(1f);
-        // Debug.Log("Hiding tutorial panel");
         ui.Q<VisualElement>("TutorialPanel").style.display = DisplayStyle.None;
         if (typingAudio != null && typingAudio.isPlaying)
             typingAudio.Stop();
@@ -120,13 +111,11 @@ public class TutorialController : MonoBehaviour
 
         var step = messages[currentStep];
 
-        // 1) begin typing…
         StopAllCoroutines();
         tutorialTitle.text = "";
         tutorialContent.text = "";
         StartCoroutine(ShowTitle(step.Title));
 
-        // 2) if there’s an EventName in JSON, try to call it
         if (!string.IsNullOrEmpty(step.EventName))
             InvokeStepEvent(step.EventName);
     }
@@ -137,14 +126,13 @@ public class TutorialController : MonoBehaviour
     }
     private IEnumerator ShowTitle(string title)
     {
-        yield return StartCoroutine(ShowText(tutorialTitle, title, false)); // no sound for title
+        yield return StartCoroutine(ShowText(tutorialTitle, title, false));
 
         if (currentStep < messages.Count)
         {
             StartCoroutine(ShowText(tutorialContent, string.Join("\n", messages[currentStep].Content), true)); // sound for text
         }
     }
-    // "Tip: Hidden layers of the same size often help the network discover complex relationships more effectively."
     private IEnumerator ShowText(Label label, string text, bool playSound)
     {
         StringBuilder sb = new StringBuilder(text);
@@ -197,7 +185,6 @@ public class TutorialController : MonoBehaviour
     }
     private void InvokeStepEvent(string methodName)
     {
-        // look for a method on this class with exactly that name, no args
         var mi = GetType().GetMethod(
             methodName,
             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
@@ -206,10 +193,7 @@ public class TutorialController : MonoBehaviour
         {
             mi.Invoke(this, null);
         }
-        else
-        {
-            // Debug.LogWarning($"TutorialController: no method named '{methodName}'");
-        }
+
     }
 
     public void AddToEvent(UnityAction action)
@@ -218,7 +202,6 @@ public class TutorialController : MonoBehaviour
     }
 
 
-    // Event firing methods
     public void ShowWorkshopButton()
     {
         StageOneController.Instance.ShowWorkshopOpenButton();
@@ -226,7 +209,6 @@ public class TutorialController : MonoBehaviour
     }
     public void RLShowWorkshopButton()
     {
-        // Debug.Log("RLShowWorkshopButton called");
         RLController.Instance.ShowWorkshopOpenButton();
     }
     public void ShowEndScreen()
@@ -240,7 +222,6 @@ public class TutorialController : MonoBehaviour
     }
     public void EndGame()
     {
-        // Debug.Log("EndGame called");
         Application.Quit();
     }
     public void SetObjective()

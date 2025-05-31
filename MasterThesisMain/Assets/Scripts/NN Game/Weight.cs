@@ -10,7 +10,6 @@ public class Weight
 
     public Weight(Node fromNode, Node toNode)
     {
-        // Debug.Log("CREATE WEIGHT");
         from = fromNode;
         to = toNode;
 
@@ -23,7 +22,6 @@ public class Weight
     }
     public void UpdateWeight(float learningRate)
     {
-        // Debug.Log("Updating weight: " + weight);
         weight -= learningRate * gradient;  // Gradient descent step
     }
 }

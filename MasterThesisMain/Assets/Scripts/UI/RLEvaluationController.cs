@@ -37,7 +37,6 @@ public class RLEvaluationController : MonoBehaviour
         {
             RLController.Instance.ShowEvaluationOpenButton();
         }
-        // Debug.Log($"Updating evaluation data: {data}");
         avgEpisodeReturn.text = data.avgEpisodeReturn.ToString();
         successRate.text = data.successRate.ToString();
         completionTime.text = data.completionTime.ToString();
@@ -53,7 +52,6 @@ public class RLEvaluationController : MonoBehaviour
     }
     private List<float> DownsampleData(float[] lossData, int maxDataPoints = 1000)
     {
-        // Debug.Log($"Downsampling data: {lossData.Length} points to {maxDataPoints} max points.");
         if (lossData.Length <= maxDataPoints) return new List<float>(lossData);
 
         int step = Mathf.CeilToInt((float)lossData.Length / maxDataPoints);

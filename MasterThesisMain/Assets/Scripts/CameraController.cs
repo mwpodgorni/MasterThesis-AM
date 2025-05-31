@@ -11,7 +11,7 @@ public class AxonometricCameraController : MonoBehaviour
 
     private Vector3 pivot;
     private float distance = 10f;
-    private Vector2 rotation = new Vector2(30f, 45f); // pitch (x) and yaw (y)
+    private Vector2 rotation = new Vector2(30f, 45f);
 
     void Start()
     {
@@ -36,7 +36,6 @@ public class AxonometricCameraController : MonoBehaviour
         }
         Quaternion camRotation = Quaternion.Euler(rotation.x, rotation.y, 0);
 
-        // Edge scrolling: adjust the pivot.
         Vector3 moveDir = Vector3.zero;
         Vector3 right = camRotation * Vector3.right;
         Vector3 forward = camRotation * Vector3.forward;

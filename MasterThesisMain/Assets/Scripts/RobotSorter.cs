@@ -25,15 +25,13 @@ public class RobotSorter : MonoBehaviour
     float _timer = 0f;
     List<Vector3> positions;
 
-    // Start is called before the first frame update
     void Start()
     {
         Random.InitState(DateTime.Now.Millisecond);
 
-        positions = new(){ _type1Point.position, _type2Point.position, _type3Point.position };
+        positions = new() { _type1Point.position, _type2Point.position, _type3Point.position };
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!spawning) return;
@@ -51,7 +49,7 @@ public class RobotSorter : MonoBehaviour
     {
         var part = _type1Parts[0];
 
-        var allParts = _type1Parts.Concat( _type2Parts).Concat(_type3Parts);
+        var allParts = _type1Parts.Concat(_type2Parts).Concat(_type3Parts);
 
         part = allParts.ElementAt(Random.Range(0, allParts.Count()));
 
@@ -92,7 +90,7 @@ public class RobotSorter : MonoBehaviour
     public void UpdateAccuracy(EvaluationData data)
     {
         spawning = true;
-        accuracy = (float) data.correctPredictions / (float) data.finishedCycles;
+        accuracy = (float)data.correctPredictions / (float)data.finishedCycles;
     }
 
     private void OnTriggerEnter(Collider other)

@@ -32,7 +32,7 @@ public class CameraDragController : MonoBehaviour
     [Header("Input Reader")]
     [SerializeField] InputReader _input;
 
-    Vector2 _targetRotation = new Vector2(30f, 45f); // pitch (x) and yaw (y)
+    Vector2 _targetRotation = new Vector2(30f, 45f);
     Vector3 _targetPosition = new Vector3(0, 0, 0);
 
     Vector3 _dragOrigin;
@@ -85,7 +85,6 @@ public class CameraDragController : MonoBehaviour
         if (_dragRotation) DragRotation();
     }
 
-    // Zoom in and out. For Orthogonic Projection, increase/decrese view size.
     void Zoom()
     {
         _currentZoomValue -= _input.Scroll * _zoomSpeed;
@@ -112,7 +111,6 @@ public class CameraDragController : MonoBehaviour
 
     void DragRotation()
     {
-        // Rotate camera when right mouse button is held.
         float mouseX = _input.PositionDelta.x * _lookSpeed;
         float mouseY = _input.PositionDelta.y * _lookSpeed;
         _targetRotation.y += mouseX;

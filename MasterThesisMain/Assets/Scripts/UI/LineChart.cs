@@ -104,7 +104,7 @@ public class LineChart : VisualElement
             painter.Stroke();
         }
 
-        // --- plot each dataset with smoother curves & thicker lines ---
+        //  plot each dataset with smoother curves & thicker lines 
         int smoothSteps = 8;                   // subdivisions per segment
         painter.lineWidth = lineWidth * 1.5f; // 50% thicker
 
@@ -145,7 +145,7 @@ public class LineChart : VisualElement
         }
     }
 
-    // fixed‑tension Catmull–Rom (tension = 0.5)
+    // fixed‑tension Catmull–Rom 
     private Vector2 CatmullRom(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, float t)
     {
         float t2 = t * t;
@@ -162,10 +162,9 @@ public class LineChart : VisualElement
 
     private void AddAxisLabels()
     {
-        // Debug.Log("Adding axis labels" + datasets.Count);
         labelContainer.Clear();
 
-        // 1) same seriesList as used in drawing
+        // 1 same seriesList as used in drawing
         var seriesList = datasets.Count > 0
             ? datasets
             : new List<(List<float>, Color, string)> { (data, lineColor, "Default") };
@@ -180,7 +179,7 @@ public class LineChart : VisualElement
         float h = rect.height;
         float stepX = w / (pointCount - 1);
 
-        // 2) global min/max
+        // 2 global min/max
         float globalMin = values.Min();
         float globalMax = values.Max();
         float padding = (globalMax - globalMin) * 0.1f;
@@ -188,7 +187,7 @@ public class LineChart : VisualElement
         float paddedMax = globalMax + padding;
         float range = Mathf.Max(paddedMax - paddedMin, 0.0001f);
 
-        // 3) Y‑axis labels
+        // 3 Y‑axis labels
         int yTicks = 4;
         for (int i = 0; i <= yTicks; i++)
         {
@@ -206,7 +205,7 @@ public class LineChart : VisualElement
             labelContainer.Add(lbl);
         }
 
-        // 4) X‑axis labels (5 ticks max)
+        // 4 X‑axis labels (5 ticks max)
         int maxXTicks = 5;
         int xStepCount = Mathf.Max(1, (pointCount - 1) / (maxXTicks - 1));
         for (int i = 0; i < pointCount; i += xStepCount)

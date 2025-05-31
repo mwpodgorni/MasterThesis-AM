@@ -8,7 +8,6 @@ public class EnemyAgent : RLAgent
 
     bool _vulnerable = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         _player = FindObjectOfType<QAgent>()?.controller;
@@ -17,7 +16,6 @@ public class EnemyAgent : RLAgent
         controller.isEnemy = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!_activated) return;
@@ -42,10 +40,8 @@ public class EnemyAgent : RLAgent
             controller.currentTile.SetCurrentType(TileType.Enemy);
         }
 
-        if (!controller.IsDead && (_player.currentTile == controller.currentTile || _player.currentTile == _prevTile) && !_calculatingMove )
+        if (!controller.IsDead && (_player.currentTile == controller.currentTile || _player.currentTile == _prevTile) && !_calculatingMove)
         {
-            // Debug.Log("Died");
-
             if (!_vulnerable)
             {
                 _player.IsDead = true;
@@ -57,7 +53,7 @@ public class EnemyAgent : RLAgent
 
                 if (_prevTile.isUsed) _currentTile.SoftReset();
                 else _currentTile.ResetTile();
-              
+
                 if (_prevTile.isUsed) _prevTile.SoftReset();
                 else _prevTile.ResetTile();
             }

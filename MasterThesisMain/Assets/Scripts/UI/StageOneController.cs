@@ -79,7 +79,7 @@ public class StageOneController : MonoBehaviour
         {
             ActivityTracker.Instance.StartTimer("StageOneTime");
         }
-        // TODO: remove this debug code
+        //  debug code
         //     HideAllPanels();
         //     menu.style.display = DisplayStyle.Flex;
         //     menu.RemoveFromClassList("opacity-none");
@@ -134,7 +134,6 @@ public class StageOneController : MonoBehaviour
         {
             int finishedCycles = StageOneController.Instance.EvaluationController().GetFinishedCycles();
             int correctPredictions = StageOneController.Instance.EvaluationController().GetCorrectPredictions();
-            // Debug.Log($"Finished Cycles: {finishedCycles}, Correct Predictions: {correctPredictions}");
             if (finishedCycles / 2 > correctPredictions)
             {
                 StateManager.Instance.SetState(GameStage.SecondNetworkTrainedBad);
@@ -156,10 +155,8 @@ public class StageOneController : MonoBehaviour
     }
     public TutorialController TutorialController()
     {
-        // Debug.Log("TutorialController called");
         if (GetComponent<TutorialController>() == null)
         {
-            // Debug.LogError("TutorialController is null");
             return null;
         }
         return GetComponent<TutorialController>();

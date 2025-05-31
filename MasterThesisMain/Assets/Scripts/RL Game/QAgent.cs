@@ -8,7 +8,6 @@ public class QAgent : RLAgent
 {
     Dictionary<State, Dictionary<Action, float>> _qTable;
 
-    // Start is called before the first frame update
     void Start()
     {
         _currentTile = controller.startingTile;
@@ -24,7 +23,6 @@ public class QAgent : RLAgent
         _rewards[TileType.Buff] = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!_activated) return;
@@ -107,7 +105,7 @@ public class QAgent : RLAgent
         var qValue = 0f;
         foreach (var act in possibleActions)
         {
-                
+
             float currentQValue;
 
             if (!actionValues.TryGetValue(act, out currentQValue)) continue;
@@ -126,7 +124,6 @@ public class QAgent : RLAgent
     {
         if (!_qTable.ContainsKey(prevState))
         {
-            // Debug.Log("New State Discovered");
             _qTable[prevState] = new Dictionary<Action, float>();
         }
         if (!_qTable[prevState].ContainsKey(action))

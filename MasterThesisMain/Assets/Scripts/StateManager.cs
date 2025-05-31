@@ -20,7 +20,6 @@ public class StateManager : MonoBehaviour
     public void SetState(GameStage newState)
     {
         CurrentStage = newState;
-        // Debug.Log($"Game state changed to: {CurrentStage}");
         UpdateBasedOnCurrentState();
     }
     public void UpdateBasedOnCurrentState()

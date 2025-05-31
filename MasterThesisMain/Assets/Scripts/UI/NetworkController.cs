@@ -43,7 +43,6 @@ public class NetworkController : MonoBehaviour
     NetworkSolution minigame2Solution = new NetworkSolution(3, 3, 2, new int[] { 4, 4 });
     NetworkSolution minigame2Solution2 = new NetworkSolution(3, 3, 2, new int[] { 3, 3 });
 
-    // Button classifyButton;
     public void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -73,9 +72,6 @@ public class NetworkController : MonoBehaviour
         inputNodeAddBtn.clicked += () => AddNode(_inputLayerPanel);
         inputNodeRemoveBtn = ui.Q<Button>("InputNodeRemoveBtn");
         inputNodeRemoveBtn.clicked += () => RemoveNode(_inputLayerPanel);
-
-        // classifyButton = ui.Q<Button>("ClassifyButton");
-        // classifyButton.clicked += () => ClassifyNetworkData();
 
         hiddenLayerAddBtn = ui.Q<Button>("HiddenLayerAddBtn");
         hiddenLayerAddBtn.clicked += AddHiddenLayer;
@@ -136,7 +132,6 @@ public class NetworkController : MonoBehaviour
     {
         if (neuralNetwork == null)
         {
-            // // Debug.LogError("Neural network not initialized.");
             return;
         }
 
@@ -259,13 +254,11 @@ public class NetworkController : MonoBehaviour
     }
     public void RemoveNode(VisualElement layer)
     {
-        // Debug.Log($"removeing node from {layer.name}");
         var nodeWrapper = layer.Q<VisualElement>("NodeWrapper");
         if (nodeWrapper.childCount <= 0) return;
         nodeWrapper.RemoveAt(nodeWrapper.childCount - 1);
         if (layer.name == "InputLayerPanel")
         {
-            // Debug.Log("removing input node");
             neuralNetwork.RemoveInputLayerNode();
         }
         else if (layer.name == "OutputLayerPanel")
@@ -280,7 +273,6 @@ public class NetworkController : MonoBehaviour
     }
     public void OnTestNetworkButtonClicked()
     {
-        // Debug.Log("TestNetworkButton clicked" + StateManager.Instance.CurrentStage);
         if (StateManager.Instance.CurrentStage == GameStage.FirstHelpOpen)
         {
             if (neuralNetwork.IsNetworkValid())
@@ -289,7 +281,6 @@ public class NetworkController : MonoBehaviour
             }
             else
             {
-                // // Debug.Log("Network is not valid. Please add nodes to the network.");
                 StageOneController.Instance.TutorialController().HideNextButton();
                 StageOneController.Instance.TutorialController().SetTypeText(false);
                 StageOneController.Instance.TutorialController().SetDisplayTime(5f);
@@ -299,21 +290,17 @@ public class NetworkController : MonoBehaviour
         }
         else if (StateManager.Instance.CurrentStage == GameStage.FirstNetworkValidated)
         {
-            // Debug.Log("TestNetworkButton clicked2");
             if (minigame2Solution.Matches(neuralNetwork) || minigame2Solution2.Matches(neuralNetwork))
             {
-                // // Debug.Log("TestNetworkButton clicked3");
                 StageOneController.Instance.TutorialController().SetTypeText(true);
                 StageOneController.Instance.TutorialController().ShowNextButton();
                 StageOneController.Instance.TutorialController().SetTutorialSteps(DataReader.Instance.FirstNetworkValid());
                 StageOneController.Instance.TutorialController().StartTutorial();
 
-                // // Debug.Log("TestNetworkButton clicked3");
                 StateManager.Instance.SetState(GameStage.SecondNetworkValidated);
             }
             else
             {
-                // // Debug.Log("Network is not valid. Please add nodes to the network.");
                 StageOneController.Instance.TutorialController().HideNextButton();
                 StageOneController.Instance.TutorialController().SetTypeText(false);
                 StageOneController.Instance.TutorialController().SetDisplayTime(5f);
@@ -329,10 +316,6 @@ public class NetworkController : MonoBehaviour
             neuralNetwork.TrainNetwork(trainingCycleSlider.value, learningRateSlider.value);
             StateManager.Instance.SetState(GameStage.SecondNetworkTraining);
         }
-        else
-        {
-            // Debug.Log("Network is not valid. Please add nodes to the network.");
-        }
     }
     public void ClearLines()
     {
@@ -343,15 +326,14 @@ public class NetworkController : MonoBehaviour
     {
         _connectionLines.ClearLines();
 
-        // 1) Get the same parent that contains _connectionLines
+        // 1 Get the same parent that contains _connectionLines
         var miniGamePanel = ui.Q<VisualElement>("WorkshopPanel");
         if (miniGamePanel == null)
         {
-            // Debug.LogError("WorkshopPanel not found!");
             return;
         }
 
-        // 2) Convert node positions to local coords
+        // 2 Convert node positions to local coords
         var inputNodeWrapper = _inputLayerPanel.Q<VisualElement>("NodeWrapper");
         List<Vector2> inputLayerPositions = new List<Vector2>();
         foreach (var inputNode in inputNodeWrapper.Children())
@@ -435,7 +417,6 @@ public class NetworkController : MonoBehaviour
     }
     void SetupTestNetwork()
     {
-        // Debug.Log("SetupTestNetwork");
         // Setup a test network with 2 hidden layers and 3 nodes in each layer
         AddNode(_inputLayerPanel);
         AddNode(_inputLayerPanel);

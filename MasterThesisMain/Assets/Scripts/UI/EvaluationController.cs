@@ -31,11 +31,11 @@ public class EvaluationController : MonoBehaviour
         errorLowValue = ui.Q<Label>("ErrorLowValue");
         errorMidValue = ui.Q<Label>("ErrorMidValue");
         errorHighValue = ui.Q<Label>("ErrorHighValue");
+
+        // dummy data
         // var seriesA = new List<float> { 1f, 2f, 3f, 2f, 1f };
         // var seriesB = new List<float> { 2f, 1f, 4f, 1f, 2f };
         // var seriesC = new List<float> { 3f, 3f, 1f, 3f, 3f };
-
-        // dummy data
         // chart.datasets = new List<(List<float>, Color, string)> {
         //     (seriesA, Color.green, "Series A"),
         //     (seriesB, Color.yellow, "Series B"),
@@ -44,7 +44,6 @@ public class EvaluationController : MonoBehaviour
     }
     public void UpdateEvaluationData(EvaluationData data)
     {
-        // Debug.Log($"Updating evaluation data: {data}");
         finishedCyclesValue.text = data.finishedCycles.ToString();
         learningRateValue.text = data.learningRate.ToString("F4");
         finalAverageLossValue.text = data.finalAverageLoss.ToString("F4");
