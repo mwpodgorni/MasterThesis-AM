@@ -13,6 +13,7 @@ public class MainMenuController : MonoBehaviour
     public VisualElement controlsPanel;
     public Button controlsButton;
     public Button controlsClosed;
+    public Button surveyButton;
     public VisualElement menu;
     private void Awake()
     {
@@ -49,6 +50,17 @@ public class MainMenuController : MonoBehaviour
         controlsPanel = ui.Q<VisualElement>("ControlsPanel");
         controlsPanel.style.display = DisplayStyle.Flex;
         controlsPanel.AddToClassList("panel-up");
+
+        surveyButton = ui.Q<Button>("SurveyButton");
+        surveyButton.clicked += OnSurveyButtonClicked;
+    }
+    public void OnSurveyButtonClicked()
+    {
+        if (ActivityTracker.Instance != null)
+        {
+            Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLSffHAoJXE4RetOsmDZG0FycdND9QlhSbru142JqOCFz9zDUAQ/viewform?usp=pp_url&entry.978412280=" + ActivityTracker.Instance.GetSessionId());
+        }
+        Application.Quit();
     }
     private void OnQuitButtonClicked()
     {
