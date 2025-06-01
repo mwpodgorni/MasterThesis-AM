@@ -101,8 +101,6 @@ public class RLManager : MonoBehaviour
             }
             else
             {
-                // Debug.Log("Episode Finished");
-
                 episodeReward[episodeCount - 1] = _player.currentEpochReward;
                 successRateRolling[episodeCount - 1] = _player.totalTaskCompleted / (float)episodeCount;
                 stepsToCompletion[episodeCount - 1] = (float)_player.currentEpochStepCount / (float)maxStepPerEpoch;

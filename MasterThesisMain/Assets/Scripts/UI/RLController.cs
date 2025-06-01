@@ -113,7 +113,6 @@ public class RLController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         string levelName = GetLevelName();

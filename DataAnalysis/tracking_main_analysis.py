@@ -27,7 +27,6 @@ print(f"StageOneTime - Total: {stage_one.sum():.2f}, Average: {avg_stage_one:.2f
 print(f"StageTwoTime - Total: {stage_two.sum():.2f}, Average: {avg_stage_two:.2f}")
 print(f"PaperReadingTime - Total: {paper_time.sum():.2f}, Average: {avg_paper_time:.2f}")
 
-# RGB color
 bar_color = (66/255, 133/255, 244/255)
 
 # Plot charts
